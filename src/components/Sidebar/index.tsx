@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronRight, Home, User, FileText, Calendar, BookOpen, HelpCircle } from "lucide-react";
 import redaProLogo from '../../assets/img/redapro.png';
+import { RouterLinks } from "../RouterLinks";
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -13,14 +14,14 @@ export function Sidebar() {
         ${isCollapsed ? 'w-20' : 'w-[250px]'}`}
     >
       <div className="relative flex items-center justify-between">
-        <a href="#">
+        <RouterLinks href="/home">
           <img
             src={redaProLogo}
             alt="Redapro"
             className={`w-[90px] rounded-full transition-all duration-300
               ${isCollapsed ? 'w-10' : 'w-[90px]'}`}
           />
-        </a>
+        </RouterLinks>
 
         <div
           className="absolute -right-6 top-1 h-6 w-6 cursor-pointer bg-[#007bff] flex items-center justify-center rounded-full"
@@ -37,40 +38,40 @@ export function Sidebar() {
       <div className={`overflow-auto py-6 h-full mt-4 ${isCollapsed ? 'hidden' : 'block'}`}>
         <ul className="space-y-2">
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/home" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <Home size={18} />
               <span>Início</span>
-            </a>
+            </RouterLinks>
           </li>
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/profile" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <User size={18} />
               <span>Meu Perfil</span>
-            </a>
+            </RouterLinks>
           </li>
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/my-essays" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <FileText size={18} />
               <span>Minhas Redações</span>
-            </a>
+            </RouterLinks>
           </li>
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/calendar" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <Calendar size={18} />
               <span>Agendamentos</span>
-            </a>
+            </RouterLinks>
           </li>
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/my-models" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <BookOpen size={18} />
               <span>Modelos Nota 1000</span>
-            </a>
+            </RouterLinks>
           </li>
           <li>
-            <a href="#" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
+            <RouterLinks href="/support" className="text-slate-800 font-medium hover:text-slate-900 hover:bg-gray-200 text-[15px] flex items-center gap-3 rounded px-4 py-2 transition-all">
               <HelpCircle size={18} />
               <span>Ajuda e Suporte</span>
-            </a>
+            </RouterLinks>
           </li>
         </ul>
       </div>

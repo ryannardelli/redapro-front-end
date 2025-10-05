@@ -1,8 +1,8 @@
-import { Sidebar } from "./components/Sidebar"
+import { MainRouter } from "./routers/MainRouter"
 
 function App() {
   return (
-      <Sidebar />
+      <MainRouter />
   )
 }
 
