@@ -1,5 +1,11 @@
+import { Shortcuts } from "../../../components/Shortcuts";
+import { Stats } from "../../../components/Stats";
+
 export function Home() {
     return(
-        <h1>Home</h1>
+        <>
+        <Shortcuts />
+        <Stats />
+        </>
     );
 }
