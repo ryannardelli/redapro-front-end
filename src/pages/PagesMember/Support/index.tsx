@@ -1,5 +1,7 @@
+import HelpAndSupport from "../../../components/HelpAndSupport";
+
 export function Support() {
     return(
-        <h1>Ajuda e Suporte</h1>
+        <HelpAndSupport />
     );
 }
