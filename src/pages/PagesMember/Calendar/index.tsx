@@ -1,5 +1,7 @@
+import Schedule from "../../../components/Schedule";
+
 export function Calendar() {
     return(
-        <h1>Agendamentos</h1>
+        <Schedule />
     );
 }
