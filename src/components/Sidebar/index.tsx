@@ -1,7 +1,7 @@
 import redaProLogo from '../../assets/img/redapro.png';
 import { useState } from "react";
 import { RouterLinks } from '../RouterLinks';
-import { BookOpen, Calendar, FileText, HelpCircle, Home, User } from 'lucide-react';
+import { BookOpen, Calendar, FileText, HelpCircle, Home, PenLine, User } from 'lucide-react';
 
 import avatarUser  from '../../assets/img/avatar-default.jpg';
 
@@ -22,7 +22,7 @@ export function Sidebar() {
 
         <nav className="text-sm font-medium text-gray-600" aria-label="Main Navigation">
           <RouterLinks
-            className="flex gap-4 items-center px-4 py-3 transition cursor-pointer group hover:bg-gray-100 hover:text-gray-900"
+            className="flex gap-4 items-center px-4 py-3 transition cursor-pointer group bg-gray-100 hover:bg-gray-100 hover:text-gray-900"
             href="/"
           >
             <Home />
@@ -38,11 +38,19 @@ export function Sidebar() {
           </RouterLinks>
 
           <RouterLinks
-            className="flex gap-4 items-center px-4 py-3 text-gray-900 transition bg-gray-100 cursor-pointer group hover:bg-gray-200"
+            className="flex gap-4 items-center px-4 py-3 text-gray-900 transition  cursor-pointer group hover:bg-gray-200"
             href="/my-essays"
           >
             <FileText />
             <span>Minhas Redações</span>
+          </RouterLinks>
+
+          <RouterLinks
+            className="flex gap-4 items-center px-4 py-3 text-gray-900 transition cursor-pointer group hover:bg-gray-200"
+            href="/essay-upload"
+          >
+            <PenLine />
+            <span>Enviar Redação</span>
           </RouterLinks>
 
           <RouterLinks

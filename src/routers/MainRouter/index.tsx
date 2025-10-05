@@ -8,6 +8,7 @@ import { Calendar } from "../../pages/PagesMember/Calendar";
 import { Support } from "../../pages/PagesMember/Support";
 import { Model } from "../../pages/PagesMember/Model";
 import { Home } from "../../pages/PagesMember/Home";
+import { EssayUpload } from "../../pages/PagesMember/EssayUpload";
 
 export function MainRouter() {
     const isauth = true;
@@ -25,6 +26,7 @@ export function MainRouter() {
                     <Route path="/" element={<Home />} />
                     <Route path="/my-profile" element={<Profile />} />
                     <Route path="/my-essays" element={<Essays />} />
+                    <Route path="/essay-upload" element={<EssayUpload />} />
                     <Route path="/models" element={<Model />} />
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/support" element={<Support />} />
