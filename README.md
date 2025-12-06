@@ -19,7 +19,6 @@ Interface moderna desenvolvida com React, Vite, TypeScript e TailwindCSS, conect
  ┣ 📁 providers/       → Context API (Providers globais)
  ┣ 📁 reducers/        → Reducers da Context API
  ┣ 📁 models/          → Tipagens e interfaces globais (Types & Interfaces)
- ┣ 📁 adapters/        → Adapters para transformar dados entre camadas
  ┣ 📁 router/          → Configuração de rotas (React Router)
  ┣ 📁 templates/       → Layouts / estruturas base de UI
  ┣ 📁 utils/           → Funções utilitárias e helpers
