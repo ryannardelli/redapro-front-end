@@ -1,73 +1,75 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# RedaPro (Front-end) — Plataforma de Correção de Redações
 
-Currently, two official plugins are available:
+Interface moderna desenvolvida com React, Vite, TypeScript e TailwindCSS, conectada à API da plataforma de correção de redações.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tecnologias Utilizadas
+- React — Biblioteca principal de UI
+- Vite — Bundler rápido e leve
+- TypeScript — Tipagem estática para maior segurança
+- TailwindCSS — Estilização baseada em utility classes
 
-## React Compiler
+## Estrutura inicial do projeto
+  ```bash
+📁 src/
+ ┣ 📁 components/      → Componentes reutilizáveis
+ ┣ 📁 pages/           → Páginas / telas do sistema
+ ┣ 📁 hooks/           → Hooks customizados
+ ┣ 📁 services/        → Serviços (APIs, Axios, configs)
+ ┣ 📁 providers/       → Context API (Providers globais)
+ ┣ 📁 reducers/        → Reducers da Context API
+ ┣ 📁 models/          → Tipagens e interfaces globais (Types & Interfaces)
+ ┣ 📁 adapters/        → Adapters para transformar dados entre camadas
+ ┣ 📁 router/          → Configuração de rotas (React Router)
+ ┣ 📁 templates/       → Layouts / estruturas base de UI
+ ┣ 📁 utils/           → Funções utilitárias e helpers
+ ┣ main.tsx            → Arquivo principal de inicialização
+ ┗ App.tsx             → Configuração principal de rotas e layout
+   ```
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Padrão de Commits (Conventional Commits)
+Este projeto segue o padrão Conventional Commits para manter um histórico organizado, automatizar changelogs e facilitar releases.
 
-## Expanding the ESLint configuration
+### Tipos de Commits Suportados
+- feat - nova funcionalidade
+- fix: correção de bug
+- docs: Alterações na documentação.
+- style: Alterações de formatação, espaçamento, ponto e vírgula, sem alterar código.
+- refactor: Refatoração do código, sem adicionar funcionalidade nem corrigir bug.
+- perf: Alterações que melhoram performance.
+- test: Adição ou alteração de testes.
+- chore: Tarefas de manutenção, scripts, builds, deps, etc.
+- ci: Integração contínua
+### Relacionamento com Issues (fixes, closes, resolves)
+#### Fechar issue automaticamente
+  ```bash
+closes #12
+   ```
+#### Resolver issue
+  ```bash
+resolves #87
+   ```
+#### Relacionar múltiplas issues
+  ```bash
+fixes #3 #5 closes #9
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Como iniciar o projeto
+### 1. Clone o repositório
+  ```bash
+git clone https://github.com/ryannardelli/redapro-front-end.git
+   ```
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 2. Navegue até o diretório
+  ```bash
+cd front-end-redapro
+   ```
+### 3. Instale as dependências
+  ```bash
+npm install
+   ```
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 4. Execute em modo desenvolvimento
+  ```bash
+npm run dev
+   ```
