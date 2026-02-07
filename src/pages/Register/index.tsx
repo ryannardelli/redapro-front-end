@@ -1,5 +1,117 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { RegisterSchema, type RegisterFormData } from "../../schemas/RegisterSchema";
+import { StepOne } from "../../components/ResgisterForm/StepOne";
+import { StepTwo } from "../../components/ResgisterForm/StepTwo";
+import { StepThree } from "../../components/ResgisterForm/StepThree";
+
 export function Register() {
-    return(
-        <h1>Registrar</h1>
-    );
+  const [step, setStep] = useState(1);
+
+  const {
+    register,
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(RegisterSchema),
+  });
+
+  async function handleNext() {
+        let fields: (keyof RegisterFormData)[] = [];
+
+        if (step === 1) fields = ["name"];
+        if (step === 2) fields = ["email", "password"];
+
+        const isValid = await trigger(fields);
+
+        if (isValid) {
+            setStep(step + 1);
+        }
+    }
+
+
+  function onSubmit(data: RegisterFormData) {
+    if (step < 3) {
+      setStep(step + 1);
+      return;
+    }
+
+    console.log("Dados enviados:", data);
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg"
+      >
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Criar conta
+        </h1>
+
+        <div className="flex items-center justify-between mb-8">
+          {[1, 2, 3].map((item) => (
+            <div key={item} className="flex items-center w-full">
+              <div
+                className={`w-8 h-8 flex items-center justify-center rounded-full text-sm font-semibold
+                  ${
+                    step >= item
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-300 text-gray-600"
+                  }
+                `}
+              >
+                {item}
+              </div>
+
+              {item < 3 && (
+                <div
+                  className={`flex-1 h-1 mx-2
+                    ${step > item ? "bg-blue-600" : "bg-gray-300"}
+                  `}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {step === 1 && <StepOne register={register} errors={errors} />}
+        {step === 2 && <StepTwo register={register} errors={errors} />}
+        {step === 3 && <StepThree />}
+
+        <div className="flex justify-between mt-8">
+            {step > 1 ? (
+                <button
+                type="button"
+                onClick={() => setStep(step - 1)}
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition cursor-pointer"
+                >
+                Voltar
+                </button>
+            ) : (
+                <div />
+            )}
+
+            {step < 3 ? (
+                <button
+                type="button"
+                onClick={handleNext}
+                className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
+                >
+                Próximo
+                </button>
+            ) : (
+                <button
+                type="submit"
+                className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition cursor-pointer"
+                >
+                Finalizar
+                </button>
+            )}
+            </div>
+      </form>
+    </div>
+  );
 }

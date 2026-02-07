@@ -1,5 +1,11 @@
+import { CardEssays } from "../../../components/CardEssays";
+import FilterHeader from "../../../components/FilterHeader";
+
 export function Essays() {
     return(
-        <h1>Minhas Redações</h1>
+        <div className=" p-0 md:p-4">
+            <FilterHeader />
+            <CardEssays />
+        </div>
     );
 }

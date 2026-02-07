@@ -1,5 +1,7 @@
+import ModelsEssays from "../../../components/ModelsEssays";
+
 export function Model() {
     return(
-        <h1>Meus modelos</h1>
+        <ModelsEssays />
     );
 }
