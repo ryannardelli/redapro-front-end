@@ -15,7 +15,7 @@ export function StepTwo({ register, errors }: Props) {
           {...register("email")}
           className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <p className="text-sm text-red-500">{errors.email?.message}</p>
+        <p className="text-sm text-red-500 mt-2">{errors.email?.message}</p>
       </div>
 
       <div>
@@ -25,7 +25,7 @@ export function StepTwo({ register, errors }: Props) {
           {...register("password")}
           className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <p className="text-sm text-red-500">{errors.password?.message}</p>
+        <p className="text-sm text-red-500 mt-2">{errors.password?.message}</p>
       </div>
     </div>
   );

@@ -86,7 +86,7 @@ export function Register() {
                 <button
                 type="button"
                 onClick={() => setStep(step - 1)}
-                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition"
+                className="px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition cursor-pointer"
                 >
                 Voltar
                 </button>

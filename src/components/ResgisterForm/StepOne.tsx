@@ -10,12 +10,12 @@ export function StepOne({ register, errors }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium">Nome completo</label>
+        <label className="block text-sm font-medium">Nome</label>
         <input
           {...register("name")}
           className="w-full mt-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <p className="text-sm text-red-500">{errors.name?.message}</p>
+        <p className="text-sm text-red-500 mt-2">{errors.name?.message}</p>
       </div>
     </div>
   );
