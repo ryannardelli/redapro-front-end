@@ -1,4 +1,5 @@
 import imageLogin from '../../assets/img/image-login.svg'
+import { RouterLinks } from '../RouterLinks';
 
 export function LoginForm() {
     return(
@@ -8,7 +9,9 @@ export function LoginForm() {
             <form>
               <div className="mb-12">
                 <h1 className="text-slate-900 text-3xl font-bold">Entrar</h1>
-                <p className="text-[15px] mt-6 text-slate-600">Não tem uma conta <a href="javascript:void(0);" className="text-blue-600 font-medium hover:underline ml-1 whitespace-nowrap">Cadastre-se aqui</a></p>
+                <p className="text-[15px] mt-6 text-slate-600">Não tem uma conta  <RouterLinks href='/register' className="text-blue-600 font-medium hover:underline ml-1 whitespace-nowrap">
+                      Cadastre-se aqui
+                </RouterLinks></p>
               </div>
 
               <div>
@@ -45,9 +48,9 @@ export function LoginForm() {
                   </label>
                 </div>
                 <div>
-                  <a href="javascript:void(0);" className="text-blue-600 font-medium text-sm hover:underline">
-                    Esqueceu a senha?
-                  </a>
+                  <RouterLinks href='/forgot-password' className='text-blue-600 font-medium text-sm hover:underline'>
+                      Esqueceu a senha?
+                  </RouterLinks>
                 </div>
               </div>
 
