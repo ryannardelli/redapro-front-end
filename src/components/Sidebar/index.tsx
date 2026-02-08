@@ -16,7 +16,7 @@ export function Sidebar() {
           sideBar ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0`}
       >
-        <RouterLinks href="/home" className="flex items-center px-4 py-5">
+        <RouterLinks href="/" className="flex items-center px-4 py-5">
           <img src={redaProLogo} alt="Kutty Logo" className="w-15 rounded-full" />
         </RouterLinks>
 
