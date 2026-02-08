@@ -18,7 +18,7 @@ export function MainRouter() {
   const { state } = useAuth();
   
   const isAuth = state.isAuthenticated;
-  const isAdmin = false;
+  const isAdmin = state.user?.role === "admin" ? true : false;
 
   return (
     <BrowserRouter>
