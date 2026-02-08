@@ -14,8 +14,8 @@ import { AdminRoute } from "../AdminRouter";
 import { AdminSetupRoutes } from "../AdminSetupRoutes";
 
 export function MainRouter() {
-  const isAuth = true;
-  const isAdmin = true;
+  const isAuth = false;
+  const isAdmin = false;
 
   return (
     <BrowserRouter>
