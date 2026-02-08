@@ -40,16 +40,16 @@ export function Register() {
 
   const handlePrev = () => setCurrentStep((prev) => prev - 1);
 
-  const onSubmit = async (data: RegisterFormData) => {
-    showMessage.dismiss();
-    try {
-      await registerUser(data.name, data.email, data.password);
+  const handleFinish = handleSubmit(async (data: RegisterFormData) => {
+  showMessage.dismiss();
 
-      showMessage.success("Cadastro realizado com sucesso 🎉");
-    } catch (err: any) {
-      showMessage.error(err.message);
-    }
-  };
+  try {
+    await registerUser(data.name, data.email, data.password);
+    showMessage.success("Cadastro realizado com sucesso 🎉");
+  } catch (err: any) {
+    showMessage.error(err.message);
+  }
+});
 
   const progressWidth = ((currentStep - 1) / (FORM_STEPS.length - 1)) * 100;
 
@@ -57,7 +57,6 @@ export function Register() {
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       {state.loading && <SpinnerLoading />}
       <form
-        onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-lg bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100"
       >
         <header className="text-center mb-10">
@@ -135,7 +134,8 @@ export function Register() {
             </button>
           ) : (
             <button
-              type="submit"
+              type="button"
+              onClick={handleFinish}
               className="px-8 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 shadow-lg shadow-emerald-200 active:scale-95 transition-all disabled:opacity-70 cursor-pointer"
             >
               Finalizar Cadastro

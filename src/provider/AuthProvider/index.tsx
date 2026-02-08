@@ -1,10 +1,10 @@
 import { useEffect, useReducer } from "react";
 import { authReducer, initialState } from "../../reducer/authReducer";
 import { AuthContext } from "./AuthContext";
-// import { jwtDecode } from "jwt-decode";
 // import { catchInformationsUserById } from "../../services/user";
 // import { useUsers } from "../../hook/useUsers";
 import { userAuthentication } from "../../services/auth";
+import { jwtDecode } from "jwt-decode";
 
 type AuthProviderProps = {
   children: React.ReactNode;
