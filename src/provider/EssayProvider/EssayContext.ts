@@ -3,15 +3,15 @@ import type { CreateEssayPayload, Essay, EssayAction, EssayState } from "../../m
 import { initialStateEssay } from "../../reducer/essayReducer";
 
 type EssayContextType = {
-    state: EssayState;
-    dispatch: (action: EssayAction) => void;
+    stateEssay: EssayState;
+    dispatchEssay: (action: EssayAction) => void;
     createEssay: (data: CreateEssayPayload) => Promise<Essay>;
     deleteEssay: (id: number) => Promise<void>;
 };
 
 export const EssayContext = createContext<EssayContextType>({
-    state: initialStateEssay,
-    dispatch: () => undefined,
+    stateEssay: initialStateEssay,
+    dispatchEssay: () => undefined,
     createEssay: async () => {
         throw new Error("essayCreate not implemented");
     },

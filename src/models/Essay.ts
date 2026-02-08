@@ -28,7 +28,7 @@ export interface Essay {
 }
 
 export type EssayState = {
-    essay: Essay[];
+    essays: Essay[];
     loading: boolean;
     error: string | null;
 }

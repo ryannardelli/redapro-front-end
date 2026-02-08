@@ -1,6 +1,10 @@
 import defaultEssay from '../../assets/img/defaultEssay.jpg';
+import { useEssay } from '../../hooks/useEssay';
 
 export function CardEssays() {
+    const { stateEssay } = useEssay();
+    console.log(stateEssay);
+    
     return (
         <section className="px-4 py-10 mx-auto max-w-7xl">
             <h2 className="mb-2 text-3xl font-extrabold leading-tight text-gray-900">Redações</h2>

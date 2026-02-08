@@ -1,7 +1,7 @@
 import type { EssayAction, EssayState } from "../models/Essay";
 
 export const initialStateEssay: EssayState = {
-    essay: [],
+    essays: [],
     loading: false,
     error: null
 }
@@ -13,13 +13,13 @@ export function essayReducer(state: EssayState, action: EssayAction) {
         case "ADD_ESSAY":
             return {
                 ...state,
-                budgets: [...state.essay, action.payload]
+                budgets: [...state.essays, action.payload]
             }
         case "DELETE_ESSAY":
             return {
                 ...state,
                 loading: false,
-                budgets: state.essay.filter(essay => essay.id !== action.payload)
+                budgets: state.essays.filter(essay => essay.id !== action.payload)
             }
         case "DELETE_ESSAY_REQUEST":
             return {

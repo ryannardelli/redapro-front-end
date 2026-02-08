@@ -7,7 +7,7 @@ export async function getUserEssays(userId: number): Promise<Essay[]> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
-    const res = await fetch(`${API_URL}/essay/users/${userId}`, {
+    const res = await fetch(`${API_URL}/users/${userId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
