@@ -35,7 +35,7 @@ export function LoginForm() {
             <div className="mb-12">
               <h1 className="text-slate-900 text-3xl font-bold">Entrar</h1>
               <p className="text-[15px] mt-6 text-slate-600">
-                Não tem uma conta  
+                Não tem uma conta?  
                 <RouterLinks href='/register' className="text-blue-600 font-medium hover:underline ml-1 whitespace-nowrap">
                   Cadastre-se aqui
                 </RouterLinks>
@@ -88,6 +88,16 @@ export function LoginForm() {
               {errors.password && (
                 <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
               )}
+              
+              {/* Link "Esqueceu a senha?" */}
+              <div className="mt-2 text-right">
+                <RouterLinks 
+                  href="/forgot-password" 
+                  className="text-blue-600 font-medium text-sm hover:underline"
+                >
+                  Esqueceu a senha?
+                </RouterLinks>
+              </div>
             </div>
 
             <div className="mt-12">
