@@ -18,9 +18,11 @@ interface JwtPayload {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  // const userContext = useUsers();
 
   const login = async (email: string, password: string) => {
+  try {
+    dispatch({ type: "SET_LOADING", payload: true });
+
     const token = await userAuthentication.login({ email, password });
 
     const decoded = jwtDecode<JwtPayload>(token);
@@ -29,10 +31,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     dispatch({ type: "LOGIN", payload: { token, user: userData } });
 
-    // userContext.dispatch({ type: "SET_USER", payload: userData });
-
     return userData;
-  };
+  } catch (err: any) {
+    dispatch({ type: "SET_ERROR", payload: err.message || "Erro ao fazer login" });
+    throw err;
+  } finally {
+    dispatch({ type: "SET_LOADING", payload: false }); // ⚡️ termina a loading
+  }
+};
 
   const registerUser = async (name: string, email: string, password: string) => {
   dispatch({ type: "SET_LOADING", payload: true });

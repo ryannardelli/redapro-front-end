@@ -5,10 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { showMessage } from "../../adapters/showMessage";
 import { LoginSchema, type LoginFormData } from "../../schemas/LoginSchema";
 import { useAuth } from "../../hooks/useAuth";
+import { SpinnerLoading } from '../SpinnerLoading';
 
 export function LoginForm() {
-  const { loginUser, state } = useAuth();
-
+  const { login, state } = useAuth();
+  
   const {
     register,
     handleSubmit,
@@ -20,7 +21,7 @@ export function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await loginUser(data.email, data.password);
+      await login(data.email, data.password);
     } catch (err: any) {
       showMessage.error(err.message);
     }
@@ -28,6 +29,7 @@ export function LoginForm() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-0">
+      {state.loading && <SpinnerLoading />}
       <div className="grid md:grid-cols-2 items-center gap-4 max-md:gap-8 max-w-6xl max-md:max-w-lg w-full p-4 [box-shadow:0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-md">
         
         <div className="md:max-w-md w-full px-4 py-4">
