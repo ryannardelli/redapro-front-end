@@ -6,10 +6,12 @@ import { showMessage } from "../../adapters/showMessage";
 import { LoginSchema, type LoginFormData } from "../../schemas/LoginSchema";
 import { useAuth } from "../../hooks/useAuth";
 import { SpinnerLoading } from '../SpinnerLoading';
+import { useNavigate } from 'react-router';
 
 export function LoginForm() {
   const { login, state } = useAuth();
-  
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -21,8 +23,15 @@ export function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await login(data.email, data.password);
+      const user = await login(data.email, data.password);
+
+      if(user.role === "admin") {
+        navigate("/admin/setup");
+      } else {
+        navigate("/");
+      }
     } catch (err: any) {
+      console.log(err);
       showMessage.error(err.message);
     }
   });

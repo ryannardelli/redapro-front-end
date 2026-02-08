@@ -2,43 +2,33 @@ import { useReducer } from "react";
 import { authReducer, initialState } from "../../reducer/authReducer";
 import { AuthContext } from "./AuthContext";
 import { userAuthentication } from "../../services/auth";
-import { jwtDecode } from "jwt-decode";
-import { catchInformationsUser } from "../../services/users";
+import type { LoginResponse } from "../../models/Auth";
 
 type AuthProviderProps = {
   children: React.ReactNode;
 };
 
-interface JwtPayload {
-  id: number;
-  name?: string;
-  email?: string;
-  exp: number;
-}
-
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const login = async (email: string, password: string) => {
-  try {
-    dispatch({ type: "SET_LOADING", payload: true });
+    try {
+      dispatch({ type: "SET_LOADING", payload: true });
 
-    const token = await userAuthentication.login({ email, password });
+      const { token, user }: LoginResponse = await userAuthentication.login({ email, password });
 
-    const decoded = jwtDecode<JwtPayload>(token);
+      localStorage.setItem("token", token);
 
-    const userData = await catchInformationsUser.getUserById(decoded.id);
+      dispatch({ type: "LOGIN", payload: { token, user } });
 
-    dispatch({ type: "LOGIN", payload: { token, user: userData } });
-
-    return userData;
-  } catch (err: any) {
-    dispatch({ type: "SET_ERROR", payload: err.message || "Erro ao fazer login" });
-    throw err;
-  } finally {
-    dispatch({ type: "SET_LOADING", payload: false }); // ⚡️ termina a loading
-  }
-};
+      return user;
+    } catch (err: any) {
+      dispatch({ type: "SET_ERROR", payload: err.message || "Erro ao fazer login" });
+      throw err;
+    } finally {
+      dispatch({ type: "SET_LOADING", payload: false });
+    }
+  };
 
   const registerUser = async (name: string, email: string, password: string) => {
   dispatch({ type: "SET_LOADING", payload: true });

@@ -1,3 +1,5 @@
+import type { LoginResponse } from "../models/Auth";
+
 const API_URL = "/api/auth";
 
 type CredentialsUser = {
@@ -5,34 +7,29 @@ type CredentialsUser = {
   password: string;
 };
 
-type AuthResponse = {
-  token: string;
-};
-
 type ApiError = {
   message?: string;
 };
 
 export const userAuthentication = {
-  login: async ({ email, password }: CredentialsUser): Promise<string> => {
-    const res = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+login: async ({ email, password }: CredentialsUser): Promise<LoginResponse> => {
+  const res = await fetch(`${API_URL}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-    if (!res.ok) {
-      const errorData: ApiError = await res.json().catch(() => ({}));
-      throw new Error(errorData.message);
-    }
+  if (!res.ok) {
+    const errorData: ApiError = await res.json().catch(() => ({}));
+    throw new Error(errorData.message);
+  }
 
-    const data: AuthResponse = await res.json();
+  const data: LoginResponse = await res.json();
 
-    localStorage.setItem("token", data.token);
-    return data.token;
-  },
+  return data;
+},
 
   register: async ({
     name,

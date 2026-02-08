@@ -23,3 +23,13 @@ export type State = {
   loading: boolean;
   error: string | null;
 };
+
+export interface LoginResponse {
+    token: string;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      role: string;
+    };
+}
