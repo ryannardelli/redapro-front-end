@@ -9,6 +9,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { showMessage } from "../../adapters/showMessage";
 import { SpinnerLoading } from "../../components/SpinnerLoading";
 import { useNavigate } from "react-router";
+import Lottie from "lottie-react";
+import successAnimation from "../../assets/animation/successfully.json";
 
 const FORM_STEPS = [
   { id: 1, label: "Perfil", fields: ["name"] },
@@ -19,6 +21,7 @@ const FORM_STEPS = [
 export function Register() {
   const [currentStep, setCurrentStep] = useState(1);
   const isLastStep = currentStep === FORM_STEPS.length;
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false);
 
   const { registerUser, state } = useAuth();
   const navigate = useNavigate();
@@ -49,12 +52,17 @@ export function Register() {
     const response = await registerUser(data.name, data.email, data.password);
     // console.log(response);
     // showMessage.success(response);
+
+    setShowSuccessAnimation(true);
     
-    if(response.user.role === "admin") {
-      navigate("/admin/setup")
-    } else {
-      navigate("/");
-    }
+     setTimeout(() => {
+      if (response.user.role === "admin") {
+        navigate("/admin/setup");
+      } else {
+        navigate("/");
+      }
+    }, 2000);
+
   } catch (err: any) {
     showMessage.error(err.message);
   }
@@ -65,7 +73,11 @@ export function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       {state.loading && <SpinnerLoading />}
-      <form
+
+      {showSuccessAnimation ? (
+        <Lottie animationData={successAnimation} loop={false} style={{ width: 300, height: 300 }} />
+      ) : (
+         <form
         className="w-full max-w-lg bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100"
       >
         <header className="text-center mb-10">
@@ -152,6 +164,8 @@ export function Register() {
           )}
         </footer>
       </form>
+      )}
+    
     </div>
   );
 }
