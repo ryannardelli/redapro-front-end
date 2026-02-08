@@ -1,7 +1,8 @@
 import { createContext } from "react";
 import type { Dispatch } from "react";
 import { initialState } from "../../reducer/authReducer";
-import type { AuthAction, State, User } from "../../models/Auth";
+import type { AuthAction, State } from "../../models/Auth";
+import type { User } from "../../models/User";
 
 type ContextType = {
   state: State;
