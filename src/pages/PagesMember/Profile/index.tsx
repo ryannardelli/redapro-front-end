@@ -1,27 +1,35 @@
 import { CheckCircle2, FileText, Settings, Star, XCircle } from "lucide-react";
+import { useAuth } from "../../../hooks/useAuth";
+import { SpinnerLoading } from "../../../components/SpinnerLoading";
+import { formatRole } from "../../../utils/formatRole";
 
 export function Profile() {
+  const { state } = useAuth();
+  const user = state.user;
+
+  if(!user) {
+    <SpinnerLoading />
+  }
+
     return(
     <section className="px-4 py-12 max-w-7xl mx-auto space-y-12">
 
-      {/* ===================== USER INFO ===================== */}
       <div className="flex items-center space-x-6">
         <img
-          src="https://readymadeui.com/profile_4.webp"
+          src={user?.pictureUrl || "https://ui-avatars.com/api/?name=" + user?.name}
           alt="Avatar"
           className="w-24 h-24 rounded-full object-cover"
         />
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Luana Silva</h1>
-          <p className="text-gray-500">Membro(a)</p>
-          <p className="text-gray-500">luana@example.com</p>
+          <h1 className="text-2xl font-bold text-gray-900">{user?.name}</h1>
+          <p className="text-gray-500">{formatRole(user.role)}</p>
+          <p className="text-gray-500">{user?.email}</p>
         </div>
         <button className="ml-auto flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700">
           <Settings size={16} /> Configurações
         </button>
       </div>
 
-      {/* ===================== STATISTICS CARDS ===================== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
         <div className="bg-white shadow rounded-lg p-4 text-center">
           <p className="text-gray-500">Redações Enviadas</p>
@@ -43,7 +51,6 @@ export function Profile() {
         </div>
       </div>
 
-      {/* ===================== HISTORY TABLE ===================== */}
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="min-w-full">
           <thead className="bg-gray-100">
@@ -89,7 +96,6 @@ export function Profile() {
         </table>
       </div>
 
-      {/* ===================== ACHIEVEMENTS ===================== */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <div className="bg-yellow-100 text-yellow-700 rounded-lg p-4 text-center shadow">
           🏆 Redação com nota máxima

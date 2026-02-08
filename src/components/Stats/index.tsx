@@ -4,7 +4,6 @@ export function Stats() {
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-        {/* Redações enviadas */}
         <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
           <div className="flex items-center justify-center w-10 h-10 text-pink-700 bg-pink-100 rounded">
             <FileText className="w-5 h-5" />
@@ -17,7 +16,6 @@ export function Stats() {
           </div>
         </div>
 
-        {/* Média geral */}
         <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
           <div className="flex items-center justify-center w-10 h-10 text-green-700 bg-green-100 rounded">
             <BarChart3 className="w-5 h-5" />
@@ -30,7 +28,6 @@ export function Stats() {
           </div>
         </div>
 
-        {/* Última correção */}
         <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
           <div className="flex items-center justify-center w-10 h-10 text-red-700 bg-red-100 rounded">
             <Calendar className="w-5 h-5" />
@@ -43,7 +40,6 @@ export function Stats() {
           </div>
         </div>
 
-        {/* Ranking */}
         <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
           <div className="flex items-center justify-center w-10 h-10 text-yellow-700 bg-yellow-100 rounded">
             <Award className="w-5 h-5" />
