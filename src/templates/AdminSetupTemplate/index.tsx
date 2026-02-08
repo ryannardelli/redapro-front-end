@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, NavLink } from "react-router";
-import { Home, Users, Menu, X, MenuIcon } from "lucide-react";
+import { Home, Users, Menu, X, MenuIcon, BookOpen } from "lucide-react";
 
 export default function AdminSetupTemplate() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +11,7 @@ export default function AdminSetupTemplate() {
     { to: "/admin/setup", label: "Home", icon: Home, end: true },
     { to: "/admin/setup/menus", label: "Menus", icon: MenuIcon },
     { to: "/admin/setup/profiles", label: "Perfis", icon: Users },
+    { to: "/admin/setup/reference-essay", label: "Modelos Nota 1000", icon: BookOpen },
   ];
 
   return (
@@ -39,7 +40,7 @@ export default function AdminSetupTemplate() {
               key={item.to}
               to={item.to}
               end={item.end}
-              onClick={() => setIsOpen(false)} // Fecha ao clicar no mobile
+              onClick={() => setIsOpen(false)}
               className={({ isActive }) => `
                 flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200
                 ${isActive 

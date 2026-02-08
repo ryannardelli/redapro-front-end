@@ -3,6 +3,7 @@ import AdminSetupTemplate from "../../templates/AdminSetupTemplate";
 import { SetupHome } from "../../pages/PagesAdmin/AdminSetup/SetupHome";
 import { MenuBuilder } from "../../pages/PagesAdmin/AdminSetup/MenuBuilder";
 import { ProfileBuilder } from "../../pages/PagesAdmin/AdminSetup/ProfileBuilder";
+import ModelsEssay from "../../pages/PagesAdmin/AdminSetup/ModelsEssay";
 
 export function AdminSetupRoutes() {
   return (
@@ -10,6 +11,7 @@ export function AdminSetupRoutes() {
       <Route index element={<SetupHome />} />
       <Route path="menus" element={<MenuBuilder />} />
       <Route path="profiles" element={<ProfileBuilder />} />
+      <Route path="reference-essay" element={<ModelsEssay />} />
     </Route>
   );
 }
