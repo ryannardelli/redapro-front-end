@@ -7,6 +7,7 @@ import { StepTwo } from "../../components/ResgisterForm/StepTwo";
 import { StepThree } from "../../components/ResgisterForm/StepThree";
 import { useAuth } from "../../hooks/useAuth";
 import { showMessage } from "../../adapters/showMessage";
+import { SpinnerLoading } from "../../components/SpinnerLoading";
 
 const FORM_STEPS = [
   { id: 1, label: "Perfil", fields: ["name"] },
@@ -18,13 +19,13 @@ export function Register() {
   const [currentStep, setCurrentStep] = useState(1);
   const isLastStep = currentStep === FORM_STEPS.length;
 
-  const { registerUser } = useAuth();
+  const { registerUser, state } = useAuth();
 
   const {
     register,
     handleSubmit,
     trigger,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(RegisterSchema),
     mode: "onChange",
@@ -40,13 +41,12 @@ export function Register() {
   const handlePrev = () => setCurrentStep((prev) => prev - 1);
 
   const onSubmit = async (data: RegisterFormData) => {
+    showMessage.dismiss();
     try {
-      console.log("Dados: ", data);
       await registerUser(data.name, data.email, data.password);
 
       showMessage.success("Cadastro realizado com sucesso 🎉");
     } catch (err: any) {
-      // 🔥 erro vindo DIRETO do backend
       showMessage.error(err.message);
     }
   };
@@ -55,6 +55,7 @@ export function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+      {state.loading && <SpinnerLoading />}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-lg bg-white p-10 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100"
@@ -135,10 +136,9 @@ export function Register() {
           ) : (
             <button
               type="submit"
-              disabled={isSubmitting}
               className="px-8 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 shadow-lg shadow-emerald-200 active:scale-95 transition-all disabled:opacity-70 cursor-pointer"
             >
-              {isSubmitting ? "Enviando..." : "Finalizar Cadastro"}
+              Finalizar Cadastro
             </button>
           )}
         </footer>

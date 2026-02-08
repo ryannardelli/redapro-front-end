@@ -4,7 +4,7 @@ export const initialState: AuthState = {
     user: null,
     token: null,
     isAuthenticated: false,
-    loading: true,
+    loading: false,
     error: null
 };
 
@@ -25,7 +25,7 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
         user: action.payload.user,
         token: action.payload.token,
         isAuthenticated: true,
-        loading: false,
+        loading: true,
         error: null,
       };
     case "SET_ERROR":

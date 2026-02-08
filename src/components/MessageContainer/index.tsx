@@ -1,5 +1,5 @@
 import { Bounce, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Não esqueça do CSS base!
+import "react-toastify/dist/ReactToastify.css";
 
 type MessageContainerProps = {
     children: React.ReactNode;
@@ -21,7 +21,8 @@ export function MessageContainer({ children }: MessageContainerProps) {
                 pauseOnHover
                 theme="colored"
                 transition={Bounce}
-                toastClassName="custom-toast" 
+                toastClassName="custom-toast"
+                progressClassName="custom-progress" 
             />
         </>
     );
