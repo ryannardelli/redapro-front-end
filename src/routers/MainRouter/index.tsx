@@ -12,9 +12,12 @@ import { Support } from "../../pages/PagesMember/Support";
 import { PrivateRoute } from "../PrivateRouter";
 import { AdminRoute } from "../AdminRouter";
 import { AdminSetupRoutes } from "../AdminSetupRoutes";
+import { useAuth } from "../../hooks/useAuth";
 
 export function MainRouter() {
-  const isAuth = false;
+  const { state } = useAuth();
+  
+  const isAuth = state.isAuthenticated;
   const isAdmin = false;
 
   return (

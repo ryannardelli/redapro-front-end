@@ -8,6 +8,7 @@ import { StepThree } from "../../components/ResgisterForm/StepThree";
 import { useAuth } from "../../hooks/useAuth";
 import { showMessage } from "../../adapters/showMessage";
 import { SpinnerLoading } from "../../components/SpinnerLoading";
+import { useNavigate } from "react-router";
 
 const FORM_STEPS = [
   { id: 1, label: "Perfil", fields: ["name"] },
@@ -20,6 +21,7 @@ export function Register() {
   const isLastStep = currentStep === FORM_STEPS.length;
 
   const { registerUser, state } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -44,8 +46,15 @@ export function Register() {
   showMessage.dismiss();
 
   try {
-    const successMessage = await registerUser(data.name, data.email, data.password);
-    showMessage.success(successMessage);
+    const response = await registerUser(data.name, data.email, data.password);
+    // console.log(response);
+    // showMessage.success(response);
+    
+    if(response.user.role === "admin") {
+      navigate("/admin/setup")
+    } else {
+      navigate("/");
+    }
   } catch (err: any) {
     showMessage.error(err.message);
   }

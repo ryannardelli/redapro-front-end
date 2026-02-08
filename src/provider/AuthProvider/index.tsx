@@ -40,17 +40,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   try {
     const response = await userAuthentication.register({ name, email, password });
 
-    const userData = await login(email, password);
+    const { message, token, user } = response;
 
     dispatch({
       type: "REGISTER",
       payload: {
-        token: userAuthentication.getTokenFromStorage() || "",
-        user: userData,
+        token,
+        user,
       },
     });
 
-    return response.message;
+    localStorage.setItem("token", token);
+
+    return { message, token, user };
 
   } catch (err: unknown) {
      const message =
