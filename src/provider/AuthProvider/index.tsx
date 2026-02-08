@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   dispatch({ type: "SET_LOADING", payload: true });
 
   try {
-    await userAuthentication.register({ name, email, password });
+    const response = await userAuthentication.register({ name, email, password });
 
     const userData = await login(email, password);
 
@@ -49,16 +49,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         user: userData,
       },
     });
+
+    return response.message;
+
   } catch (err: unknown) {
-    let message = "";
-
-    if (err instanceof Error) {
-      message = err.message;
-    }
-
+     const message =
+    err instanceof Error ? err.message : "Erro inesperado";
+    
     dispatch({ type: "SET_ERROR", payload: message });
 
-    throw err;
+    throw new Error(message);
   }
 };
 

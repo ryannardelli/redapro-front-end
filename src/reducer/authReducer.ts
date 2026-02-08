@@ -25,7 +25,7 @@ export function authReducer(state: AuthState, action: AuthAction): AuthState {
         user: action.payload.user,
         token: action.payload.token,
         isAuthenticated: true,
-        loading: true,
+        loading: false,
         error: null,
       };
     case "SET_ERROR":

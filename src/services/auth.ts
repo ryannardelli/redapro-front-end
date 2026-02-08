@@ -49,10 +49,13 @@ export const userAuthentication = {
       body: JSON.stringify({ name, email, password }),
     });
 
+    const data = await res.json().catch(() => ({}));
+
     if (!res.ok) {
-      const errorData: ApiError = await res.json().catch(() => ({}));
-      throw new Error(errorData.message);
+      throw new Error(data.message);
     }
+
+    return data;
   },
 
   logout: () => {

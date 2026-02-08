@@ -44,9 +44,8 @@ export function Register() {
   showMessage.dismiss();
 
   try {
-    console.log("Dados enviados: ", data);
-    await registerUser(data.name, data.email, data.password);
-    showMessage.success("Cadastro realizado com sucesso 🎉");
+    const successMessage = await registerUser(data.name, data.email, data.password);
+    showMessage.success(successMessage);
   } catch (err: any) {
     showMessage.error(err.message);
   }
