@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       return user;
     } catch (err: any) {
-      dispatch({ type: "SET_ERROR", payload: err.message || "Erro ao fazer login" });
+      dispatch({ type: "SET_ERROR", payload: err.message});
       throw err;
     } finally {
       dispatch({ type: "SET_LOADING", payload: false });

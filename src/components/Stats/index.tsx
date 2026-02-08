@@ -1,9 +1,9 @@
-import { FileText, BarChart3, Calendar, Award } from "lucide-react";
+import { FileText, BarChart3, Calendar } from "lucide-react";
 
 export function Stats() {
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
           <div className="flex items-center justify-center w-10 h-10 text-pink-700 bg-pink-100 rounded">
             <FileText className="w-5 h-5" />
@@ -37,18 +37,6 @@ export function Stats() {
               03/10/2025
             </h2>
             <p className="text-sm leading-none text-gray-600">Última correção</p>
-          </div>
-        </div>
-
-        <div className="flex flex-row items-center p-5 bg-white rounded-xl shadow">
-          <div className="flex items-center justify-center w-10 h-10 text-yellow-700 bg-yellow-100 rounded">
-            <Award className="w-5 h-5" />
-          </div>
-          <div className="ml-3">
-            <h2 className="mb-1 text-lg font-bold leading-none text-gray-900 truncate">
-              5º
-            </h2>
-            <p className="text-sm leading-none text-gray-600">Ranking</p>
           </div>
         </div>
       </div>

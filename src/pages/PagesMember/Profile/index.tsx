@@ -30,7 +30,7 @@ export function Profile() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <div className="bg-white shadow rounded-lg p-4 text-center">
           <p className="text-gray-500">Redações Enviadas</p>
           <p className="text-2xl font-bold text-gray-900">20</p>
@@ -44,10 +44,6 @@ export function Profile() {
           <p className="text-2xl font-bold text-gray-900 flex items-center justify-center gap-1">
             720
           </p>
-        </div>
-        <div className="bg-white shadow rounded-lg p-4 text-center">
-          <p className="text-gray-500">Ranking</p>
-          <p className="text-2xl font-bold text-gray-900">5º lugar</p>
         </div>
       </div>
 
