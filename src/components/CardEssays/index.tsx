@@ -25,7 +25,7 @@ export function CardEssays() {
       {essays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
           <p className="mb-6 text-xl text-gray-500 font-medium">Você ainda não submeteu nenhuma redação.</p>
-          <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl">
+          <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl cursor-pointer">
             Começar minha primeira redação
           </button>
         </div>
@@ -36,7 +36,6 @@ export function CardEssays() {
 
             return (
               <div key={essay.id} className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
-                {/* Imagem com Overlay suave */}
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src={defaultEssay}
@@ -47,15 +46,14 @@ export function CardEssays() {
                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
                       hasGrade ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                     }`}>
-                      {hasGrade ? 'Corrigida' : 'Em correção'}
+                      {hasGrade ? 'Corrigida' : 'A ser corrigida'}
                     </span>
                   </div>
                 </div>
 
-                {/* Conteúdo */}
                 <div className="p-6 flex flex-col flex-grow">
                   <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">
-                    {essay.category?.name || 'Geral'}
+                    {essay.category?.name}
                   </span>
                   <h3 className="mb-3 text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
                     {essay.title}
@@ -64,7 +62,6 @@ export function CardEssays() {
                     {essay.content.slice(0, 120)}...
                   </p>
 
-                  {/* Info Meta */}
                   <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
                     <div className="flex items-center text-gray-600 text-xs">
                       <Calendar size={14} className="mr-1.5 opacity-70" />
@@ -78,7 +75,6 @@ export function CardEssays() {
                     </div>
                   </div>
 
-                  {/* Ações */}
                   <div className="mt-auto flex gap-3">
                     <button 
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-50 text-gray-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer"
