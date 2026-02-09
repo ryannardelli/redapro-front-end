@@ -6,7 +6,7 @@ export default function MainTemplate() {
         <>
             <Sidebar />
 
-            <div className="ml-0 md:ml-60 transition-all">
+            <div className="ml-0 md:ml-60 transition-all bg-gray-50">
                 <Outlet />
             </div>
         </>

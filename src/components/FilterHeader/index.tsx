@@ -1,6 +1,6 @@
 export default function FilterHeader() {
   return (
-    <div className="bg-white p-4 rounded-lg shadow mb-4 flex flex-col md:flex-row gap-4 items-center">
+    <div className="p-4 rounded-lg shadow mb-4 flex flex-col md:flex-row gap-4 items-center">
       {/* Campo de pesquisa */}
       <input
         type="text"

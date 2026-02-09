@@ -5,7 +5,7 @@ export default function SubmitEssay() {
   const [mode, setMode] = useState("ia");
 
   return (
-    <section className="p-6 max-w-4xl mx-auto bg-white rounded-xl shadow">
+    <section className="p-6 max-w-4xl mx-auto rounded-xl shadow bg-white">
       <h1 className="text-2xl font-bold text-gray-900 mb-4">Enviar Redação</h1>
       <p className="text-gray-600 mb-6">
         Escolha se deseja correção automática por IA 🧠 ou por um corretor humano 👩‍🏫.

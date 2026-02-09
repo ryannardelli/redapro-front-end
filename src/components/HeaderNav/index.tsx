@@ -1,4 +1,4 @@
-import React, { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { Search, Bell, Menu, ChevronDown, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -112,7 +112,7 @@ export function HeaderNav({
                 
                 <div className="h-[1px] bg-gray-50 my-2 mx-4"></div>
                 
-                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-500 hover:bg-rose-50 font-semibold transition-colors"
+                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-500 hover:bg-rose-50 font-semibold transition-colors cursor-pointer"
                   onClick={logout}
                 >
                   <LogOut size={18} /> Sair da conta

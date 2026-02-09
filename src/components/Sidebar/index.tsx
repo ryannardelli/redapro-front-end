@@ -155,7 +155,7 @@ export function Sidebar() {
   const user = state.user;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="bg-gray-50">
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-gray-100 flex flex-col transition-transform duration-300 ease-in-out shadow-xl md:shadow-none ${
           sideBarOpen ? "translate-x-0" : "-translate-x-full"

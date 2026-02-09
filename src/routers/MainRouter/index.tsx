@@ -6,7 +6,7 @@ import { Home } from "../../pages/PagesMember/Home";
 import { Profile } from "../../pages/PagesMember/Profile";
 import { Essays } from "../../pages/PagesMember/Essays";
 import { EssayUpload } from "../../pages/PagesMember/EssayUpload";
-import { Model } from "../../pages/PagesMember/Model";
+import { Model } from "../../pages/PagesMember/Models";
 import { Calendar } from "../../pages/PagesMember/Calendar";
 import { Support } from "../../pages/PagesMember/Support";
 import { PrivateRoute } from "../PrivateRouter";
