@@ -1,125 +1,118 @@
 import { useState } from "react";
-import { FileText, Upload, Send, Bot, User } from "lucide-react";
+import { FileText, Send, Bot, User, ChevronRight } from "lucide-react";
 
 export default function SubmitEssay() {
   const [mode, setMode] = useState("ia");
 
   return (
-    <section className="p-6 max-w-4xl mx-auto rounded-xl shadow bg-white">
-      <h1 className="text-2xl font-bold text-gray-900 mb-4">Enviar Redação</h1>
-      <p className="text-gray-600 mb-6">
-        Escolha se deseja correção automática por IA 🧠 ou por um corretor humano 👩‍🏫.
-      </p>
+    <section className="p-8 max-w-4xl mx-auto rounded-2xl shadow-lg border border-gray-100 bg-white">
+      <header className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Enviar Redação</h1>
+        <p className="text-gray-500 mt-2 text-lg">
+          Personalize sua experiência de correção escolhendo o método ideal.
+        </p>
+      </header>
 
-      {/* Seletor IA / Corretor */}
-      <div className="flex gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
         <button
           onClick={() => setMode("ia")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
+          className={`flex cursor-pointer items-center p-4 rounded-xl border-2 transition-all duration-200 text-left ${
             mode === "ia"
-              ? "bg-blue-600 text-white border-blue-600"
-              : "border-gray-300 hover:bg-gray-100"
+              ? "border-blue-600 bg-blue-50 ring-4 ring-blue-50"
+              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
           }`}
         >
-          <Bot size={18} /> IA
+          <div className={`p-3 rounded-lg mr-4 ${mode === "ia" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-500"}`}>
+            <Bot size={24} />
+          </div>
+          <div>
+            <p className={`font-bold ${mode === "ia" ? "text-blue-900" : "text-gray-700"}`}>Correção por IA</p>
+            <p className="text-sm text-gray-500">Feedback instantâneo e detalhado.</p>
+          </div>
         </button>
 
         <button
           onClick={() => setMode("corretor")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
+          className={`flex items-center cursor-pointer p-4 rounded-xl border-2 transition-all duration-200 text-left ${
             mode === "corretor"
-              ? "bg-green-600 text-white border-green-600"
-              : "border-gray-300 hover:bg-gray-100"
+              ? "border-emerald-600 bg-emerald-50 ring-4 ring-emerald-50"
+              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
           }`}
         >
-          <User size={18} /> Corretor
+          <div className={`p-3 rounded-lg mr-4 ${mode === "corretor" ? "bg-emerald-600 text-white" : "bg-gray-100 text-gray-500"}`}>
+            <User size={24} />
+          </div>
+          <div>
+            <p className={`font-bold ${mode === "corretor" ? "text-emerald-900" : "text-gray-700"}`}>Corretor Humano</p>
+            <p className="text-sm text-gray-500">Olhar analítico e pedagógico.</p>
+          </div>
         </button>
       </div>
 
-      {/* Formulário */}
-      <form className="space-y-5">
-        {/* Título */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Título da Redação
-          </label>
-          <input
-            type="text"
-            placeholder="Ex: Os impactos da tecnologia..."
-            className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      <form className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Título da Redação</label>
+            <input
+              type="text"
+              placeholder="Ex: Os impactos da tecnologia..."
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">Categoria</label>
+            <select className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all appearance-none bg-white">
+              <option value="">Selecione um tema</option>
+              <option value="meio-ambiente">Meio Ambiente</option>
+              <option value="tecnologia">Tecnologia</option>
+              <option value="educacao">Educação</option>
+            </select>
+          </div>
         </div>
 
-        {/* Tema */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Tema
-          </label>
-          <select className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Selecione um tema</option>
-            <option value="meio-ambiente">Meio Ambiente</option>
-            <option value="tecnologia">Tecnologia</option>
-            <option value="educacao">Educação</option>
-            <option value="politica">Política</option>
-          </select>
-        </div>
-
-        {/* Texto da Redação */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Redação
-          </label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">Texto da Redação</label>
           <textarea
             placeholder="Digite ou cole sua redação aqui..."
-            rows={8}
-            className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            rows={10}
+            className="w-full px-4 py-4 border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all resize-none leading-relaxed"
           ></textarea>
         </div>
 
-        {/* Upload opcional */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Upload (opcional)
-          </label>
-          <label className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-50 border rounded-lg cursor-pointer hover:bg-gray-100">
-            <Upload size={18} className="text-gray-600" />
-            <span className="text-sm text-gray-600">Selecionar arquivo</span>
-            <input type="file" className="hidden" />
-          </label>
-        </div>
-
-        {/* Botão de envio */}
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="w-full md:w-auto flex items-center justify-center gap-2 px-8 py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transform active:scale-95 transition-all shadow-lg shadow-gray-200 cursor-pointer"
         >
           <Send size={18} />
-          Enviar Redação
+          Enviar para Correção
         </button>
       </form>
 
-      {/* Histórico de Redações */}
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-          <FileText size={18} className="text-blue-600" /> Histórico de Envios
+      <hr className="my-10 border-gray-100" />
+
+      <div>
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <FileText size={20} className="text-blue-600" /> Histórico de Envios
         </h2>
 
-        <ul className="divide-y">
-          <li className="py-3 flex justify-between items-center">
-            <div>
-              <p className="font-medium text-gray-800">Redação sobre Meio Ambiente</p>
-              <p className="text-xs text-gray-500">Enviada em 05/10/2025 • Correção IA</p>
+        <div className="space-y-3">
+          {[
+            { title: "Redação sobre Meio Ambiente", date: "05/10/2025", type: "IA" },
+            { title: "Redação sobre Tecnologia", date: "02/10/2025", type: "Humana" },
+          ].map((item, idx) => (
+            <div 
+              key={idx} 
+              className="group flex justify-between items-center p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <div>
+                <p className="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{item.title}</p>
+                <p className="text-sm text-gray-500">Enviada em {item.date} • {item.type}</p>
+              </div>
+              <ChevronRight size={18} className="text-gray-400 group-hover:text-blue-600 transition-all transform group-hover:translate-x-1" />
             </div>
-            <button className="text-blue-600 text-sm hover:underline">Ver resultado</button>
-          </li>
-          <li className="py-3 flex justify-between items-center">
-            <div>
-              <p className="font-medium text-gray-800">Redação sobre Tecnologia</p>
-              <p className="text-xs text-gray-500">Enviada em 02/10/2025 • Corretor</p>
-            </div>
-            <button className="text-blue-600 text-sm hover:underline">Ver resultado</button>
-          </li>
-        </ul>
+          ))}
+        </div>
       </div>
     </section>
   );
