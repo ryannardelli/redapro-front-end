@@ -36,7 +36,7 @@ export function Stats() {
             <h2 className="mb-1 text-lg font-bold leading-none text-gray-900 truncate">
               03/10/2025
             </h2>
-            <p className="text-sm leading-none text-gray-600">Última correção</p>
+            <p className="text-sm leading-none text-gray-600">Última redação</p>
           </div>
         </div>
       </div>
