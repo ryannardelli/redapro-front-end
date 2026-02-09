@@ -1,6 +1,7 @@
 import defaultEssay from '../../assets/img/defaultEssay.jpg';
 import { useEssay } from '../../hooks/useEssay';
 import { Edit3, Eye, Award, Calendar } from 'lucide-react';
+import { RouterLinks } from '../RouterLinks';
 
 export function CardEssays() {
   const { stateEssay } = useEssay();
@@ -16,9 +17,9 @@ export function CardEssays() {
           </p>
         </div>
         {essays.length > 0 && (
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm cursor-pointer">
-            <Edit3 size={18} /> Nova Redação
-          </button>
+          <RouterLinks className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm cursor-pointer" href='/essay-upload'>
+              <Edit3 size={18} /> Nova Redação
+          </RouterLinks>
         )}
       </header>
 

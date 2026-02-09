@@ -6,13 +6,13 @@ import { Home } from "../../pages/PagesMember/Home";
 import { Profile } from "../../pages/PagesMember/Profile";
 import { Essays } from "../../pages/PagesMember/Essays";
 import { EssayUpload } from "../../pages/PagesMember/EssayUpload";
-import { Model } from "../../pages/PagesMember/Models";
 import { Calendar } from "../../pages/PagesMember/Calendar";
 import { Support } from "../../pages/PagesMember/Support";
 import { PrivateRoute } from "../PrivateRouter";
 import { AdminRoute } from "../AdminRouter";
 import { AdminSetupRoutes } from "../AdminSetupRoutes";
 import { useAuth } from "../../hooks/useAuth";
+import { Models } from "../../pages/PagesMember/Models";
 
 export function MainRouter() {
   const { state } = useAuth();
@@ -35,7 +35,7 @@ export function MainRouter() {
             <Route path="/my-profile" element={<Profile />} />
             <Route path="/my-essays" element={<Essays />} />
             <Route path="/essay-upload" element={<EssayUpload />} />
-            <Route path="/models" element={<Model />} />
+            <Route path="/models" element={<Models />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/support" element={<Support />} />
           </Route>
