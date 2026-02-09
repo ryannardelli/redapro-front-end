@@ -27,3 +27,36 @@ export async function getUserEssays(userId: number): Promise<Essay[]> {
     throw error;
   }
 }
+
+export async function create_essay(
+  userId: number,
+  payload: {
+    title: string;
+    content: string;
+    category_id: number;
+  }
+): Promise<Essay> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message);
+    }
+
+    const essay: Essay = await res.json();
+    return essay;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
