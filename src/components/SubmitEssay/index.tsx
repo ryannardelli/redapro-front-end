@@ -4,11 +4,18 @@ import { EssaySchema, type EssayFormData } from "../../schemas/EssaySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useCategory } from "../../hooks/useCategory";
+import { useEssay } from "../../hooks/useEssay";
+import { showMessage } from "../../adapters/showMessage";
+import { SpinnerLoading } from "../SpinnerLoading";
 
 export default function SubmitEssay() {
   const [mode, setMode] = useState<"ia" | "corretor">("ia");
   const { stateCategory } = useCategory();
+  const { createEssay, stateEssay } = useEssay();
   const categories = stateCategory.categories;
+
+  const { loading } = stateEssay;
+  console.log(loading);
 
   const {
     register,
@@ -22,19 +29,31 @@ export default function SubmitEssay() {
     },
   });
 
-  // 🔹 Submit
-  const onSubmit = async (data: EssayFormData) => {
-    console.log(data);
+  const onSubmit = async (formData: EssayFormData) => {
+  showMessage.dismiss();
+  try {
+    if (formData.mode !== "corretor") {
+      return;
+    }
 
-    // await createEssay({
-    //   title: data.title,
-    //   content: data.content,
-    //   category_id: data.category_id,
-    // });
-  };
+    const response = await createEssay({
+      title: formData.title,
+      content: formData.content,
+      category_id: formData.category_id,
+    });
+
+    showMessage.success(response.message);
+
+  } catch (err) {
+    if (err instanceof Error) {
+      showMessage.error(err.message);
+    }
+  }
+};
 
   return (
     <section className="p-8 max-w-4xl mx-auto rounded-2xl shadow-lg border border-gray-100 bg-white">
+      {loading && <SpinnerLoading />}
       <header className="mb-8">
         <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
           Enviar Redação

@@ -21,18 +21,24 @@ export function essayReducer(state: EssayState, action: EssayAction) {
                 loading: false,
                 essays: state.essays.filter(essay => essay.id !== action.payload)
             }
-        case "DELETE_ESSAY_REQUEST":
+        case "SET_LOADING":
             return {
                 ...state,
-                loading: true,
-                error: null
-            }
-        case "DELETE_ESSAY_FAILURE":
-            return {
-                ...state,
-                loading: false,
-                error: null
-            }
+            loading: action.payload,
+        };
+
+        // case "DELETE_ESSAY_REQUEST":
+        //     return {
+        //         ...state,
+        //         loading: true,
+        //         error: null
+        //     }
+        // case "DELETE_ESSAY_FAILURE":
+        //     return {
+        //         ...state,
+        //         loading: false,
+        //         error: null
+        //     }
         default:
             return state
     }

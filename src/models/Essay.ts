@@ -36,12 +36,11 @@ export type EssayState = {
 export type EssayAction =
     | {type: "ADD_ESSAY"; payload: Essay}
     | {type: "SET_ESSAY"; payload: Essay[]}
+    | { type: "SET_LOADING"; payload: boolean }
     | {type: "DELETE_ESSAY"; payload: number}
-    | {type: "DELETE_ESSAY_FAILURE"; payload: string}
-    | {type: "DELETE_ESSAY_REQUEST";}
 
 export type CreateEssayPayload = {
     title: string;
     content: string;
-    categoryId: number;
+    category_id: number;
 }

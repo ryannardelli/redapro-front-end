@@ -36,6 +36,7 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     if (!state.user) return;
 
     try {
+      dispatchEssay({ type: "SET_LOADING", payload: true });
       const newEssay = await create_essay(state.user.id, data);
 
       dispatchEssay({
@@ -46,7 +47,10 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
       return newEssay;
     } catch (error) {
       console.error(error);
+      dispatchEssay({ type: "SET_ERROR", payload: true });
       throw error;
+    } finally {
+        dispatchEssay({ type: "SET_LOADING", payload: false });
     }
   };
 
