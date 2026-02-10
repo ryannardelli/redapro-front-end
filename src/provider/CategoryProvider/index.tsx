@@ -27,7 +27,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       });
     } catch (error) {
       console.error(error);
-      dispatchCategory({ type: "SET_ERROR", payload: true });
+      dispatchCategory({ type: "SET_ERROR", payload: error.message });
     } finally {
       dispatchCategory({ type: "SET_LOADING", payload: false });
     }

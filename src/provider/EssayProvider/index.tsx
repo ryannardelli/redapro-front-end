@@ -1,7 +1,7 @@
 import { useEffect, useReducer, type ReactNode } from "react";
 import { EssayContext } from "./EssayContext";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { getUserEssays, create_essay } from "../../services/essay";
+import { getUserEssays, create_essay, delete_essay } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload } from "../../models/Essay";
 
@@ -47,16 +47,41 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
       return newEssay;
     } catch (error) {
       console.error(error);
-      dispatchEssay({ type: "SET_ERROR", payload: true });
-      throw error;
+      
+      if (error instanceof Error) {
+            dispatchEssay({
+            type: "SET_ERROR",
+            payload: error.message
+            });
+        }
     } finally {
         dispatchEssay({ type: "SET_LOADING", payload: false });
     }
   };
 
-    const deleteEssay = async () => {
-        throw new Error("deleteEssay not implemented yet");
-    };
+    const deleteEssay = async (essayId: number) => {
+            try {
+                dispatchEssay({ type: "SET_LOADING", payload: true });
+
+                await delete_essay(essayId);
+
+                dispatchEssay({
+                type: "DELETE_ESSAY",
+                payload: essayId,
+                });
+            } catch (error) {
+                console.error(error);
+
+                if (error instanceof Error) {
+                dispatchEssay({
+                    type: "SET_ERROR",
+                    payload: error.message,
+                });
+                }
+            } finally {
+                dispatchEssay({ type: "SET_LOADING", payload: false });
+            }
+            };
 
     return (
         <EssayContext.Provider value={{ stateEssay, dispatchEssay, createEssay, deleteEssay }}>

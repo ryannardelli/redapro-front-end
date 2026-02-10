@@ -15,7 +15,6 @@ export default function SubmitEssay() {
   const categories = stateCategory.categories;
 
   const { loading } = stateEssay;
-  console.log(loading);
 
   const {
     register,

@@ -9,7 +9,7 @@ export const initialStateCategory: CategoryState = {
 export function categoryReducer(state: CategoryState, action: CategoryAction) {
      switch(action.type) {
         case "SET_CATEGORIES":
-            return {...state, categories: action.payload }
+            return {...state, categories: action.payload, error: null }
         case "ADD_CATEGORY":
             return {
                 ...state,
@@ -21,18 +21,18 @@ export function categoryReducer(state: CategoryState, action: CategoryAction) {
                 loading: false,
                 categories: state.categories.filter(category => category.id !== action.payload)
             }
-        case "DELETE_CATEGORY_REQUEST":
+        case "SET_LOADING":
             return {
                 ...state,
-                loading: true,
-                error: null
-            }
-        case "DELETE_CATEGORY_FAILURE":
+            loading: action.payload,
+        };
+
+        case "SET_ERROR":
             return {
                 ...state,
+                error: action.payload,
                 loading: false,
-                error: null
-            }
+            };
         default:
             return state
     }

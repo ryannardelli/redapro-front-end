@@ -17,7 +17,7 @@ export async function getUserEssays(userId: number): Promise<Essay[]> {
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => null);
-      throw new Error(errorData?.message);
+      throw new Error(errorData?.message ?? "Erro ao buscar redação.");
     }
 
     const essays: Essay[] = await res.json();
@@ -50,11 +50,33 @@ export async function create_essay(
 
     if (!res.ok) {
       const errorData = await res.json().catch(() => null);
-      throw new Error(errorData?.message);
+      throw new Error(errorData?.message ?? "Erro ao criar redação.");
     }
 
     const essay: Essay = await res.json();
     return essay;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function delete_essay(essayId: number): Promise<void> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao excluir redação.");
+    }
   } catch (error) {
     console.error(error);
     throw error;

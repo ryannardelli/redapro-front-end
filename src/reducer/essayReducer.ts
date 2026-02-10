@@ -27,18 +27,12 @@ export function essayReducer(state: EssayState, action: EssayAction) {
             loading: action.payload,
         };
 
-        // case "DELETE_ESSAY_REQUEST":
-        //     return {
-        //         ...state,
-        //         loading: true,
-        //         error: null
-        //     }
-        // case "DELETE_ESSAY_FAILURE":
-        //     return {
-        //         ...state,
-        //         loading: false,
-        //         error: null
-        //     }
+         case "SET_ERROR":
+            return {
+                ...state,
+                error: action.payload,
+                loading: false,
+        };
         default:
             return state
     }

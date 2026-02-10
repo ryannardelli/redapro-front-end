@@ -1,11 +1,20 @@
 import defaultEssay from '../../assets/img/defaultEssay.jpg';
 import { useEssay } from '../../hooks/useEssay';
-import { Edit3, Eye, Award, Calendar } from 'lucide-react';
+import { Edit3, Eye, Award, Calendar, Trash2 } from 'lucide-react'; 
 import { RouterLinks } from '../RouterLinks';
 
 export function CardEssays() {
-  const { stateEssay } = useEssay();
+  const { stateEssay, deleteEssay } = useEssay();
+  const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteEssay(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
@@ -43,13 +52,36 @@ export function CardEssays() {
                     className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                     alt={essay.title}
                   />
-                  <div className="absolute top-4 right-4">
+                  
+                  <div className="absolute top-4 left-4">
                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
                       hasGrade ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                     }`}>
                       {hasGrade ? 'Corrigida' : 'A ser corrigida'}
                     </span>
                   </div>
+
+                  <button
+                    onClick={() => handleDelete(essay.id)}
+                    disabled={loading}
+                    className={`absolute top-4 right-4 p-2 rounded-lg shadow-md transition
+                      ${loading
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 cursor-pointer'
+                      }`}
+                    title="Excluir redação"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+
+
+                  {/* <button 
+                    onClick={() => handleDelete(essay.id)}
+                    className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-lg shadow-md transition-colors backdrop-blur-sm cursor-pointer"
+                    title="Excluir redação"
+                  >
+                    <Trash2 size={18} />
+                  </button> */}
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">
@@ -60,7 +92,7 @@ export function CardEssays() {
                     {essay.title}
                   </h3>
                   <p className="mb-6 text-gray-500 text-sm line-clamp-3 leading-relaxed">
-                    {essay.content.slice(0, 120)}...
+                    {essay.content ? essay.content.slice(0, 120) : "Conteúdo não disponível"}
                   </p>
 
                   <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
