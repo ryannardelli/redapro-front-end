@@ -2,6 +2,7 @@ import { useEffect, useReducer, type ReactNode } from "react";
 import { categoryReducer, initialStateCategory } from "../../reducer/categoryReducer";
 import { getAllCategories } from "../../services/category";
 import { CategoryContext } from "./CategoryContext";
+import { userAuthentication } from "../../services/auth";
 
 
 type CategoryProviderProps = {
@@ -17,6 +18,10 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
   useEffect(() => {
   const loadCategories = async () => {
     try {
+      const token = userAuthentication.getTokenFromStorage();
+
+      if(!token) return;
+      
       dispatchCategory({ type: "SET_LOADING", payload: true });
 
       const categories = await getAllCategories();
