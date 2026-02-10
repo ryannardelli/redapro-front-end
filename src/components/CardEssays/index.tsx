@@ -8,6 +8,8 @@ export function CardEssays() {
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
 
+  console.log(essays);
+
   const handleDelete = async (id: number) => {
     try {
       await deleteEssay(id);
