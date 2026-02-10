@@ -23,13 +23,13 @@ export function MainRouter() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* rotas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
         {/* rotas privadas (membros) */}
-        <Route element={<PrivateRoute isAuth={isAuth} />}>
+        <Route element={<PrivateRoute isAuth={state.isAuthenticated}
+        loading={state.loading} />}>
           <Route element={<MainTemplate />}>
             <Route path="/" element={<Home />} />
             <Route path="/my-profile" element={<Profile />} />

@@ -1,8 +1,9 @@
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import { authReducer, initialState } from "../../reducer/authReducer";
 import { AuthContext } from "./AuthContext";
 import { userAuthentication } from "../../services/auth";
 import type { LoginResponse } from "../../models/Auth";
+import { getMe } from "../../services/users";
 
 type AuthProviderProps = {
   children: React.ReactNode;
@@ -10,6 +11,35 @@ type AuthProviderProps = {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  useEffect(() => {
+    async function restoreSession() {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        dispatch({ type: "SET_LOADING", payload: false });
+        return;
+      }
+
+      try {
+        dispatch({ type: "SET_LOADING", payload: true });
+
+        const user = await getMe();
+
+        dispatch({
+          type: "LOGIN",
+          payload: { token, user },
+        });
+      } catch {
+        localStorage.removeItem("token");
+        dispatch({ type: "LOGOUT" });
+      } finally {
+        dispatch({ type: "SET_LOADING", payload: false });
+      }
+    }
+
+    restoreSession();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {

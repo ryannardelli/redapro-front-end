@@ -215,8 +215,7 @@ export function Sidebar() {
           </button>
         </div>
       </aside>
-
-      {/* --- CONTEÚDO PRINCIPAL --- */}
+      
       <div className={`transition-all duration-300 ${sideBarOpen ? "blur-sm md:blur-none" : ""} md:ml-64`}>
         <HeaderNav 
           onToggleSidebar={() => setSideBarOpen(true)} 

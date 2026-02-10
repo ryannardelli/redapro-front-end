@@ -21,7 +21,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       const token = userAuthentication.getTokenFromStorage();
 
       if(!token) return;
-      
+
       dispatchCategory({ type: "SET_LOADING", payload: true });
 
       const categories = await getAllCategories();
