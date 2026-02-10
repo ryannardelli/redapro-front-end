@@ -35,9 +35,9 @@ export function CardEssays() {
       {essays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
           <p className="mb-6 text-xl text-gray-500 font-medium">Você ainda não submeteu nenhuma redação.</p>
-          <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl cursor-pointer">
+          <RouterLinks className='px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl cursor-pointer' href='/essay-upload'>
             Começar minha primeira redação
-          </button>
+          </RouterLinks>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
