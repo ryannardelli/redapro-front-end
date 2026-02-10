@@ -8,8 +8,7 @@ import { useCategory } from "../../hooks/useCategory";
 export default function SubmitEssay() {
   const [mode, setMode] = useState<"ia" | "corretor">("ia");
   const { stateCategory } = useCategory();
-
-  console.log(stateCategory);
+  const categories = stateCategory.categories;
 
   const {
     register,
@@ -144,14 +143,18 @@ export default function SubmitEssay() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Categoria
             </label>
+
             <select
               {...register("category_id", { valueAsNumber: true })}
               className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all appearance-none bg-white"
             >
               <option value={0}>Selecione uma categoria</option>
-              <option value={1}>Meio Ambiente</option>
-              <option value={2}>Tecnologia</option>
-              <option value={3}>Educação</option>
+
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </select>
             {errors.category_id && (
               <p className="text-sm text-red-500 mt-1">
