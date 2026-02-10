@@ -11,6 +11,7 @@ export type AuthState = {
 export type AuthAction =
   | { type: "LOGIN"; payload: { user: User; token: string } }
   | { type: "REGISTER"; payload: { user: User; token: string } }
+  | { type: "RESTORE_SESSION"; payload: { user: User | null; token: string } }
   | { type: "LOGOUT" }
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "SET_ERROR"; payload: string }

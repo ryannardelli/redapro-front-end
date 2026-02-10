@@ -1,237 +1,148 @@
 import defaultEssay from '../../assets/img/defaultEssay.jpg';
+import { useEssay } from '../../hooks/useEssay';
+import { Edit3, Eye, Award, Calendar, Trash2 } from 'lucide-react'; 
+import { RouterLinks } from '../RouterLinks';
 
 export function CardEssays() {
-    return (
-        <section className="px-4 py-10 mx-auto max-w-7xl">
-            <h2 className="mb-2 text-3xl font-extrabold leading-tight text-gray-900">Redações</h2>
-            <p className="mb-20 text-lg text-gray-500">
-                Confira seuas redações avaliadas com nota, tema e data de envio.
-            </p>
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-            <div className="p-5 bg-white rounded shadow-md">
-                <a href="#">
-                    <img
-                        src={defaultEssay}
-                        className="object-cover w-full h-56 mb-5 bg-center rounded"
-                        alt="Redação"
-                        loading="lazy"
-                    />
-                </a>
-                <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                    <a href="#" className="text-gray-900 hover:text-purple-700">
-                        Impactos da Inteligência Artificial na Educação
-                    </a>
-                </h2>
-                <p className="mb-3 text-sm font-normal text-gray-500">
-                    Uma análise sobre como a IA está transformando métodos de ensino e aprendizagem nas escolas.
-                </p>
-                <p className="mb-1 text-sm font-medium text-gray-700">
-                    Tema: Tecnologia e Educação
-                </p>
-                <p className="mb-1 text-sm font-medium text-gray-700">
-                    Nota: 860
-                </p>
-                <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                </p>
-                <p className="mb-3 text-sm font-normal text-gray-500">
-                    Enviada em: 05/10/2025
-                </p>
-            </div>
+  const { stateEssay, deleteEssay } = useEssay();
+  const loading = stateEssay.loading;
+  const essays = stateEssay.essays || [];
+
+  console.log(essays);
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteEssay(id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <section className="px-4 py-12 mx-auto max-w-7xl">
+      <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <h2 className="text-4xl font-black tracking-tight text-gray-900">Suas Redações</h2>
+          <p className="mt-2 text-lg text-gray-500">
+            Gerencie seu progresso e acompanhe suas avaliações.
+          </p>
+        </div>
+        {essays.length > 0 && (
+          <RouterLinks className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm cursor-pointer" href='/essay-upload'>
+              <Edit3 size={18} /> Nova Redação
+          </RouterLinks>
+        )}
+      </header>
+
+      {essays.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+          <p className="mb-6 text-xl text-gray-500 font-medium">Você ainda não submeteu nenhuma redação.</p>
+          <RouterLinks className='px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl cursor-pointer' href='/essay-upload'>
+            Começar minha primeira redação
+          </RouterLinks>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {essays.map((essay) => {
+            const hasGrade = essay.note !== null && essay.note !== undefined;
+
+            return (
+              <div key={essay.id} className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={defaultEssay}
+                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                    alt={essay.title}
+                  />
+                  
+                  <div className="absolute top-4 left-4">
+                    <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
+                      hasGrade ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      {hasGrade ? 'Corrigida' : 'A ser corrigida'}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => handleDelete(essay.id)}
+                    disabled={loading}
+                    className={`absolute top-4 right-4 p-2 rounded-lg shadow-md transition
+                      ${loading
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                        : 'bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 cursor-pointer'
+                      }`}
+                    title="Excluir redação"
+                  >
+                    <Trash2 size={18} />
+                  </button>
 
 
-                <div className="bg-white p-5 rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            Sustentabilidade e Consumo Consciente
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Discussão sobre como hábitos de consumo impactam o meio ambiente e possíveis soluções.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Meio Ambiente
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 800
-                    </p>
-
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Status: Pendente
-                    </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 04/10/2025
-                    </p>
+                  {/* <button 
+                    onClick={() => handleDelete(essay.id)}
+                    className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-lg shadow-md transition-colors backdrop-blur-sm cursor-pointer"
+                    title="Excluir redação"
+                  >
+                    <Trash2 size={18} />
+                  </button> */}
                 </div>
 
-                    <div className="p-5 bg-white rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            A Importância da Leitura na Formação Pessoal
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Este texto discute como o hábito da leitura contribui para o desenvolvimento crítico, cultural e emocional dos indivíduos.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Educação
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 900
-                    </p>
+                <div className="p-6 flex flex-col flex-grow">
+                  <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">
+                    {essay.category?.name}
+                  </span>
+                  <h3 className="mb-3 text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+                    {essay.title}
+                  </h3>
+                  <p className="mb-6 text-gray-500 text-sm line-clamp-3 leading-relaxed">
+                    {essay.content ? essay.content.slice(0, 120) : "Conteúdo não disponível"}
+                  </p>
 
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                   </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 01/10/2025
-                    </p>
+                  <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
+                    <div className="flex items-center text-gray-600 text-xs">
+                      <Calendar size={14} className="mr-1.5 opacity-70" />
+                      {new Date(essay.createdAt).toLocaleDateString()}
+                    </div>
+                    <div className="flex items-center text-gray-600 text-xs">
+                      <Award size={14} className="mr-1.5 opacity-70" />
+                      Nota: <span className={`ml-1 font-bold ${hasGrade ? 'text-green-600' : 'text-gray-400'}`}>
+                        {hasGrade ? essay.note : '--'}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex gap-3">
+                    <button 
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-50 text-gray-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer"
+                      title="Editar redação"
+                    >
+                      <Edit3 size={16} /> Editar
+                    </button>
+                    
+                    <div className="relative flex-1 group/tooltip">
+                      <button
+                        disabled={!hasGrade}
+                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 font-semibold rounded-xl transition-all
+                          ${hasGrade 
+                            ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100 cursor-pointer' 
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          }`}
+                      >
+                        <Eye size={16} /> Ver Nota
+                      </button>
+                      
+                      {!hasGrade && (
+                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none">
+                          Nota ainda não disponível
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-
-                <div className="p-5 bg-white rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            Sustentabilidade e Consumo Consciente
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Aborda como escolhas diárias de consumo impactam o meio ambiente e quais ações podemos adotar para reduzir a pegada ecológica.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Meio Ambiente
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 850
-                    </p>
-
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                    </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 28/09/2025
-                    </p>
-                </div>
-
-                <div className="p-5 bg-white rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            O Papel da Tecnologia na Inclusão Social
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Analisa como inovações tecnológicas podem facilitar a inclusão de pessoas com deficiência e ampliar o acesso à educação e ao mercado de trabalho.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Tecnologia e Sociedade
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 920
-                    </p>
-
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 15/09/2025
-                    </p>
-                </div>
-
-                <div className="p-5 bg-white rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            Desafios da Mobilidade Urbana nas Grandes Cidades
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Discute os problemas do trânsito, transporte público e como políticas públicas podem melhorar a qualidade de vida urbana.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Urbanismo
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 960
-                    </p>
-
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 05/09/2025
-                    </p>
-                </div>
-
-                <div className="p-5 bg-white rounded shadow-md">
-                    <a href="#">
-                        <img
-                            src={defaultEssay}
-                            className="object-cover w-full h-56 mb-5 bg-center rounded"
-                            alt="Redação"
-                            loading="lazy"
-                        />
-                    </a>
-                    <h2 className="mb-2 text-lg font-semibold text-gray-900">
-                        <a href="#" className="text-gray-900 hover:text-purple-700">
-                            Alimentação Saudável e Qualidade de Vida
-                        </a>
-                    </h2>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Explora a relação entre hábitos alimentares, saúde física e mental, e estratégias para promover uma dieta equilibrada.
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Tema: Saúde
-                    </p>
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                        Nota: 980
-                    </p>
-
-                    <p className="mb-1 text-sm font-medium text-gray-700">
-                    Status: Corrigida
-                </p>
-                    <p className="mb-3 text-sm font-normal text-gray-500">
-                        Enviada em: 01/09/2025
-                    </p>
-                </div>
-            </div>
-        </section>
-    );
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
 }

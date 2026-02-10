@@ -49,3 +49,20 @@ export const catchInformationsUser: CatchInformationsUser = {
         return res.json() as Promise<User[]>;
     }
 };
+
+export async function getMe(): Promise<User> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  const res = await fetch(`${API_URL}/me`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Sessão inválida");
+  }
+
+  return res.json();
+}

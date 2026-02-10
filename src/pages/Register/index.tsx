@@ -50,9 +50,7 @@ export function Register() {
 
   try {
     const response = await registerUser(data.name, data.email, data.password);
-    // console.log(response);
-    // showMessage.success(response);
-
+    
     setShowSuccessAnimation(true);
     
      setTimeout(() => {

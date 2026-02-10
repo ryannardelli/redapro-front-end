@@ -100,7 +100,6 @@ export function LoginForm() {
                 <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
               )}
               
-              {/* Link "Esqueceu a senha?" */}
               <div className="mt-2 text-right">
                 <RouterLinks 
                   href="/forgot-password" 
@@ -122,7 +121,6 @@ export function LoginForm() {
           </form>
         </div>
 
-        {/* Imagem lateral */}
         <div className="w-full h-96 flex items-center bg-[#000842] rounded-xl p-8">
           <img src={imageLogin} className="w-full aspect-[12/12] object-contain" alt="login-image" />
         </div>
