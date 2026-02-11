@@ -3,7 +3,19 @@ import { Edit3 } from "lucide-react";
 import { ModalBase } from "../../../Modal/ModalBase";
 import { EssayEditForm } from "../../../Modal/EssayEditForm";
 
-export function EditEssay() {
+interface EditEssayProps {
+  essay: {
+    id: number;
+    title: string;
+    content: string;
+    category: {
+      id: number;
+      name: string;
+    };
+  };
+}
+
+export function EditEssay({ essay }: EditEssayProps ) {
   const [isOpen, setIsOpen] = useState(false);
   
   const formRef = useRef<HTMLFormElement>(null);
@@ -46,10 +58,10 @@ export function EditEssay() {
           formRef={formRef} 
           onSubmit={onFormSubmit}
           initialData={{
-            title: "Título Existente",
-            category: "Enem",
-            content: "Conteúdo atual da redação..."
-          }} 
+            title: essay.title,
+            content: essay.content,
+            category: essay.category.id,
+          }}
         />
       </ModalBase>
     </>

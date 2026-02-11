@@ -101,7 +101,7 @@ export function CardEssays() {
                   </div>
 
                   <div className="mt-auto flex gap-3">
-                    <EditEssay />
+                    <EditEssay essay={essay} />
                     
                     <div className="relative flex-1 group/tooltip">
                       <button
