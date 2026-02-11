@@ -80,6 +80,7 @@ import {
   EssayEditSchema,
   type EssayEditFormData,
 } from "../../../schemas/EssayEditSchema";
+import { EssaySchema, type EssayFormData } from "../../../schemas/EssaySchema";
 
 
 interface EssayEditFormProps {
@@ -97,8 +98,8 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<EssayEditFormData>({
-    resolver: zodResolver(EssayEditSchema),
+  } = useForm<EssayFormData>({
+    resolver: zodResolver(EssaySchema),
     defaultValues: initialData,
   });
 
