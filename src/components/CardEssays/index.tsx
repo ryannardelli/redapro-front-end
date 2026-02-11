@@ -2,6 +2,7 @@ import defaultEssay from '../../assets/img/defaultEssay.jpg';
 import { useEssay } from '../../hooks/useEssay';
 import { Edit3, Eye, Award, Calendar, Trash2 } from 'lucide-react'; 
 import { RouterLinks } from '../RouterLinks';
+import { EditEssay } from '../ButtonsActivities/Essay/EditEssay';
 
 export function CardEssays() {
   const { stateEssay, deleteEssay } = useEssay();
@@ -73,15 +74,6 @@ export function CardEssays() {
                   >
                     <Trash2 size={18} />
                   </button>
-
-
-                  {/* <button 
-                    onClick={() => handleDelete(essay.id)}
-                    className="absolute top-4 right-4 p-2 bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded-lg shadow-md transition-colors backdrop-blur-sm cursor-pointer"
-                    title="Excluir redação"
-                  >
-                    <Trash2 size={18} />
-                  </button> */}
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">
@@ -109,12 +101,7 @@ export function CardEssays() {
                   </div>
 
                   <div className="mt-auto flex gap-3">
-                    <button 
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gray-50 text-gray-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200 cursor-pointer"
-                      title="Editar redação"
-                    >
-                      <Edit3 size={16} /> Editar
-                    </button>
+                    <EditEssay />
                     
                     <div className="relative flex-1 group/tooltip">
                       <button
