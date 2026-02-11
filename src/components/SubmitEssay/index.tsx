@@ -31,9 +31,7 @@ export default function SubmitEssay() {
   const onSubmit = async (formData: EssayFormData) => {
   showMessage.dismiss();
   try {
-    if (formData.mode !== "corretor") {
-      return;
-    }
+    if (formData.mode !== "corretor") return;
 
     const response = await createEssay({
       title: formData.title,
@@ -41,12 +39,14 @@ export default function SubmitEssay() {
       category_id: formData.category_id,
     });
 
-    showMessage.success(response.message);
-
+    showMessage.success(response?.message);
   } catch (err) {
-    if (err instanceof Error) {
-      showMessage.error(err.message);
-    }
+    const errorMessage =
+      err instanceof Error
+        ? err.message
+        : err?.message;
+
+    showMessage.error(errorMessage);
   }
 };
 

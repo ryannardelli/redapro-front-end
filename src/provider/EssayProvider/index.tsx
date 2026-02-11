@@ -58,12 +58,15 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     } catch (error) {
       console.error(error);
 
-      if (error instanceof Error) {
-        dispatchEssay({
-          type: "SET_ERROR",
-          payload: error.message,
-        });
-      }
+      const message =
+      error instanceof Error
+        ? error.message
+        : error?.message;
+
+    dispatchEssay?.({ type: "SET_ERROR", payload: message });
+
+    throw error;
+
     } finally {
       dispatchEssay({ type: "SET_LOADING", payload: false });
     }
