@@ -21,6 +21,14 @@ export function essayReducer(state: EssayState, action: EssayAction) {
                 loading: false,
                 essays: state.essays.filter(essay => essay.id !== action.payload)
             }
+        case "UPDATE_ESSAY":
+            return {
+                ...state,
+                essays: state.essays.map((essay) =>
+                essay.id === action.payload.id ? action.payload : essay
+                ),
+        };
+
         case "SET_LOADING":
             return {
                 ...state,
