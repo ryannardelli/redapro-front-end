@@ -75,18 +75,13 @@
 import React, { type RefObject } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import {
-  EssayEditSchema,
-  type EssayEditFormData,
-} from "../../../schemas/EssayEditSchema";
 import { EssaySchema, type EssayFormData } from "../../../schemas/EssaySchema";
 
 
 interface EssayEditFormProps {
   formRef: RefObject<HTMLFormElement | null>;
-  initialData?: EssayEditFormData;
-  onSubmit: (data: EssayEditFormData) => void;
+  initialData?: EssayFormData;
+  onSubmit: (data: EssayEditFormProps) => void;
 }
 
 export const EssayEditForm: React.FC<EssayEditFormProps> = ({
