@@ -1,7 +1,10 @@
 import { useState, useRef } from "react";
 import { Edit3 } from "lucide-react";
-import { ModalBase } from "../../../Modal/ModalBase";
-import { EssayEditForm } from "../../../Modal/EssayEditForm";
+import { ModalBase } from "../../../Modais/ModalBase";
+import { EssayEditForm } from "../../../Modais/EssayEditForm";
+import { useEssay } from "../../../../hooks/useEssay";
+import { showMessage } from "../../../../adapters/showMessage";
+import type { EssayFormData } from "../../../../schemas/EssaySchema";
 
 interface EditEssayProps {
   essay: {
@@ -17,24 +20,35 @@ interface EditEssayProps {
 
 export function EditEssay({ essay }: EditEssayProps ) {
   const [isOpen, setIsOpen] = useState(false);
+  const { updateEssay, stateEssay} = useEssay();
+  const loading = stateEssay.loading;
   
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSaveTrigger = () => {
-    formRef.current?.requestSubmit();
+    if(!loading) {
+      formRef.current?.requestSubmit();
+    }
   };
 
-  const onFormSubmit = async (data: any) => {
+  const onFormSubmit = async (data: EssayFormData) => {
+    console.log("Dados do formulário enviados:", data);
     try {
-      console.log("Dados recebidos para edição:", data);
-      // Aqui você faria o seu fetch/axios:
-      
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulação
+      const response = await updateEssay(essay.id, {
+        title: data.title,
+        content: data.content,
+        category_id: data.category,
+      });
+
+      showMessage.success(response.message);
       setIsOpen(false);
-    } catch (error) {
-      console.error("Erro ao salvar:", error);
-    } finally {
-      //
+    } catch (err) {
+      const errorMessage =
+      err instanceof Error
+        ? err.message
+        : err?.message;
+      console.log(err);
+      showMessage.error(errorMessage);
     }
   };
 
@@ -53,6 +67,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSave={handleSaveTrigger}
+        isLoading={loading}
       >
         <EssayEditForm 
           formRef={formRef} 

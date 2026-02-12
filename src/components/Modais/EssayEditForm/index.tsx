@@ -7,13 +7,13 @@ import { useCategory } from "../../../hooks/useCategory";
 interface EssayEditFormProps {
   formRef: RefObject<HTMLFormElement | null>;
   initialData?: EssayFormData;
-  onSubmit: (data: EssayEditFormProps) => void;
+  onSubmit: (data: EssayFormData) => void;
 }
 
 export const EssayEditForm: React.FC<EssayEditFormProps> = ({
-  formRef,
   initialData,
   onSubmit,
+  formRef
 }) => {
   const {
     register,

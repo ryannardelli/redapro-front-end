@@ -94,7 +94,7 @@ export async function update_essay(
   const token = userAuthentication.getTokenFromStorage();
 
   try {
-    const res = await fetch(`/reference-essay/${essayId}`, {
+    const res = await fetch(`${API_URL}/${essayId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
