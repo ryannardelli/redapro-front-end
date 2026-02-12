@@ -1,8 +1,10 @@
 import defaultEssay from '../../assets/img/defaultEssay.jpg';
 import { useEssay } from '../../hooks/useEssay';
-import { Edit3, Eye, Award, Calendar, Trash2 } from 'lucide-react'; 
+import { Edit3, Eye, Award, Calendar } from 'lucide-react'; 
 import { RouterLinks } from '../RouterLinks';
 import { EditEssay } from '../ButtonsActivities/Essay/EditEssay';
+import { DeleteEssay } from "../ButtonsActivities/Essay/DeleteEssay";
+
 
 export function CardEssays() {
   const { stateEssay, deleteEssay } = useEssay();
@@ -62,18 +64,12 @@ export function CardEssays() {
                     </span>
                   </div>
 
-                  <button
-                    onClick={() => handleDelete(essay.id)}
-                    disabled={loading}
-                    className={`absolute top-4 right-4 p-2 rounded-lg shadow-md transition
-                      ${loading
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-white/90 hover:bg-red-50 text-gray-400 hover:text-red-600 cursor-pointer'
-                      }`}
-                    title="Excluir redação"
-                  >
-                    <Trash2 size={18} />
-                  </button>
+                  <DeleteEssay
+                      onDelete={() => handleDelete(essay.id)}
+                      loading={loading}
+                      title="Excluir redação"
+                      className="absolute top-4 right-4"
+                    />
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">
