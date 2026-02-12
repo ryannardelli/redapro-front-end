@@ -4,6 +4,9 @@ import { Edit3, Eye, Award, Calendar } from 'lucide-react';
 import { RouterLinks } from '../RouterLinks';
 import { EditEssay } from '../ButtonsActivities/Essay/EditEssay';
 import { DeleteEssay } from "../ButtonsActivities/Essay/DeleteEssay";
+import { toast } from 'react-toastify';
+import { Dialog } from '../DialogConfirm/Dialog';
+import { showMessage } from '../../adapters/showMessage';
 
 
 export function CardEssays() {
@@ -12,8 +15,21 @@ export function CardEssays() {
   const essays = stateEssay.essays || [];
 
   const handleDelete = async (id: number) => {
+    showMessage.dismiss();
+
     try {
-      await deleteEssay(id);
+      toast(Dialog, {
+        data: "Tem certeza que deseja excluir esta redação?",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        onClose: async(confimation) => {
+          if(confimation) {
+            await deleteEssay(id);
+          }
+        }
+      })
     } catch (error) {
       console.error(error);
     }
