@@ -1,7 +1,7 @@
 import { useEffect, useReducer, type ReactNode, useCallback } from "react";
 import { EssayContext } from "./EssayContext";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { getUserEssays, create_essay, delete_essay } from "../../services/essay";
+import { getUserEssays, create_essay, delete_essay, update_essay } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload } from "../../models/Essay";
 
@@ -58,12 +58,15 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     } catch (error) {
       console.error(error);
 
-      if (error instanceof Error) {
-        dispatchEssay({
-          type: "SET_ERROR",
-          payload: error.message,
-        });
-      }
+      const message =
+      error instanceof Error
+        ? error.message
+        : error?.message;
+
+    dispatchEssay?.({ type: "SET_ERROR", payload: message });
+
+    throw error;
+
     } finally {
       dispatchEssay({ type: "SET_LOADING", payload: false });
     }
@@ -73,12 +76,14 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     try {
       dispatchEssay({ type: "SET_LOADING", payload: true });
 
-      await delete_essay(essayId);
+      const response = await delete_essay(essayId);
 
       dispatchEssay({
         type: "DELETE_ESSAY",
         payload: essayId,
       });
+
+      return response;
     } catch (error) {
       console.error(error);
 
@@ -88,10 +93,43 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
           payload: error.message,
         });
       }
+
+      throw error;
     } finally {
       dispatchEssay({ type: "SET_LOADING", payload: false });
     }
   };
+
+  const updateEssay = async (
+  essayId: number,
+  data: CreateEssayPayload
+) => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const updatedEssay = await update_essay(essayId, data);
+
+    dispatchEssay({
+      type: "UPDATE_ESSAY",
+      payload: updatedEssay,
+    });
+
+    return updatedEssay;
+  } catch (error) {
+    console.error(error);
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao atualizar redação";
+
+    dispatchEssay({ type: "SET_ERROR", payload: message });
+    throw error;
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+};
+
 
   return (
     <EssayContext.Provider
@@ -99,6 +137,7 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
         stateEssay,
         createEssay,
         deleteEssay,
+        updateEssay,
       }}
     >
       {children}

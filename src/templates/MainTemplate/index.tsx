@@ -1,5 +1,5 @@
+import { Sidebar } from "@components/layout/Sidebar";
 import { Outlet } from "react-router";
-import { Sidebar } from "../../components/Sidebar";
 
 export default function MainTemplate() {
     return(

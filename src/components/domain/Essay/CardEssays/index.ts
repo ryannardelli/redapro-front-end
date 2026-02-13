@@ -1,0 +1,1 @@
+export { CardEssays } from './CardEssays';
