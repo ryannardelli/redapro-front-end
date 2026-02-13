@@ -1,10 +1,10 @@
-import { CardEssays } from "../../../components/CardEssays";
-import FilterHeader from "../../../components/FilterHeader";
+import { CardEssays } from "@components/domain/Essay/CardEssays";
+import { FilterHeaderEssay } from "@components/domain/Essay/FilterHeaderEssay";
 
 export function Essays() {
     return(
         <div className=" p-0 md:p-4">
-            <FilterHeader />
+            <FilterHeaderEssay />
             <CardEssays />
         </div>
     );

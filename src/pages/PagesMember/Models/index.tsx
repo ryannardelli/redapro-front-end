@@ -1,4 +1,4 @@
-import ModelsEssays from "../../../components/ModelsEssays";
+import { ModelsEssays } from "@components/domain/EssaysReference/ModelsEssays";
 
 export function Models() {
     return(

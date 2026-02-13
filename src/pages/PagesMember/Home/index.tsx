@@ -1,7 +1,7 @@
+import { Shortcuts } from "@components/ui/Dashboard/ShortCuts";
 import ActivityTable from "../../../components/ActivityTable";
-import HistoryEssays from "../../../components/HistoryEssays";
-import { Shortcuts } from "../../../components/Shortcuts";
 import { Stats } from "../../../components/Stats";
+import { HistoryEssays } from "@components/domain/Essay/HistoryEssays";
 
 export function Home() {
     return(

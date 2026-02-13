@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema, type RegisterFormData } from "../../schemas/RegisterSchema";
-import { StepOne } from "../../components/ResgisterForm/StepOne";
-import { StepTwo } from "../../components/ResgisterForm/StepTwo";
-import { StepThree } from "../../components/ResgisterForm/StepThree";
 import { useAuth } from "../../hooks/useAuth";
 import { showMessage } from "../../adapters/showMessage";
-import { SpinnerLoading } from "../../components/SpinnerLoading";
 import { useNavigate } from "react-router";
 import Lottie from "lottie-react";
 import successAnimation from "../../assets/animation/successfully.json";
+import { SpinnerLoading } from "@components/ui/Spinner/SpinnerLoading";
+import { StepOne } from "@components/domain/Auth/ResgiterForm/StepOne";
+import { StepTwo } from "@components/domain/Auth/ResgiterForm/StepTwo";
+import { StepThree } from "@components/domain/Auth/ResgiterForm/StepThree";
 
 const FORM_STEPS = [
   { id: 1, label: "Perfil", fields: ["name"] },

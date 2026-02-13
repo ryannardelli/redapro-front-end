@@ -1,0 +1,1 @@
+export { ModelsEssays } from './ModelEssays';
