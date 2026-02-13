@@ -7,6 +7,7 @@ import { DeleteEssay } from "../ButtonsActivities/Essay/DeleteEssay";
 import { toast } from 'react-toastify';
 import { Dialog } from '../DialogConfirm/Dialog';
 import { showMessage } from '../../adapters/showMessage';
+import { ActionButton } from '../ui/ActionButton';
 
 
 export function CardEssays() {
@@ -123,25 +124,17 @@ export function CardEssays() {
 
                   <div className="mt-auto flex gap-3">
                     <EditEssay essay={essay} />
-                    
-                    <div className="relative flex-1 group/tooltip">
-                      <button
+
+                    <ActionButton
                         disabled={!hasGrade}
-                        className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 font-semibold rounded-xl transition-all
-                          ${hasGrade 
-                            ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100 cursor-pointer' 
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          }`}
+                        tooltip="Nota ainda não disponível"
+                        icon={<Eye size={16} />}
+                        onClick={() => {
+                          // ação de ver nota
+                        }}
                       >
-                        <Eye size={16} /> Ver Nota
-                      </button>
-                      
-                      {!hasGrade && (
-                        <span className="absolute -top-10 left-1/2 -translate-x-1/2 w-max px-2 py-1 bg-gray-800 text-white text-[10px] rounded opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none">
-                          Nota ainda não disponível
-                        </span>
-                      )}
-                    </div>
+                        Ver Nota
+                    </ActionButton>
                   </div>
                 </div>
               </div>
