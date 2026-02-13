@@ -76,12 +76,14 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     try {
       dispatchEssay({ type: "SET_LOADING", payload: true });
 
-      await delete_essay(essayId);
+      const response = await delete_essay(essayId);
 
       dispatchEssay({
         type: "DELETE_ESSAY",
         payload: essayId,
       });
+
+      return response;
     } catch (error) {
       console.error(error);
 
@@ -91,6 +93,8 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
           payload: error.message,
         });
       }
+
+      throw error;
     } finally {
       dispatchEssay({ type: "SET_LOADING", payload: false });
     }

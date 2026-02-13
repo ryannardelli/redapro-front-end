@@ -77,6 +77,8 @@ export async function delete_essay(essayId: number): Promise<void> {
       const errorData = await res.json().catch(() => null);
       throw new Error(errorData?.message ?? "Erro ao excluir redação.");
     }
+
+    return await res.json();
   } catch (error) {
     console.error(error);
     throw error;

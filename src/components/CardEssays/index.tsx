@@ -15,25 +15,34 @@ export function CardEssays() {
   const essays = stateEssay.essays || [];
 
   const handleDelete = async (id: number) => {
-    showMessage.dismiss();
+  showMessage.dismiss();
 
-    try {
-      toast(Dialog, {
-        data: "Tem certeza que deseja excluir esta redação?",
-        autoClose: false,
-        closeOnClick: false,
-        closeButton: false,
-        draggable: false,
-        onClose: async(confimation) => {
-          if(confimation) {
-            await deleteEssay(id);
-          }
+  toast(Dialog, {
+    data: "Tem certeza que deseja excluir esta redação?",
+    autoClose: false,
+    closeOnClick: false,
+    closeButton: false,
+    draggable: false,
+    onClose: async (props) => {
+      const isConfirmed = props?.data === true || props === true;
+
+      if (isConfirmed) {
+        try {
+          const response = await deleteEssay(id);
+          console.log(response);
+          setTimeout(() => {
+            showMessage.success(response?.message || "Excluído com sucesso!");
+          }, 100);
+        } catch (err: any) {
+          const errorMessage = err?.response?.data?.message || err.message || "Erro desconhecido";
+          setTimeout(() => {
+            showMessage.error(errorMessage);
+          }, 100);
         }
-      })
-    } catch (error) {
-      console.error(error);
+      }
     }
-  };
+  });
+};
 
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
