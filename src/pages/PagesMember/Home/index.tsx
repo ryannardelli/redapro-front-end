@@ -1,14 +1,14 @@
 import { Shortcuts } from "@components/ui/Dashboard/ShortCuts";
-import ActivityTable from "../../../components/ActivityTable";
-import { Stats } from "../../../components/Stats";
 import { HistoryEssays } from "@components/domain/Essay/HistoryEssays";
+import { ActivityTable } from "@components/domain/Essay/ActivityTable";
+import { StatsHome } from "@components/domain/Dashboard/StatsHome";
 
 export function Home() {
     return(
         <>
             <div>
                 <Shortcuts />
-                <Stats />
+                <StatsHome />
             </div>
             
             <div className="flex flex-col gap-6 p-4">

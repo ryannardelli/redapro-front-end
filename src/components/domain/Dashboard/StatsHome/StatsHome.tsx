@@ -1,6 +1,6 @@
 import { FileText, BarChart3, Calendar } from "lucide-react";
 
-export function Stats() {
+export function StatsHome() {
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">

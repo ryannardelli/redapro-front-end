@@ -1,6 +1,6 @@
 import { FileText, CheckCircle2, Clock, XCircle, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 
-export default function ActivityTable() {
+export function ActivityTable() {
   const activities = [
     {
       id: 1,

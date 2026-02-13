@@ -1,7 +1,7 @@
-import Schedule from "../../../components/Schedule";
+import { History } from "@components/domain/Schedule/History";
 
 export function Calendar() {
     return(
-        <Schedule />
+        <History />
     );
 }

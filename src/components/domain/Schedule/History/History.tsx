@@ -4,7 +4,7 @@ import {
   ChevronRight, ChevronLeft, Clock, Search, Plus, BookOpen 
 } from "lucide-react";
 
-export default function SchedulePage() {
+export function History() {
   const [filterStatus, setFilterStatus] = useState("Todos");
 
   const agendamentos = [
@@ -46,7 +46,6 @@ export default function SchedulePage() {
   return (
     <section className="px-4 py-8 max-w-6xl mx-auto space-y-8 min-h-screen">
       
-      {/* --- HEADER --- */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-200 pb-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-purple-600 font-bold text-sm uppercase tracking-wider">
@@ -63,7 +62,6 @@ export default function SchedulePage() {
         </button>
       </div>
 
-      {/* --- FILTROS --- */}
       <div className="flex flex-col lg:flex-row gap-4">
         <div className="relative flex-1 group">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-500 transition-colors" size={18} />
@@ -88,13 +86,11 @@ export default function SchedulePage() {
         </div>
       </div>
 
-      {/* --- LISTAGEM DE AGENDAMENTOS --- */}
       <div className="grid grid-cols-1 gap-4">
         {agendamentos.map((ag) => (
           <div key={ag.id} className="group relative bg-white border border-slate-200 p-5 md:p-6 rounded-3xl hover:border-purple-200 hover:shadow-xl hover:shadow-purple-500/5 transition-all">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               
-              {/* Info Mentor e Data */}
               <div className="flex items-start gap-4">
                 <div className="hidden sm:flex flex-col items-center justify-center w-16 h-16 bg-slate-50 rounded-2xl border border-slate-100 group-hover:bg-purple-50 group-hover:border-purple-100 transition-colors">
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">DIA</span>
@@ -116,7 +112,6 @@ export default function SchedulePage() {
                 </div>
               </div>
 
-              {/* Tema da Mentoria */}
               <div className="flex-1 md:px-8 border-l border-slate-100">
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Assunto da Sessão</p>
                 <div className="flex items-center gap-2 text-slate-700 font-semibold italic">
@@ -125,7 +120,6 @@ export default function SchedulePage() {
                 </div>
               </div>
 
-              {/* Ações */}
               <div className="flex items-center gap-2 pt-4 md:pt-0 border-t md:border-t-0 border-slate-50">
                 <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-slate-600 hover:text-purple-600 hover:bg-purple-50 rounded-xl font-bold text-sm transition-all border border-transparent hover:border-purple-100">
                   <Edit size={16} />
