@@ -58,7 +58,7 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
           Categoria
         </label>
 
-        <select {...register("category")} className={inputClass}>
+        <select {...register("category_id",  { valueAsNumber: true })} className={inputClass}>
            {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -66,9 +66,9 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
             ))}
         </select>
         
-        {errors.category && (
+        {errors.category_id && (
           <p className="text-sm text-red-500 mt-1">
-            {errors.category.message}
+            {errors.category_id.message}
           </p>
         )}
       </div>
@@ -89,6 +89,8 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
           </p>
         )}
       </div>
+
+      <input type="hidden" value="corretor" {...register("mode")} />
     </form>
   );
 };
