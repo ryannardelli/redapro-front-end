@@ -8,6 +8,7 @@ import { DeleteEssay } from '../DeleteEssay';
 import { EditEssay } from '../EditEssay';
 import { useEssay } from '@hooks/useEssay';
 import { RouterLinks } from '@components/ui/Links/RouterLinks';
+import { ViewMoreEssay } from '../ViewMoreEssay';
 
 export function CardEssays() {
   const { stateEssay, deleteEssay } = useEssay();
@@ -89,12 +90,19 @@ export function CardEssays() {
                     </span>
                   </div>
 
-                  <DeleteEssay
+                  <div className="absolute top-4 right-4 flex gap-2">
+                    <ViewMoreEssay
+                      onView={() => console.log("View more")}
+                      loading={loading}
+                      title="Ver mais"
+                    />
+
+                    <DeleteEssay
                       onDelete={() => handleDelete(essay.id)}
                       loading={loading}
                       title="Excluir redação"
-                      className="absolute top-4 right-4"
                     />
+                  </div>
                 </div>
 
                 <div className="p-6 flex flex-col flex-grow">

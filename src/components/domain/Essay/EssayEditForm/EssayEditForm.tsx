@@ -1,8 +1,9 @@
 import React, { type RefObject } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EssaySchema, type EssayFormData } from "schemas/EssaySchema";
+import { type EssayFormData } from "schemas/EssaySchema";
 import { useCategory } from "@hooks/useCategory";
+import { EssayEditSchema } from "schemas/EssayEditSchema";
 
 interface EssayEditFormProps {
   formRef: RefObject<HTMLFormElement | null>;
@@ -20,7 +21,7 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<EssayFormData>({
-    resolver: zodResolver(EssaySchema),
+    resolver: zodResolver(EssayEditSchema),
     defaultValues: initialData,
   });
 

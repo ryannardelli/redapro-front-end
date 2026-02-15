@@ -32,12 +32,11 @@ export function EditEssay({ essay }: EditEssayProps ) {
   };
 
   const onFormSubmit = async (data: EssayFormData) => {
-    console.log("Dados do formulário enviados:", data);
     try {
       const response = await updateEssay(essay.id, {
         title: data.title,
         content: data.content,
-        category_id: data.category,
+        category_id: data.category_id,
       });
 
       showMessage.success(response.message);
