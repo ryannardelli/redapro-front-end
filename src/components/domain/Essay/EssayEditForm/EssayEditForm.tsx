@@ -33,13 +33,7 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
   return (
     <form
       ref={formRef}
-      onSubmit={handleSubmit(
-        onSubmit,
-    (errors) => {
-      console.log("ERROS DE VALIDAÇÃO:", errors);
-    }
-      )}
-      // onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-5"
     >
 
@@ -95,6 +89,8 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
           </p>
         )}
       </div>
+
+      <input type="hidden" value="corretor" {...register("mode")} />
     </form>
   );
 };
