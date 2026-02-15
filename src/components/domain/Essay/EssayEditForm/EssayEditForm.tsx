@@ -33,7 +33,13 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
   return (
     <form
       ref={formRef}
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(
+        onSubmit,
+    (errors) => {
+      console.log("ERROS DE VALIDAÇÃO:", errors);
+    }
+      )}
+      // onSubmit={handleSubmit(onSubmit)}
       className="space-y-5"
     >
 
@@ -58,7 +64,7 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
           Categoria
         </label>
 
-        <select {...register("category")} className={inputClass}>
+        <select {...register("category_id",  { valueAsNumber: true })} className={inputClass}>
            {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
@@ -66,9 +72,9 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
             ))}
         </select>
         
-        {errors.category && (
+        {errors.category_id && (
           <p className="text-sm text-red-500 mt-1">
-            {errors.category.message}
+            {errors.category_id.message}
           </p>
         )}
       </div>
