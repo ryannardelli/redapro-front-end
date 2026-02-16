@@ -1,5 +1,5 @@
 import { SetupCard } from '@components/ui/Card/SetupCard/SetupCard';
-import { Layout, Users, FileCheck } from 'lucide-react';
+import { Layout, Users, FileCheck, Tags } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 export function SetupHome() {
@@ -20,6 +20,14 @@ export function SetupHome() {
       color: "purple",
       action: () => navigate("/admin/setup/profiles")
     },
+    {
+      title: "Categorias",
+      description: "Gerencie e organize as categorias das redações e conteúdos do sistema.",
+      icon: Tags,
+      color: "amber",
+      action: () => navigate("/admin/setup/categories")
+    },
+
     {
       title: "Modelos nota 1000",
       description: "Explore a galeria de redações exemplares e aprenda com os melhores.",
