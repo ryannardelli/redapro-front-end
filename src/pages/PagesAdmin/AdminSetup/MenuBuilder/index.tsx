@@ -1,34 +1,43 @@
 import React, { useState } from "react";
-import { Trash2, Plus, GraduationCap, Briefcase, CheckCircle2 } from "lucide-react";
+import { 
+  Trash2, Plus, GraduationCap, Briefcase, CheckCircle2, 
+  Home, Settings, User, FileText, Calendar, PieChart, 
+  MessageSquare, Layout, LucideIcon 
+} from "lucide-react";
 
-// 1. Definição das Rotas Disponíveis no seu Front-end
+// 1. Lista de ícones disponíveis para escolha
+const AVAILABLE_ICONS = {
+  Home, Settings, User, FileText, Calendar, PieChart, MessageSquare, Layout, Briefcase, GraduationCap
+};
+
+type IconName = keyof typeof AVAILABLE_ICONS;
+
 const DISPONIVEIS = {
   corretor: [
-    { label: "Dashboard Vendas", route: "/corretor/dash" },
-    { label: "Meus Imóveis", route: "/corretor/imoveis" },
-    { label: "Agenda de Visitas", route: "/corretor/agenda" },
-    { label: "Relatórios de Comissão", route: "/corretor/financeiro" },
+    { label: "Dashboard Vendas", route: "/corretor/dash", defaultIcon: "PieChart" as IconName },
+    { label: "Meus Imóveis", route: "/corretor/imoveis", defaultIcon: "Home" as IconName },
+    { label: "Agenda de Visitas", route: "/corretor/agenda", defaultIcon: "Calendar" as IconName },
+    { label: "Relatórios de Comissão", route: "/corretor/financeiro", defaultIcon: "FileText" as IconName },
   ],
   estudante: [
-    { label: "Minha Área", route: "/estudante/home" },
-    { label: "Cursos Inscritos", route: "/estudante/cursos" },
-    { label: "Biblioteca Digital", route: "/estudante/materiais" },
-    { label: "Suporte Acadêmico", route: "/estudante/ajuda" },
+    { label: "Minha Área", route: "/estudante/home", defaultIcon: "User" as IconName },
+    { label: "Cursos Inscritos", route: "/estudante/cursos", defaultIcon: "Layout" as IconName },
+    { label: "Biblioteca Digital", route: "/estudante/materiais", defaultIcon: "FileText" as IconName },
+    { label: "Suporte Acadêmico", route: "/estudante/ajuda", defaultIcon: "MessageSquare" as IconName },
   ]
 } as const;
 
 type UserProfile = "corretor" | "estudante";
 
 interface MenuItem {
-  id: string; // Usaremos a rota como ID único para evitar duplicatas
+  id: string;
   label: string;
   route: string;
+  iconName: IconName; // Guardamos o nome do ícone
 }
 
 export function MenuBuilder() {
   const [activeTab, setActiveTab] = useState<UserProfile>("corretor");
-  
-  // Estado dos menus que o usuário "ativou"
   const [activeMenus, setActiveMenus] = useState<Record<UserProfile, MenuItem[]>>({
     corretor: [],
     estudante: []
@@ -38,107 +47,145 @@ export function MenuBuilder() {
     const isAlreadyActive = activeMenus[activeTab].some(m => m.route === item.route);
 
     if (isAlreadyActive) {
-      // Remove se já estiver ativo
       setActiveMenus(prev => ({
         ...prev,
         [activeTab]: prev[activeTab].filter(m => m.route !== item.route)
       }));
     } else {
-      // Adiciona se não estiver ativo
       setActiveMenus(prev => ({
         ...prev,
-        [activeTab]: [...prev[activeTab], { ...item, id: item.route }]
+        [activeTab]: [...prev[activeTab], { ...item, id: item.route, iconName: item.defaultIcon }]
       }));
     }
   };
 
+  const updateIcon = (route: string, newIcon: IconName) => {
+    setActiveMenus(prev => ({
+      ...prev,
+      [activeTab]: prev[activeTab].map(m => m.route === route ? { ...m, iconName: newIcon } : m)
+    }));
+  };
+
   return (
-    <div className="max-w-5xl mx-auto p-8 font-sans">
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold text-slate-900">Customização de Menu</h1>
-        <p className="text-slate-500">Selecione as funcionalidades que estarão visíveis para cada perfil.</p>
+    <div className="max-w-6xl mx-auto p-8 font-sans bg-slate-50 min-h-screen">
+      <header className="mb-10 text-center md:text-left">
+        <h1 className="text-4xl font-black text-slate-900 tracking-tight">Customização de Menu</h1>
+        <p className="text-slate-500 text-lg">Defina quais ferramentas cada perfil pode acessar e com qual ícone.</p>
       </header>
 
-      {/* Tabs de Perfil */}
-      <div className="flex gap-4 mb-8 border-b border-slate-200">
+      {/* Tabs Estilizadas */}
+      <div className="flex justify-center md:justify-start gap-2 mb-8 p-1 bg-slate-200/50 w-fit rounded-2xl">
         {(["corretor", "estudante"] as UserProfile[]).map((profile) => (
           <button
             key={profile}
             onClick={() => setActiveTab(profile)}
-            className={`pb-4 px-2 flex items-center gap-2 font-semibold transition-all border-b-2 ${
+            className={`px-6 py-2.5 rounded-xl flex items-center gap-2 font-bold transition-all ${
               activeTab === profile 
-                ? "border-blue-600 text-blue-600" 
-                : "border-transparent text-slate-400 hover:text-slate-600"
+                ? "bg-white text-blue-600 shadow-sm" 
+                : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            {profile === "corretor" ? <Briefcase size={20}/> : <GraduationCap size={20}/>}
+            {profile === "corretor" ? <Briefcase size={18}/> : <GraduationCap size={18}/>}
             <span className="capitalize">{profile}</span>
           </button>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-10">
-        {/* Lado Esquerdo: Biblioteca de Itens Disponíveis */}
-        <section>
-          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Funcionalidades Disponíveis</h3>
-          <div className="grid gap-3">
-            {DISPONIVEIS[activeTab].map((item) => {
-              const isActive = activeMenus[activeTab].some(m => m.route === item.route);
-              return (
-                <button
-                  key={item.route}
-                  onClick={() => toggleMenu(item)}
-                  className={`flex items-center justify-between p-4 rounded-xl border-2 transition-all text-left ${
-                    isActive 
-                      ? "border-blue-100 bg-blue-50 text-blue-700 shadow-sm" 
-                      : "border-slate-100 bg-white hover:border-slate-200 text-slate-600"
-                  }`}
-                >
-                  <div>
-                    <p className="font-bold">{item.label}</p>
-                    <p className="text-xs opacity-70 font-mono">{item.route}</p>
-                  </div>
-                  {isActive ? <CheckCircle2 className="text-blue-600" size={24}/> : <Plus size={20}/>}
-                </button>
-              );
-            })}
-          </div>
-        </section>
+      <div className="grid lg:grid-cols-5 gap-8">
+        {/* Lado Esquerdo: Seleção */}
+        <section className="lg:col-span-3 space-y-4">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">Funcionalidades</h3>
+          {DISPONIVEIS[activeTab].map((item) => {
+            const activeItem = activeMenus[activeTab].find(m => m.route === item.route);
+            const isActive = !!activeItem;
 
-        {/* Lado Direito: Preview do Menu Ativo */}
-        <section className="bg-slate-900 rounded-3xl p-6 text-white h-fit shadow-2xl ring-8 ring-slate-100">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="font-bold text-lg">Preview do Menu</h3>
-            <span className="text-[10px] bg-slate-800 px-2 py-1 rounded-full text-slate-400 uppercase tracking-tighter">Mobile View</span>
-          </div>
-
-          <nav className="space-y-2">
-            {activeMenus[activeTab].length > 0 ? (
-              activeMenus[activeTab].map((menu) => (
-                <div key={menu.id} className="flex items-center justify-between group p-3 rounded-lg hover:bg-white/5 transition-colors">
-                  <div className="flex items-center gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
-                    <span className="text-sm font-medium">{menu.label}</span>
+            return (
+              <div 
+                key={item.route}
+                className={`group p-4 rounded-2xl border-2 transition-all bg-white ${
+                  isActive ? "border-blue-500 ring-4 ring-blue-50" : "border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-4">
+                    <div className={`p-3 rounded-xl ${isActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400"}`}>
+                      {/* Renderiza o ícone escolhido ou o padrão */}
+                      {React.createElement(AVAILABLE_ICONS[activeItem?.iconName || item.defaultIcon], { size: 24 })}
+                    </div>
+                    <div>
+                      <p className={`font-bold ${isActive ? "text-slate-900" : "text-slate-600"}`}>{item.label}</p>
+                      <p className="text-xs text-slate-400 font-mono">{item.route}</p>
+                    </div>
                   </div>
                   <button 
-                    onClick={() => toggleMenu(menu)}
-                    className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-red-400 transition-opacity"
+                    onClick={() => toggleMenu(item)}
+                    className={`p-2 rounded-full transition-colors ${isActive ? "bg-blue-100 text-blue-600" : "bg-slate-100 text-slate-400 hover:bg-slate-200"}`}
                   >
-                    <Trash2 size={16}/>
+                    {isActive ? <CheckCircle2 size={20}/> : <Plus size={20}/>}
                   </button>
                 </div>
-              ))
-            ) : (
-              <div className="py-10 text-center border-2 border-dashed border-slate-800 rounded-2xl text-slate-600 text-sm">
-                Nenhum item selecionado. <br/> Adicione itens à esquerda.
+
+                {/* Seletor de Ícones (Só aparece se estiver ativo) */}
+                {isActive && (
+                  <div className="mt-4 pt-4 border-t border-slate-100">
+                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Trocar Ícone:</p>
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                      {(Object.keys(AVAILABLE_ICONS) as IconName[]).map((iconKey) => (
+                        <button
+                          key={iconKey}
+                          onClick={() => updateIcon(item.route, iconKey)}
+                          className={`p-2 rounded-lg border transition-all ${
+                            activeItem.iconName === iconKey 
+                              ? "bg-blue-50 border-blue-200 text-blue-600" 
+                              : "border-transparent text-slate-400 hover:bg-slate-50"
+                          }`}
+                        >
+                          {React.createElement(AVAILABLE_ICONS[iconKey], { size: 18 })}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </nav>
-          
-          <div className="mt-8 pt-6 border-t border-slate-800">
-             <button className="w-full bg-blue-600 py-3 rounded-xl font-bold text-sm hover:bg-blue-500 transition-colors">
-               Salvar Configuração
-             </button>
+            );
+          })}
+        </section>
+
+        {/* Lado Direito: Preview Mobile */}
+        <section className="lg:col-span-2">
+          <div className="sticky top-8 bg-slate-900 rounded-[3rem] p-4 shadow-2xl border-[8px] border-slate-800 h-[600px] flex flex-col">
+            <div className="w-20 h-6 bg-slate-800 rounded-full mx-auto mb-8 mt-2"></div>
+            
+            <div className="flex-1 px-4 overflow-y-auto">
+              <h3 className="text-white font-bold text-xl mb-6 px-2">Menu</h3>
+              <nav className="space-y-2">
+                {activeMenus[activeTab].map((menu) => {
+                  const Icon = AVAILABLE_ICONS[menu.iconName];
+                  return (
+                    <div key={menu.id} className="flex items-center justify-between group p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all border border-white/5">
+                      <div className="flex items-center gap-4">
+                        <Icon size={20} className="text-blue-400" />
+                        <span className="text-slate-200 font-medium">{menu.label}</span>
+                      </div>
+                      <button onClick={() => toggleMenu(menu as any)} className="text-slate-600 hover:text-red-400 transition-colors">
+                        <Trash2 size={16}/>
+                      </button>
+                    </div>
+                  );
+                })}
+              </nav>
+
+              {activeMenus[activeTab].length === 0 && (
+                <div className="h-40 flex flex-col items-center justify-center text-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl p-6">
+                  <Layout size={32} className="mb-2 opacity-20"/>
+                  <p className="text-sm italic">Selecione opções para visualizar o menu</p>
+                </div>
+              )}
+            </div>
+
+            <button className="mt-4 w-full bg-blue-600 py-4 rounded-2xl font-bold text-white shadow-lg shadow-blue-900/20 hover:bg-blue-500 transition-all">
+              Salvar Menu
+            </button>
           </div>
         </section>
       </div>
