@@ -2,19 +2,22 @@ import { useState } from "react";
 import { Trash2, Edit3, UserPlus, ShieldCheck, Plus, Search } from "lucide-react";
 
 export function ProfileBuilder() {
+  // Perfis fixos iniciais conforme solicitado
   const [profiles, setProfiles] = useState([
-    { id: 1, name: "Admin", permissions: ["Full Access", "Finance"], users: 3 },
-    { id: 2, name: "Editor", permissions: ["Content", "Media"], users: 12 },
-    { id: 3, name: "Viewer", permissions: ["Read Only"], users: 45 },
+    { id: 1, name: "Administrador", permissions: ["Gestão Total", "Financeiro", "Usuários"], users: 2 },
+    { id: 2, name: "Corretor", permissions: ["Corrigir Redações", "Ver Critérios", "Chat Aluno"], users: 8 },
+    { id: 3, name: "Estudante", permissions: ["Enviar Redação", "Ver Notas", "Material de Apoio"], users: 124 },
   ]);
+  
   const [newProfile, setNewProfile] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const addProfile = () => {
     if (!newProfile.trim()) return;
     const profile = {
       id: Date.now(),
       name: newProfile,
-      permissions: ["Novo Acesso"],
+      permissions: ["Acesso Básico"], // Permissão padrão para novos perfis
       users: 0,
     };
     setProfiles([...profiles, profile]);
@@ -22,16 +25,22 @@ export function ProfileBuilder() {
   };
 
   const deleteProfile = (id) => {
+    // Opcional: Impedir a exclusão dos perfis mestres se desejar
     setProfiles(profiles.filter((p) => p.id !== id));
   };
 
+  // Lógica de busca simples
+  const filteredProfiles = profiles.filter(p => 
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="max-w-5xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
+    <div className="max-w-5xl mx-auto p-8 bg-gray-50 min-h-screen font-sans text-gray-800">
       {/* Header e Busca */}
       <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Gerenciador de Perfis</h1>
-          <p className="text-gray-500">Controle níveis de acesso e atribuições da plataforma.</p>
+          <p className="text-gray-500">Controle níveis de acesso para Administradores, Corretores e Alunos.</p>
         </div>
         
         <div className="flex gap-3">
@@ -40,12 +49,11 @@ export function ProfileBuilder() {
             <input
               type="text"
               placeholder="Buscar perfil..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white transition-all"
             />
           </div>
-          <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-colors shadow-sm">
-            <Plus size={18} /> Novo Perfil
-          </button>
         </div>
       </header>
 
@@ -53,16 +61,17 @@ export function ProfileBuilder() {
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex gap-3">
         <input
           type="text"
-          placeholder="Nome do novo cargo (ex: Gerente de Vendas)"
+          placeholder="Nome do novo perfil (ex: Supervisor)"
           value={newProfile}
           onChange={(e) => setNewProfile(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && addProfile()}
           className="flex-1 bg-gray-50 border-none p-2 rounded-lg focus:ring-2 focus:ring-blue-100 outline-none text-gray-700"
         />
         <button
           onClick={addProfile}
-          className="text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-lg font-semibold transition-all"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-colors"
         >
-          Criar Rápido
+          <Plus size={18} /> Criar Perfil
         </button>
       </div>
 
@@ -72,17 +81,20 @@ export function ProfileBuilder() {
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Perfil</th>
-              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Permissões</th>
-              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-center">Usuários</th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Permissões Base</th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-center">Usuários Ativos</th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-right">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {profiles.map((profile) => (
+            {filteredProfiles.map((profile) => (
               <tr key={profile.id} className="hover:bg-gray-50 transition-colors group">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                    <div className={`p-2 rounded-lg ${
+                      profile.name === 'Administrador' ? 'bg-purple-100 text-purple-600' : 
+                      profile.name === 'Corretor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'
+                    }`}>
                       <ShieldCheck size={20} />
                     </div>
                     <span className="font-bold text-gray-700">{profile.name}</span>
@@ -122,9 +134,9 @@ export function ProfileBuilder() {
           </tbody>
         </table>
         
-        {profiles.length === 0 && (
+        {filteredProfiles.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-gray-400">Nenhum perfil encontrado.</p>
+            <p className="text-gray-400">Nenhum perfil encontrado com esse nome.</p>
           </div>
         )}
       </div>
