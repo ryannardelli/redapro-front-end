@@ -3,10 +3,9 @@ import { Star, Search, ChevronLeft, ChevronRight, Download, Eye } from "lucide-r
 export default function ModelsEssay() {
   return (
     <section className="px-4 py-12 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">Models Nota 1000</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900">Modelos Nota 1000</h1>
           <p className="text-gray-500 mt-1">Inspire-se nos melhores modelos de redação com nota máxima</p>
         </div>
         <button className="mt-4 md:mt-0 bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800">
@@ -14,7 +13,6 @@ export default function ModelsEssay() {
         </button>
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-8">
         <div className="relative flex-1">
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -37,7 +35,6 @@ export default function ModelsEssay() {
         </select>
       </div>
 
-      {/* Grid de Redações */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
         {[
           {
@@ -116,7 +113,6 @@ export default function ModelsEssay() {
         ))}
       </div>
 
-      {/* Paginação */}
       <div className="flex justify-center items-center mt-12 gap-2">
         <button className="flex items-center px-3 py-2 border border-gray-300 rounded hover:bg-gray-50">
           <ChevronLeft size={16} className="mr-1" /> Anterior
