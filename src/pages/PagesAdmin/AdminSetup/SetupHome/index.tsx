@@ -20,6 +20,14 @@ export function SetupHome() {
       color: "purple",
       action: () => navigate("/admin/setup/profiles")
     },
+
+    {
+      "title": "Usuários",
+      "description": "Controle permissões, associe perfis e administre os acessos da plataforma.",
+      "icon": Users,
+      "color": "purple",
+      "action": () => navigate("/admin/setup/users")
+    },
     {
       title: "Categorias",
       description: "Gerencie e organize as categorias das redações e conteúdos do sistema.",

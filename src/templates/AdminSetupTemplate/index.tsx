@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Outlet, NavLink } from "react-router";
-import { Home, Users, Menu, X, MenuIcon, BookOpen, Tags } from "lucide-react";
+import { Home, Users, Menu, X, MenuIcon, BookOpen, Tags, UserCog } from "lucide-react";
 import { Logout } from "@components/domain/Auth/Logout";
 
 export default function AdminSetupTemplate() {
@@ -12,6 +12,7 @@ export default function AdminSetupTemplate() {
     { to: "/admin/setup", label: "Home", icon: Home, end: true },
     { to: "/admin/setup/menus", label: "Menus", icon: MenuIcon },
     { to: "/admin/setup/profiles", label: "Perfis", icon: Users },
+    { to: "/admin/setup/users", label: "Usuários", icon: UserCog },
     { to: "/admin/setup/categories", label: "Categorias", icon: Tags },
     { to: "/admin/setup/reference-essay", label: "Modelos Nota 1000", icon: BookOpen },
   ];

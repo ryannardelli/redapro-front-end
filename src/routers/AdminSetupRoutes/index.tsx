@@ -5,6 +5,7 @@ import { MenuBuilder } from "../../pages/PagesAdmin/AdminSetup/MenuBuilder";
 import { ProfileBuilder } from "../../pages/PagesAdmin/AdminSetup/ProfileBuilder";
 import ModelsEssay from "../../pages/PagesAdmin/AdminSetup/ModelsEssay";
 import { Categories } from "pages/PagesAdmin/AdminSetup/Categories";
+import { UsersBuilder } from "pages/PagesAdmin/AdminSetup/UsersBuilder";
 
 export function AdminSetupRoutes() {
   return (
@@ -12,6 +13,7 @@ export function AdminSetupRoutes() {
       <Route index element={<SetupHome />} />
       <Route path="menus" element={<MenuBuilder />} />
       <Route path="profiles" element={<ProfileBuilder />} />
+      <Route path="users" element={<UsersBuilder />} />
       <Route path="categories" element={<Categories />} />
       <Route path="reference-essay" element={<ModelsEssay />} />
     </Route>
