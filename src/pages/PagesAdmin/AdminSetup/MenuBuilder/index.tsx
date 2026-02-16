@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { 
   Trash2, Plus, GraduationCap, Briefcase, CheckCircle2, 
   Home, Settings, User, FileText, Calendar, PieChart, 
-  MessageSquare, Layout, LucideIcon 
+  MessageSquare, Layout,
+  UserCheck
 } from "lucide-react";
 
 // 1. Lista de ícones disponíveis para escolha
@@ -85,7 +86,7 @@ export function MenuBuilder() {
                 : "text-slate-500 hover:text-slate-700"
             }`}
           >
-            {profile === "corretor" ? <Briefcase size={18}/> : <GraduationCap size={18}/>}
+            {profile === "corretor" ? <UserCheck size={18}/> : <GraduationCap size={18}/>}
             <span className="capitalize">{profile}</span>
           </button>
         ))}
