@@ -92,10 +92,15 @@ export function CardEssays() {
 
                   <div className="absolute top-4 right-4 flex gap-2">
                     <ViewMoreEssay
+                      essay={essay}
+                      loading={loading}
+                      title="Ver redação completa"
+                    />
+                    {/* <ViewMoreEssay
                       onView={() => console.log("View more")}
                       loading={loading}
                       title="Ver mais"
-                    />
+                    /> */}
 
                     <DeleteEssay
                       onDelete={() => handleDelete(essay.id)}
