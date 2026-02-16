@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, NavLink } from "react-router";
-import { Home, Users, Menu, X, MenuIcon, BookOpen } from "lucide-react";
+import { Home, Users, Menu, X, MenuIcon, BookOpen, Tags } from "lucide-react";
+import { Logout } from "@components/domain/Auth/Logout";
 
 export default function AdminSetupTemplate() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +12,7 @@ export default function AdminSetupTemplate() {
     { to: "/admin/setup", label: "Home", icon: Home, end: true },
     { to: "/admin/setup/menus", label: "Menus", icon: MenuIcon },
     { to: "/admin/setup/profiles", label: "Perfis", icon: Users },
+    { to: "/admin/setup/categories", label: "Categorias", icon: Tags },
     { to: "/admin/setup/reference-essay", label: "Modelos Nota 1000", icon: BookOpen },
   ];
 
@@ -34,7 +36,7 @@ export default function AdminSetupTemplate() {
           Painel<span className="text-blue-400">Admin</span>
         </div>
 
-        <nav className="mt-6 px-3 space-y-1">
+        <nav className="mt-6 px-3 space-y-1 mb-4">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -53,6 +55,10 @@ export default function AdminSetupTemplate() {
             </NavLink>
           ))}
         </nav>
+
+        <Logout />
+
+       
       </aside>
 
       {isOpen && (

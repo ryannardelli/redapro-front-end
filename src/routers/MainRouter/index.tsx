@@ -17,7 +17,6 @@ import { Models } from "../../pages/PagesMember/Models";
 export function MainRouter() {
   const { state } = useAuth();
   
-  const isAuth = state.isAuthenticated;
   const isAdmin = state.user?.role === "admin" ? true : false;
 
   return (
