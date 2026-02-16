@@ -2,21 +2,17 @@ import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresence
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
 import React, { type ReactNode } from "react";
 
-interface ModalBaseProps {
+interface ModalShowBaseProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
-  onSave: () => void;
-  isLoading?: boolean;
   children: ReactNode;
 }
 
-export const ModalBase: React.FC<ModalBaseProps> = ({
+export const ModalShowBase: React.FC<ModalShowBaseProps> = ({
   isOpen,
   title,
   onClose,
-  onSave,
-  isLoading = false,
   children,
 }) => {
   return (
@@ -50,24 +46,6 @@ export const ModalBase: React.FC<ModalBaseProps> = ({
             <div className="px-6 py-6 overflow-y-auto max-h-[70vh]">
               {children}
             </div>
-
-            <footer className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
-              <button
-                onClick={onClose}
-                disabled={isLoading}
-                className="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all disabled:opacity-50 cursor-pointer"
-              >
-                Cancelar
-              </button>
-
-              <button
-                onClick={onSave}
-                disabled={isLoading}
-                className="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
-              >
-                Salvar
-              </button>
-            </footer>
           </MotionContainer>
         </MotionContainer>
       )}

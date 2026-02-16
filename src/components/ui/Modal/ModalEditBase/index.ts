@@ -1,0 +1,1 @@
+export { ModalBaseEdit } from './ModalEditBase';

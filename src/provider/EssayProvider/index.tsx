@@ -114,6 +114,8 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
       payload: updatedEssay,
     });
 
+    await loadUserEssays();
+
     return updatedEssay;
   } catch (error) {
     console.error(error);

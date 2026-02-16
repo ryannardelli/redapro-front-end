@@ -1,1 +1,0 @@
-export { ModalBase } from './ModalBase';

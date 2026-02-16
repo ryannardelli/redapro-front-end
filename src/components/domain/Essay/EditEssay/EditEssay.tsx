@@ -3,8 +3,8 @@ import { Edit3 } from "lucide-react";
 import { useEssay } from "../../../../hooks/useEssay";
 import { showMessage } from "../../../../adapters/showMessage";
 import type { EssayFormData } from "../../../../schemas/EssaySchema";
-import { ModalBase } from "@components/ui/Modal/ModalBase";
 import { EssayEditForm } from "../EssayEditForm";
+import { ModalBaseEdit } from "@components/ui/Modal/ModalEditBase";
 
 interface EditEssayProps {
   essay: {
@@ -32,12 +32,11 @@ export function EditEssay({ essay }: EditEssayProps ) {
   };
 
   const onFormSubmit = async (data: EssayFormData) => {
-    console.log("Dados do formulário enviados:", data);
     try {
       const response = await updateEssay(essay.id, {
         title: data.title,
         content: data.content,
-        category_id: data.category,
+        category_id: data.category_id,
       });
 
       showMessage.success(response.message);
@@ -62,7 +61,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
         <Edit3 size={16} /> Editar
       </button>
 
-      <ModalBase
+      <ModalBaseEdit
         title="Editar Redação"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -78,7 +77,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
             category: essay.category.id,
           }}
         />
-      </ModalBase>
+      </ModalBaseEdit>
     </>
   );
 }
