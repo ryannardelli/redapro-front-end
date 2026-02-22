@@ -35,13 +35,6 @@ const AVAILABLE_ICONS = {
 
 type IconName = keyof typeof AVAILABLE_ICONS;
 
-interface MenuItem {
-  id: string;
-  label: string;
-  route: string;
-  iconName: IconName;
-}
-
 export function MenuBuilder() {
   const { stateProfile, loadMenusByProfile } = useProfile();
 
@@ -49,8 +42,8 @@ export function MenuBuilder() {
   const backendMenus: Menu[] = stateProfile.menus;
 
   const [activeTab, setActiveTab] = useState<number | null>(null);
-  const [activeMenus, setActiveMenus] = useState<Record<number, MenuItem[]>>({});
-  const [lastSavedMenus, setLastSavedMenus] = useState<Record<number, MenuItem[]>>({});
+  const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
+  const [lastSavedMenus, setLastSavedMenus] = useState<Record<number, Menu[]>>({});
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
@@ -62,7 +55,7 @@ export function MenuBuilder() {
   useEffect(() => {
     if (!activeTab) return;
 
-    const formattedMenus: MenuItem[] = backendMenus.map(menu => ({
+    const formattedMenus: Menu[] = backendMenus.map(menu => ({
       id: String(menu.id),
       label: menu.label,
       route: menu.route,
@@ -71,7 +64,7 @@ export function MenuBuilder() {
 
     setActiveMenus(prev => ({
       ...prev,
-      [activeTab]: formattedMenus
+      [activeTab]: []
     }));
 
     setLastSavedMenus(prev => ({
@@ -104,7 +97,7 @@ export function MenuBuilder() {
     activeTab !== null &&
     JSON.stringify(currentMenus) !== JSON.stringify(lastSavedMenus[activeTab]);
 
-  const toggleMenu = (menu: BackendMenu) => {
+  const toggleMenu = (menu: Menu) => {
     if (!activeTab) return;
 
     const isAlreadyActive = currentMenus.some(m => m.route === menu.route);
@@ -206,7 +199,7 @@ export function MenuBuilder() {
                 )}
                   <div>
                     <p className="font-bold">{menu.label}</p>
-                    <p className="text-xs text-slate-400">{menu.route}</p>
+                    <p className="text-xs text-slate-950">{menu.route}</p>
                   </div>
                 </div>
 

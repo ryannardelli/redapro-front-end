@@ -21,7 +21,7 @@ export function ProfileTabs<T extends string>({
         <button
           key={tab.value}
           onClick={() => onChange(tab.value)}
-          className={`px-6 py-2.5 rounded-xl flex items-center gap-2 font-bold transition-all ${
+          className={`px-6 py-2.5 rounded-xl cursor-pointer flex items-center gap-2 font-bold transition-all ${
             activeTab === tab.value
               ? "bg-white text-blue-600 shadow-sm"
               : "text-slate-500 hover:text-slate-700"
