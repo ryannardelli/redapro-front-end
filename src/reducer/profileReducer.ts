@@ -2,8 +2,13 @@ import type { ProfileAction, ProfileState } from "../models/Profile";
 
 export const initialStateProfile: ProfileState = {
   profiles: [],
-  loading: false,
-  error: null,
+  menus: [],
+
+  loadingProfiles: false,
+  errorProfiles: null,
+
+  loadingMenus: false,
+  errorMenus: null,
 };
 
 export function profileReducer(
@@ -26,7 +31,7 @@ export function profileReducer(
     case "DELETE_PROFILE":
       return {
         ...state,
-        loading: false,
+        loadingProfiles: false,
         profiles: state.profiles.filter(
           (profile) => profile.id !== action.payload
         ),
@@ -40,17 +45,36 @@ export function profileReducer(
         ),
       };
 
-    case "SET_LOADING":
+    case "SET_LOADING_PROFILES":
       return {
         ...state,
-        loading: action.payload,
+        loadingProfiles: action.payload,
       };
 
-    case "SET_ERROR":
+    case "SET_ERROR_PROFILES":
       return {
         ...state,
-        error: action.payload,
-        loading: false,
+        errorProfiles: action.payload,
+        loadingProfiles: false,
+      };
+
+    case "SET_MENU":
+      return {
+        ...state,
+        menus: action.payload,
+      };
+
+     case "SET_LOADING_MENU":
+      return {
+        ...state,
+        loadingMenus: action.payload,
+      };
+
+    case "SET_ERROR_MENU":
+      return {
+        ...state,
+        errorMenus: action.payload,
+        loadingMenus: false,
       };
 
     default:

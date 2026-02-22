@@ -6,6 +6,7 @@ import {
   create_profile,
   delete_profile,
   update_profile,
+  getMenusByProfileId,
 } from "../../services/profile";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateProfilePayload } from "../../models/Profile";
@@ -26,7 +27,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     if (!state.user) return;
 
     try {
-      dispatchProfile({ type: "SET_LOADING", payload: true });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
       const profiles = await getUserProfiles(state.user.id);
 
@@ -37,11 +38,11 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     } catch (error) {
       console.error(error);
       dispatchProfile({
-        type: "SET_ERROR",
+        type: "SET_ERROR_PROFILES",
         payload: "Erro ao carregar perfis",
       });
     } finally {
-      dispatchProfile({ type: "SET_LOADING", payload: false });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
     }
   }, [state.user]);
 
@@ -56,7 +57,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     if (!state.user) return;
 
     try {
-      dispatchProfile({ type: "SET_LOADING", payload: true });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
       const response = await create_profile(state.user.id, data);
 
@@ -71,16 +72,16 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
           ? error.message
           : error?.message || "Erro ao criar perfil";
 
-      dispatchProfile({ type: "SET_ERROR", payload: message });
+      dispatchProfile({ type: "SET_ERROR_PROFILES", payload: message });
       throw error;
     } finally {
-      dispatchProfile({ type: "SET_LOADING", payload: false });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
     }
   };
 
   const deleteProfile = async (profileId: number) => {
     try {
-      dispatchProfile({ type: "SET_LOADING", payload: true });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
       const response = await delete_profile(profileId);
 
@@ -95,14 +96,14 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
 
       if (error instanceof Error) {
         dispatchProfile({
-          type: "SET_ERROR",
+          type: "SET_ERROR_PROFILES",
           payload: error.message,
         });
       }
 
       throw error;
     } finally {
-      dispatchProfile({ type: "SET_LOADING", payload: false });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
     }
   };
 
@@ -111,7 +112,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     data: CreateProfilePayload
   ) => {
     try {
-      dispatchProfile({ type: "SET_LOADING", payload: true });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
       const updatedProfile = await update_profile(profileId, data);
 
@@ -131,12 +132,43 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
           ? error.message
           : "Erro ao atualizar perfil";
 
-      dispatchProfile({ type: "SET_ERROR", payload: message });
+      dispatchProfile({ type: "SET_ERROR_PROFILES", payload: message });
       throw error;
     } finally {
-      dispatchProfile({ type: "SET_LOADING", payload: false });
+      dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
     }
   };
+
+   const loadMenusByProfile = useCallback(
+    async (profileId: number) => {
+      try {
+        dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
+
+        const menus = await getMenusByProfileId(profileId);
+
+        dispatchProfile({
+          type: "SET_MENU",
+          payload: menus,
+        });
+      } catch (error) {
+        console.error(error);
+
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Erro ao carregar menus do perfil";
+
+        dispatchProfile({
+          type: "SET_ERROR_PROFILES",
+          payload: message,
+        });
+      } finally {
+        dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
+      }
+    },
+    []
+  );
+
 
   return (
     <ProfileContext.Provider
@@ -145,6 +177,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
         createProfile,
         deleteProfile,
         updateProfile,
+        loadMenusByProfile
       }}
     >
       {children}
