@@ -57,7 +57,7 @@ export function MenuBuilder() {
 
     const formattedMenus: Menu[] = backendMenus.map(menu => ({
       id: String(menu.id),
-      label: menu.label,
+      label: menu.name,
       route: menu.route,
       iconName: menu.icon
     }));
@@ -138,9 +138,9 @@ export function MenuBuilder() {
         body: JSON.stringify({
           profileId: activeTab,
           menus: currentMenus.map(menu => ({
-            label: menu.label,
+            label: menu.name,
             route: menu.route,
-            icon: menu.iconName
+            icon: menu.icon
           }))
         })
       });
@@ -198,8 +198,8 @@ export function MenuBuilder() {
                   { size: 22 }
                 )}
                   <div>
-                    <p className="font-bold">{menu.label}</p>
-                    <p className="text-xs text-slate-950">{menu.route}</p>
+                    <p className="font-bold">{menu.name}</p>
+                    <p className="text-xs text-slate-400">{menu.route}</p>
                   </div>
                 </div>
 
