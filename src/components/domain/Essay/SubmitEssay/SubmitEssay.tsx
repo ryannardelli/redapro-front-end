@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";import { useCategory } from "@hooks/us
 import { useEssay } from "@hooks/useEssay";
 import { EssaySchema, type EssayFormData } from "schemas/EssaySchema";
 import { showMessage } from "adapters/showMessage";
-import { SpinnerLoading } from "@components/ui/Spinner/SpinnerLoading";
+import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 ;
 
 export function SubmitEssay() {

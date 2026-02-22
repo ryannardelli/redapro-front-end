@@ -7,7 +7,7 @@ import { showMessage } from "../../adapters/showMessage";
 import { useNavigate } from "react-router";
 import Lottie from "lottie-react";
 import successAnimation from "../../assets/animation/successfully.json";
-import { SpinnerLoading } from "@components/ui/Spinner/SpinnerLoading";
+import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { StepOne } from "@components/domain/Auth/ResgiterForm/StepOne";
 import { StepTwo } from "@components/domain/Auth/ResgiterForm/StepTwo";
 import { StepThree } from "@components/domain/Auth/ResgiterForm/StepThree";

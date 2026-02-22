@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Trash2, Edit3, UserPlus, ShieldCheck, Plus, Search } from "lucide-react";
 import { useProfile } from "@hooks/useProfile";
+import { Skeleton } from "@components/ui/Loading/Skeleton";
 
 export function ProfileBuilder() {
   const { stateProfile } = useProfile();
@@ -9,6 +10,7 @@ export function ProfileBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const [newProfileName, setNewProfileName] = useState("");
   const [profiles, setProfiles] = useState(backendProfiles);
+  console.log(stateProfile.loadingProfiles);
 
   useMemo(() => setProfiles(backendProfiles), [backendProfiles]);
 
@@ -83,42 +85,73 @@ export function ProfileBuilder() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
-            {filteredProfiles.map((profile) => (
-              <tr key={profile.id} className="hover:bg-gray-50 transition-colors group">
-                <td className="px-6 py-4 flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${
-                    profile.name === 'Administrador' ? 'bg-purple-100 text-purple-600' :
-                    profile.name === 'Corretor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'
-                  }`}>
-                    <ShieldCheck size={20} />
-                  </div>
-                  <span className="font-bold text-gray-700">{profile.name}</span>
-                </td>
-                <td className="px-6 py-4 text-gray-600 font-medium">
-                  {profile.description || "Sem descrição"}
-                </td>
-                <td className="px-6 py-4 text-center text-gray-600 font-medium">
-                  {profile.users || 0}
-                </td>
-                <td className="px-6 py-4 text-right">
-                  <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button title="Atribuir Usuário" className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors">
-                      <UserPlus size={18} />
-                    </button>
-                    <button title="Editar" className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                      <Edit3 size={18} />
-                    </button>
-                    <button 
-                      onClick={() => deleteProfile(profile.id)}
-                      title="Excluir" 
-                      className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {stateProfile.loadingProfiles
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <tr key={i} className="animate-pulse">
+                    <td className="px-6 py-4">
+                      {/* Limpamos as bordas, padding e largura do Skeleton original 
+                          para que ele se comporte como uma célula de tabela comum.
+                      */}
+                      <Skeleton className="!border-none !p-0 !max-w-none !mx-0 !bg-transparent shadow-none" />
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="h-2 bg-gray-200 rounded w-full"></div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="h-2 bg-gray-200 rounded w-8 mx-auto"></div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="h-2 bg-gray-200 rounded w-24 ml-auto"></div>
+                    </td>
+                  </tr>
+                ))
+              : filteredProfiles.map((profile) => (
+                  <tr key={profile.id} className="hover:bg-gray-50 transition-colors group">
+                    <td className="px-6 py-4 flex items-center gap-3">
+                      <div
+                        className={`p-2 rounded-lg ${
+                          profile.name === "Administrador"
+                            ? "bg-purple-100 text-purple-600"
+                            : profile.name === "Corretor"
+                            ? "bg-blue-100 text-blue-600"
+                            : "bg-green-100 text-green-600"
+                        }`}
+                      >
+                        <ShieldCheck size={20} />
+                      </div>
+                      <span className="font-bold text-gray-700">{profile.name}</span>
+                    </td>
+                    <td className="px-6 py-4 text-gray-600 font-medium">
+                      {profile.description || "Sem descrição"}
+                    </td>
+                    <td className="px-6 py-4 text-center text-gray-600 font-medium">
+                      {profile.users || 0}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          title="Atribuir Usuário"
+                          className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                        >
+                          <UserPlus size={18} />
+                        </button>
+                        <button
+                          title="Editar"
+                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
+                          <Edit3 size={18} />
+                        </button>
+                        <button
+                          onClick={() => deleteProfile(profile.id)}
+                          title="Excluir"
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
 
