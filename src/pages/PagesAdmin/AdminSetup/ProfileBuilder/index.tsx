@@ -1,48 +1,46 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Trash2, Edit3, UserPlus, ShieldCheck, Plus, Search } from "lucide-react";
+import { useProfile } from "@hooks/useProfile";
 
 export function ProfileBuilder() {
-  // Perfis fixos iniciais conforme solicitado
-  const [profiles, setProfiles] = useState([
-    { id: 1, name: "Administrador", permissions: ["Gestão Total", "Financeiro", "Usuários"], users: 2 },
-    { id: 2, name: "Corretor", permissions: ["Corrigir Redações", "Ver Critérios", "Chat Aluno"], users: 8 },
-    { id: 3, name: "Estudante", permissions: ["Enviar Redação", "Ver Notas", "Material de Apoio"], users: 124 },
-  ]);
-  
-  const [newProfile, setNewProfile] = useState("");
+  const { stateProfile } = useProfile();
+  const backendProfiles = stateProfile.profiles || [];
+
   const [searchTerm, setSearchTerm] = useState("");
+  const [newProfileName, setNewProfileName] = useState("");
+  const [profiles, setProfiles] = useState(backendProfiles);
+
+  useMemo(() => setProfiles(backendProfiles), [backendProfiles]);
 
   const addProfile = () => {
-    if (!newProfile.trim()) return;
+    if (!newProfileName.trim()) return;
     const profile = {
       id: Date.now(),
-      name: newProfile,
-      permissions: ["Acesso Básico"], // Permissão padrão para novos perfis
-      users: 0,
+      name: newProfileName,
+      description: "Descrição padrão",
+      permissions: ["Acesso Básico"],
+      users: 0
     };
     setProfiles([...profiles, profile]);
-    setNewProfile("");
+    setNewProfileName("");
   };
 
-  const deleteProfile = (id) => {
-    // Opcional: Impedir a exclusão dos perfis mestres se desejar
-    setProfiles(profiles.filter((p) => p.id !== id));
+  const deleteProfile = (id: number) => {
+    setProfiles(profiles.filter(p => p.id !== id));
   };
 
-  // Lógica de busca simples
-  const filteredProfiles = profiles.filter(p => 
+  const filteredProfiles = profiles.filter(p =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="max-w-5xl mx-auto p-8 bg-gray-50 min-h-screen font-sans text-gray-800">
-      {/* Header e Busca */}
       <header className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Gerenciador de Perfis</h1>
           <p className="text-gray-500">Controle níveis de acesso para Administradores, Corretores e Alunos.</p>
         </div>
-        
+
         <div className="flex gap-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4" />
@@ -57,13 +55,12 @@ export function ProfileBuilder() {
         </div>
       </header>
 
-      {/* Input de Criação Rápida */}
       <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 mb-6 flex gap-3">
         <input
           type="text"
           placeholder="Nome do novo perfil (ex: Supervisor)"
-          value={newProfile}
-          onChange={(e) => setNewProfile(e.target.value)}
+          value={newProfileName}
+          onChange={(e) => setNewProfileName(e.target.value)}
           onKeyPress={(e) => e.key === 'Enter' && addProfile()}
           className="flex-1 bg-gray-50 border-none p-2 rounded-lg focus:ring-2 focus:ring-blue-100 outline-none text-gray-700"
         />
@@ -75,13 +72,12 @@ export function ProfileBuilder() {
         </button>
       </div>
 
-      {/* Tabela de Perfis */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Perfil</th>
-              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Permissões Base</th>
+              <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase">Descrição</th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-center">Usuários Ativos</th>
               <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase text-right">Ações</th>
             </tr>
@@ -89,28 +85,20 @@ export function ProfileBuilder() {
           <tbody className="divide-y divide-gray-100">
             {filteredProfiles.map((profile) => (
               <tr key={profile.id} className="hover:bg-gray-50 transition-colors group">
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`p-2 rounded-lg ${
-                      profile.name === 'Administrador' ? 'bg-purple-100 text-purple-600' : 
-                      profile.name === 'Corretor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'
-                    }`}>
-                      <ShieldCheck size={20} />
-                    </div>
-                    <span className="font-bold text-gray-700">{profile.name}</span>
+                <td className="px-6 py-4 flex items-center gap-3">
+                  <div className={`p-2 rounded-lg ${
+                    profile.name === 'Administrador' ? 'bg-purple-100 text-purple-600' :
+                    profile.name === 'Corretor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'
+                  }`}>
+                    <ShieldCheck size={20} />
                   </div>
+                  <span className="font-bold text-gray-700">{profile.name}</span>
                 </td>
-                <td className="px-6 py-4">
-                  <div className="flex flex-wrap gap-2">
-                    {profile.permissions.map((perm, i) => (
-                      <span key={i} className="text-[11px] font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded-md border border-gray-200">
-                        {perm}
-                      </span>
-                    ))}
-                  </div>
+                <td className="px-6 py-4 text-gray-600 font-medium">
+                  {profile.description || "Sem descrição"}
                 </td>
                 <td className="px-6 py-4 text-center text-gray-600 font-medium">
-                  {profile.users}
+                  {profile.users || 0}
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -133,7 +121,7 @@ export function ProfileBuilder() {
             ))}
           </tbody>
         </table>
-        
+
         {filteredProfiles.length === 0 && (
           <div className="py-20 text-center">
             <p className="text-gray-400">Nenhum perfil encontrado com esse nome.</p>
