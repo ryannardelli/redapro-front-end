@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
-  Trash2,
   Plus,
   GraduationCap,
-  Briefcase,
   CheckCircle2,
   Home,
   Settings,
   User,
   FileText,
   Calendar,
-  MessageSquare,
   Layout,
   UserCheck,
   BookOpen,
   HelpCircle,
   PenLine
 } from "lucide-react";
+
+import { ProfileTabs } from "@components/ui/ProfileTabs";
+import { useProfile } from "@hooks/useProfile";
+import type { Menu } from "models/Menu";
+import type { Profile } from "models/Profile";
+import { Skeleton } from "@components/ui/Loading/Skeleton";
 
 const AVAILABLE_ICONS = {
   Home,
@@ -27,122 +30,150 @@ const AVAILABLE_ICONS = {
   BookOpen,
   HelpCircle,
   PenLine,
-  MessageSquare,
   Layout,
-  Briefcase,
   GraduationCap
 };
 
 type IconName = keyof typeof AVAILABLE_ICONS;
 
-const DISPONIVEIS = {
-  corretor: [
-    { label: "Início", route: "/", defaultIcon: "Home" as IconName },
-    { label: "Correções de Redação", route: "/essays-corrector", defaultIcon: "FileText" as IconName },
-    { label: "Agenda de Correções", route: "/schedules-corrector", defaultIcon: "Calendar" as IconName },
-     { label: "Meu Perfil", route: "/my-profile", defaultIcon: "User" as IconName },
-    { label: "Ajuda e Suporte", route: "/support", defaultIcon: "HelpCircle" as IconName }
-  ],
-
-  estudante: [
-    { label: "Início", route: "/", defaultIcon: "Home" as IconName },
-    { label: "Minhas Redações", route: "/my-essays", defaultIcon: "FileText" as IconName },
-    { label: "Enviar Redação", route: "/essay-upload", defaultIcon: "PenLine" as IconName },
-    { label: "Modelos Nota 1000", route: "/models", defaultIcon: "BookOpen" as IconName },
-    { label: "Meu Perfil", route: "/my-profile", defaultIcon: "User" as IconName },
-    { label: "Ajuda e Suporte", route: "/support", defaultIcon: "HelpCircle" as IconName },
-     { label: "Agendamentos", route: "/calendar", defaultIcon: "Calendar" as IconName }
-  ]
-} as const;
-
-type UserProfile = "corrector" | "student";
-
-interface MenuItem {
-  id: string;
-  label: string;
-  route: string;
-  iconName: IconName;
-}
-
 export function MenuBuilder() {
-  const [activeTab, setActiveTab] = useState<UserProfile>("corretor");
-  const [activeMenus, setActiveMenus] = useState<Record<UserProfile, MenuItem[]>>({
-    corretor: [],
-    estudante: []
-  });
+  const { stateProfile, loadMenusByProfile } = useProfile();
 
-  /* Permite apenas 1 menu por perfil */
-  const toggleMenu = (item: typeof DISPONIVEIS["corretor"][number]) => {
-    const isAlreadyActive = activeMenus[activeTab].some(m => m.route === item.route);
+  const profiles: Profile[] = stateProfile.profiles;
+  const backendMenus: Menu[] = stateProfile.menus;
+
+  const [activeTab, setActiveTab] = useState<number | null>(null);
+  const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
+  const [lastSavedMenus, setLastSavedMenus] = useState<Record<number, Menu[]>>({});
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    if (activeTab) {
+      loadMenusByProfile(activeTab);
+    }
+  }, [activeTab, loadMenusByProfile]);
+
+  useEffect(() => {
+    if (!activeTab) return;
+
+    const formattedMenus: Menu[] = backendMenus.map(menu => ({
+      id: String(menu.id),
+      label: menu.name,
+      route: menu.route,
+      iconName: menu.icon as IconName
+    }));
+
+    setActiveMenus(prev => ({ ...prev, [activeTab]: [] }));
+    setLastSavedMenus(prev => ({ ...prev, [activeTab]: formattedMenus }));
+  }, [backendMenus, activeTab]);
+
+  const profileTabs = useMemo(() => {
+    return profiles.map(profile => ({
+      value: profile.id,
+      label: profile.name,
+      icon:
+        profile.name === "Administrador" ? <Settings size={18} /> :
+        profile.name === "Corretor" ? <UserCheck size={18} /> :
+        <GraduationCap size={18} />
+    }));
+  }, [profiles]);
+
+  useEffect(() => {
+    if (profiles.length && activeTab === null) {
+      setActiveTab(profiles[0].id);
+    }
+  }, [profiles, activeTab]);
+
+  const currentMenus = activeTab ? activeMenus[activeTab] || [] : [];
+  const hasActiveMenu = currentMenus.length === 1;
+
+  const hasChanges =
+    activeTab !== null &&
+    JSON.stringify(currentMenus) !== JSON.stringify(lastSavedMenus[activeTab]);
+
+  const toggleMenu = (menu: Menu) => {
+    if (!activeTab) return;
+
+    const isAlreadyActive = currentMenus.some(m => m.route === menu.route);
 
     setActiveMenus(prev => ({
       ...prev,
       [activeTab]: isAlreadyActive
         ? []
         : [{
-            id: item.route,
-            label: item.label,
-            route: item.route,
-            iconName: item.defaultIcon
+            id: String(menu.id),
+            label: menu.name,
+            route: menu.route,
+            iconName: menu.icon as IconName
           }]
     }));
   };
 
   const updateIcon = (route: string, newIcon: IconName) => {
+    if (!activeTab) return;
+
     setActiveMenus(prev => ({
       ...prev,
-      [activeTab]: prev[activeTab].map(m =>
-        m.route === route ? { ...m, iconName: newIcon } : m
+      [activeTab]: (prev[activeTab] || []).map(menu =>
+        menu.route === route ? { ...menu, iconName: newIcon } : menu
       )
     }));
   };
 
-  const hasActiveMenu = activeMenus[activeTab].length === 1;
+  const updateLabel = (route: string, newLabel: string) => {
+    if (!activeTab) return;
+
+    setActiveMenus(prev => ({
+      ...prev,
+      [activeTab]: (prev[activeTab] || []).map(menu =>
+        menu.route === route ? { ...menu, label: newLabel } : menu
+      )
+    }));
+  };
+
+  const saveMenus = async () => {
+    if (!activeTab) return;
+
+    try {
+      setIsSaving(true);
+      setLastSavedMenus(prev => ({ ...prev, [activeTab]: currentMenus }));
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
-    <div className="max-w-6xl mx-auto p-8 bg-slate-50 min-h-screen font-sans">
+    <div className="max-w-6xl mx-auto p-8 bg-slate-50 min-h-screen">
       <header className="mb-10">
         <h1 className="text-4xl font-black text-slate-900">Customização de Menu</h1>
         <p className="text-slate-500 text-lg">
-          Escolha apenas uma funcionalidade por perfil para manter consistência com a API.
+          Apenas uma funcionalidade pode ficar ativa por perfil.
         </p>
       </header>
 
-      <div className="flex gap-2 mb-8 p-1 bg-slate-200/50 w-fit rounded-2xl">
-        {(["corretor", "estudante"] as UserProfile[]).map(profile => (
-          <button
-            key={profile}
-            onClick={() => setActiveTab(profile)}
-            className={`px-6 py-2.5 rounded-xl flex items-center gap-2 font-bold transition-all ${
-              activeTab === profile
-                ? "bg-white text-blue-600 shadow-sm"
-                : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            {profile === "corretor" ? <UserCheck size={18} /> : <GraduationCap size={18} />}
-            <span className="capitalize">{profile}</span>
-          </button>
-        ))}
-      </div>
+      {activeTab !== null && (
+        <ProfileTabs<number>
+          tabs={profileTabs}
+          activeTab={activeTab}
+          onChange={setActiveTab}
+        />
+      )}
 
-      <div className="grid lg:grid-cols-5 gap-8">
-        <section className="lg:col-span-3 space-y-4">
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2">
-            Funcionalidades (1 por vez)
-          </h3>
-          <p className="text-sm text-slate-500 px-2">
-            Ao selecionar uma nova opção, a anterior será substituída.
-          </p>
-
-          {DISPONIVEIS[activeTab].map(item => {
-            const activeItem = activeMenus[activeTab].find(m => m.route === item.route);
+      <section className="space-y-4">
+        {stateProfile.loadingMenus ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <Skeleton key={index} className="h-24 max-w-full" />
+          ))
+        ) : (
+          backendMenus.map(menu => {
+            const activeItem = currentMenus.find(m => m.route === menu.route);
             const isActive = !!activeItem;
             const isDisabled = hasActiveMenu && !isActive;
 
             return (
               <div
-                key={item.route}
-                className={`p-4 rounded-2xl border-2 transition-all bg-white ${
+                key={menu.route}
+                className={`p-4 rounded-2xl border-2 transition-all duration-200 bg-white ${
                   isActive
                     ? "border-blue-500 ring-4 ring-blue-50"
                     : isDisabled
@@ -150,109 +181,78 @@ export function MenuBuilder() {
                     : "border-slate-200 hover:border-slate-300"
                 }`}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`p-3 rounded-xl ${
-                        isActive ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-400"
-                      }`}
-                    >
-                      {React.createElement(
-                        AVAILABLE_ICONS[activeItem?.iconName || item.defaultIcon],
-                        { size: 24 }
-                      )}
-                    </div>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-4 flex-1">
+                    {React.createElement(
+                      AVAILABLE_ICONS[activeItem?.iconName || menu.icon as IconName] || HelpCircle,
+                      { size: 22 }
+                    )}
 
-                    <div>
-                      <p className="font-bold text-slate-900">{item.label}</p>
-                      <p className="text-xs text-slate-400 font-mono">{item.route}</p>
+                    <div className="flex-1">
+                      {isActive ? (
+                        <div className="relative flex items-center group/name">
+                          <input
+                            type="text"
+                            value={activeItem?.label}
+                            onChange={(e) => updateLabel(menu.route, e.target.value)}
+                            className="font-bold bg-transparent border-b border-blue-200 focus:border-blue-500 outline-none pr-6 w-full max-w-[250px]"
+                          />
+                          <PenLine
+                            size={14}
+                            className="absolute right-0 text-slate-300 opacity-0 group-hover/name:opacity-100"
+                          />
+                        </div>
+                      ) : (
+                        <p className="font-bold">{menu.name}</p>
+                      )}
+                      <p className="text-xs text-slate-400">{menu.route}</p>
                     </div>
                   </div>
 
                   <button
                     disabled={isDisabled}
-                    onClick={() => toggleMenu(item)}
-                    className={`p-2 rounded-full transition-colors ${
-                      isActive
-                        ? "bg-blue-100 text-blue-600"
-                        : isDisabled
-                        ? "bg-slate-100 text-slate-300 cursor-not-allowed"
-                        : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-                    }`}
+                    onClick={() => toggleMenu(menu)}
+                    className="transition-transform active:scale-90"
                   >
-                    {isActive ? <CheckCircle2 size={20} /> : <Plus size={20} />}
+                    {isActive ? (
+                      <CheckCircle2 className="text-blue-500" />
+                    ) : (
+                      <Plus />
+                    )}
                   </button>
                 </div>
 
                 {isActive && (
-                  <div className="mt-4 pt-4 border-t border-slate-100">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">
-                      Trocar Ícone
-                    </p>
-                    <div className="flex gap-2 overflow-x-auto">
-                      {(Object.keys(AVAILABLE_ICONS) as IconName[]).map(iconKey => (
-                        <button
-                          key={iconKey}
-                          onClick={() => updateIcon(item.route, iconKey)}
-                          className={`p-2 rounded-lg border transition-all ${
-                            activeItem.iconName === iconKey
-                              ? "bg-blue-50 border-blue-200 text-blue-600"
-                              : "border-transparent text-slate-400 hover:bg-slate-50"
-                          }`}
-                        >
-                          {React.createElement(AVAILABLE_ICONS[iconKey], { size: 18 })}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="mt-4 flex gap-2 flex-wrap">
+                    {(Object.keys(AVAILABLE_ICONS) as IconName[]).map(icon => (
+                      <button
+                        key={icon}
+                        onClick={() => updateIcon(menu.route, icon)}
+                        className={`p-2 rounded-lg border ${
+                          activeItem?.iconName === icon
+                            ? "bg-blue-50 border-blue-300 text-blue-600"
+                            : "border-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        {React.createElement(AVAILABLE_ICONS[icon], { size: 18 })}
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
             );
-          })}
-        </section>
+          })
+        )}
+      </section>
 
-        <section className="lg:col-span-2">
-          <div className="sticky top-8 bg-slate-900 rounded-[3rem] p-4 h-[600px] flex flex-col border-[8px] border-slate-800 shadow-2xl">
-            <div className="w-20 h-6 bg-slate-800 rounded-full mx-auto my-4" />
-
-            <div className="flex-1 px-4">
-              <h3 className="text-white font-bold text-xl mb-6">Menu</h3>
-
-              {activeMenus[activeTab].length === 0 ? (
-                <div className="h-40 flex flex-col items-center justify-center text-slate-500 border-2 border-dashed border-slate-800 rounded-3xl">
-                  <Layout size={32} className="mb-2 opacity-20" />
-                  <p className="text-sm italic">Nenhum menu selecionado</p>
-                </div>
-              ) : (
-                activeMenus[activeTab].map(menu => {
-                  const Icon = AVAILABLE_ICONS[menu.iconName];
-                  return (
-                    <div
-                      key={menu.id}
-                      className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5"
-                    >
-                      <div className="flex items-center gap-4">
-                        <Icon size={20} className="text-blue-400" />
-                        <span className="text-slate-200 font-medium">{menu.label}</span>
-                      </div>
-                      <button
-                        onClick={() => toggleMenu(menu as any)}
-                        className="text-slate-600 hover:text-red-400"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-
-            <button className="mt-4 w-full bg-blue-600 py-4 rounded-2xl font-bold text-white hover:bg-blue-500 transition-all">
-              Salvar Menu
-            </button>
-          </div>
-        </section>
-      </div>
+      <button
+        onClick={saveMenus}
+        disabled={!hasChanges || isSaving}
+        className="mt-8 w-full bg-blue-600 py-4 rounded-2xl font-bold text-white
+                   hover:bg-blue-500 disabled:opacity-50"
+      >
+        {isSaving ? "Salvando..." : "Salvar alterações"}
+      </button>
     </div>
   );
 }

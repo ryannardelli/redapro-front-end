@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { LoginSchema, type LoginFormData } from 'schemas/LoginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showMessage } from 'adapters/showMessage';
-import { SpinnerLoading } from '@components/ui/Spinner/SpinnerLoading';
+import { SpinnerLoading } from '@components/ui/Loading/SpinnerLoading';
 import { RouterLinks } from '@components/ui/Links/RouterLinks';
 
 export function LoginForm() {

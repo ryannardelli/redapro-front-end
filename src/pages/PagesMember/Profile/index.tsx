@@ -1,7 +1,7 @@
 import { CheckCircle2, FileText, Settings, XCircle, Trophy, Target, Clock, Calendar } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { formatRole } from "../../../utils/formatRole";
-import { SpinnerLoading } from "@components/ui/Spinner/SpinnerLoading";
+import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 
 export function Profile() {
   const { state } = useAuth();
