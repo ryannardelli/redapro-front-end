@@ -89,9 +89,6 @@ export function ProfileBuilder() {
               ? Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i} className="animate-pulse">
                     <td className="px-6 py-4">
-                      {/* Limpamos as bordas, padding e largura do Skeleton original 
-                          para que ele se comporte como uma célula de tabela comum.
-                      */}
                       <Skeleton className="!border-none !p-0 !max-w-none !mx-0 !bg-transparent shadow-none" />
                     </td>
                     <td className="px-6 py-4">

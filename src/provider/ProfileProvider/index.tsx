@@ -142,7 +142,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
    const loadMenusByProfile = useCallback(
     async (profileId: number) => {
       try {
-        dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
+        dispatchProfile({ type: "SET_LOADING_MENU", payload: true });
 
         const menus = await getMenusByProfileId(profileId);
 
@@ -163,7 +163,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
           payload: message,
         });
       } finally {
-        dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
+        dispatchProfile({ type: "SET_LOADING_MENU", payload: false });
       }
     },
     []
