@@ -1,4 +1,4 @@
-import { useReducer, type ReactNode, useCallback } from "react";
+import { useReducer, type ReactNode, useCallback, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import { userReducer, initialStateUser } from "../../reducer/userReducer";
 import { catchInformationsUser } from "@services/users";
@@ -39,6 +39,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       dispatchUser({ type: "SET_LOADING_USERS", payload: false });
     }
   }, []);
+
+   useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   return (
     <UserContext.Provider
