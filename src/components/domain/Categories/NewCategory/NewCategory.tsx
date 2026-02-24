@@ -16,7 +16,6 @@ export function NewCategory() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  // 🔁 agora semanticamente é "create"
   const handleCreateTrigger = () => {
     if (!loading) {
       formRef.current?.requestSubmit();
