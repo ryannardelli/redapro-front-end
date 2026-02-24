@@ -10,7 +10,6 @@ export function ProfileBuilder() {
   const [searchTerm, setSearchTerm] = useState("");
   const [newProfileName, setNewProfileName] = useState("");
   const [profiles, setProfiles] = useState(backendProfiles);
-  console.log(stateProfile.loadingProfiles);
 
   useMemo(() => setProfiles(backendProfiles), [backendProfiles]);
 
