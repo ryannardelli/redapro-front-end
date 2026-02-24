@@ -6,3 +6,15 @@ export type User = {
     pictureUrl: string;
     createdAt: string;
 }
+
+export type UserState = {
+  users: User[];
+  
+  loadingUsers: boolean;
+  errorUsers: string | null;
+};
+
+export type UserAction =
+  | { type: "SET_USERS"; payload: User[] }
+  | { type: "SET_LOADING_USERS"; payload: boolean }
+  | { type: "SET_ERROR_USERS"; payload: string | null };

@@ -46,7 +46,9 @@ export const catchInformationsUser: CatchInformationsUser = {
             throw new Error(errorData.message);
         }
 
-        return res.json() as Promise<User[]>;
+        const data =  res.json() as Promise<User[]>;
+        console.log(data);
+        return data;
     }
 };
 
