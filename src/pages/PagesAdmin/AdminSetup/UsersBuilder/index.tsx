@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { Edit, Shield, UserPlus, MoreVertical, Search } from 'lucide-react';
+import { useUsers } from '@hooks/useUsers';
 
 export function UsersBuilder() {
+  const { stateUser } = useUsers();
+  const users = stateUser.users;
+  console.log(users);
+  
   // Exemplo de estado para popular a tabela
-  const [users] = useState([
-    { id: 1, name: 'Ana Silva', email: 'ana.silva@empresa.com', role: 'Admin', status: 'Ativo', profile: 'Diretoria' },
-    { id: 2, name: 'Lucas Rover', email: 'lucas.r@empresa.com', role: 'Editor', status: 'Ativo', profile: 'Marketing' },
-    { id: 3, name: 'Beatriz Costa', email: 'biacosta@empresa.com', role: 'Viewer', status: 'Inativo', profile: 'Suporte' },
-  ]);
+  // const [users] = useState([
+  //   { id: 1, name: 'Ana Silva', email: 'ana.silva@empresa.com', role: 'Admin', status: 'Ativo', profile: 'Diretoria' },
+  //   { id: 2, name: 'Lucas Rover', email: 'lucas.r@empresa.com', role: 'Editor', status: 'Ativo', profile: 'Marketing' },
+  //   { id: 3, name: 'Beatriz Costa', email: 'biacosta@empresa.com', role: 'Viewer', status: 'Inativo', profile: 'Suporte' },
+  // ]);
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen font-sans">
