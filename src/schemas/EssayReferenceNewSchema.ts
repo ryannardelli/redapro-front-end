@@ -20,9 +20,12 @@ export const EssaysReferenceSchema = z.object({
     .optional()
     .or(z.literal("").transform(() => null)), // permite vazio como null
   categoryId: z
-    .number({ invalid_type_error: "O ID da categoria deve ser um número" })
-    .int("O ID da categoria deve ser um número inteiro")
-    .min(1, "O ID da categoria deve ser maior que 0"),
+  .number({
+    required_error: "Selecione uma categoria.",
+    invalid_type_error: "Categoria inválida.",
+  })
+  .int()
+  .gt(0, "A categoria é obrigatória."),
 });
 
 export type EssaysReferenceData = z.infer<typeof EssaysReferenceSchema>;
