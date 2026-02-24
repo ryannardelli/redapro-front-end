@@ -1,7 +1,6 @@
 import {
   Edit,
   Shield,
-  UserPlus,
   MoreVertical,
   Search,
   User as UserIcon,
@@ -38,11 +37,6 @@ export function UsersBuilder() {
             Total de {users.length} usuários cadastrados no sistema.
           </p>
         </div>
-
-        <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white px-5 py-2.5 rounded-xl font-medium shadow-sm shadow-indigo-200">
-          <UserPlus size={18} />
-          <span>Novo Usuário</span>
-        </button>
       </div>
 
       <div className="max-w-7xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
