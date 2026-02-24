@@ -1,3 +1,4 @@
+import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
 import { Star, Search, ChevronLeft, ChevronRight, Eye, Edit3, Trash2, CheckCircle2, Circle } from "lucide-react";
 
 export default function AdminModelsEssay() {
@@ -42,9 +43,7 @@ export default function AdminModelsEssay() {
           <h1 className="text-3xl font-extrabold text-gray-900">Gerenciar Modelos Nota 1000</h1>
           <p className="text-gray-500 mt-1">Controle, edite e publique modelos de redação de alta performance.</p>
         </div>
-        <button className="mt-4 md:mt-0 bg-indigo-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-indigo-700 shadow-md transition-all flex items-center gap-2">
-          <Edit3 size={18} /> Novo Modelo
-        </button>
+        <NewEssaysReference />
       </div>
 
       {/* Barra de Ferramentas / Filtros */}

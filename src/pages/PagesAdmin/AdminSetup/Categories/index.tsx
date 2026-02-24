@@ -18,11 +18,6 @@ export function Categories() {
           </div>
 
           <NewCategory />
-          
-          {/* <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-indigo-100 font-medium text-sm cursor-pointer">
-            <Plus size={18} />
-            Nova Categoria
-          </button> */}
         </div>
 
         {!loading && !error && (
