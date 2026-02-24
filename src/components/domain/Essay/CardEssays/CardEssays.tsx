@@ -96,11 +96,6 @@ export function CardEssays() {
                       loading={loading}
                       title="Ver redação completa"
                     />
-                    {/* <ViewMoreEssay
-                      onView={() => console.log("View more")}
-                      loading={loading}
-                      title="Ver mais"
-                    /> */}
 
                     <DeleteEssay
                       onDelete={() => handleDelete(essay.id)}

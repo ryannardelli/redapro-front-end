@@ -1,6 +1,7 @@
-import { Plus, Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-react';
+import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
 import { Skeleton } from "@components/ui/Loading/Skeleton";
+import { NewCategory } from '@components/domain/Categories/NewCategory';
 
 export function Categories() {
   const { stateCategory } = useCategory();
@@ -15,10 +16,13 @@ export function Categories() {
             <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Categorias de Conteúdo</h1>
             <p className="text-slate-500 text-sm">Gerencie os temas e eixos temáticos disponíveis na plataforma.</p>
           </div>
-          <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-indigo-100 font-medium text-sm">
+
+          <NewCategory />
+          
+          {/* <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-indigo-100 font-medium text-sm cursor-pointer">
             <Plus size={18} />
             Nova Categoria
-          </button>
+          </button> */}
         </div>
 
         {!loading && !error && (
@@ -30,7 +34,7 @@ export function Categories() {
             />
             <StatCard 
               icon={<Tag size={20} className="text-emerald-600" />} 
-              label="Eixos Ativos" 
+              label="Categorias Ativas" 
               value={categories?.length || 0} 
             />
           </div>
@@ -51,7 +55,7 @@ export function Categories() {
               <thead>
                 <tr className="bg-slate-50/50 border-b border-slate-100">
                   <th className="px-6 py-4 text-[11px] uppercase tracking-widest font-bold text-slate-400">Identificação</th>
-                  <th className="px-6 py-4 text-[11px] uppercase tracking-widest font-bold text-slate-400">Descrição do Eixo</th>
+                  <th className="px-6 py-4 text-[11px] uppercase tracking-widest font-bold text-slate-400">Descrição da categoria</th>
                   <th className="px-6 py-4 text-[11px] uppercase tracking-widest font-bold text-slate-400 text-right">Ações</th>
                 </tr>
               </thead>

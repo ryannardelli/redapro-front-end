@@ -11,7 +11,7 @@ interface ModalEditBaseProps {
   children: ReactNode;
 }
 
-export const ModalBaseEdit: React.FC<ModalEditBaseProps> = ({
+export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
   isOpen,
   title,
   onClose,
