@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { useCategory } from "../../../../hooks/useCategory";
 import { showMessage } from "../../../../adapters/showMessage";
 
-import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
+import { ModalCreateBase } from "@components/ui/Modal/ModalCreateBase";
 import { CategoryCreateForm } from "../CategoryCreateForm";
 import type { CategoryCreateData } from "schemas/CategoryNewSchema";
 
@@ -16,7 +16,8 @@ export function NewCategory() {
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleSaveTrigger = () => {
+  // 🔁 agora semanticamente é "create"
+  const handleCreateTrigger = () => {
     if (!loading) {
       formRef.current?.requestSubmit();
     }
@@ -51,18 +52,18 @@ export function NewCategory() {
         Nova Categoria
       </button>
 
-      <ModalEditBase
+      <ModalCreateBase
         title="Nova Categoria"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onSave={handleSaveTrigger}
+        onCreate={handleCreateTrigger}
         isLoading={loading}
       >
         <CategoryCreateForm
           formRef={formRef}
           onSubmit={onFormSubmit}
         />
-      </ModalEditBase>
+      </ModalCreateBase>
     </>
   );
 }

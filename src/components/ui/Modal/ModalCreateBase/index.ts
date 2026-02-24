@@ -1,0 +1,1 @@
+export { ModalCreateBase } from './ModalCreateBase';

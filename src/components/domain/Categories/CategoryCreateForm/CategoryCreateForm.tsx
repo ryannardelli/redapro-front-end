@@ -6,8 +6,6 @@ interface CategoryCreateFormProps {
   formRef: React.Ref<HTMLFormElement>;
 }
 
-console.log("NewCategory renderizou");
-
 export function CategoryCreateForm({
   onSubmit,
   formRef,
