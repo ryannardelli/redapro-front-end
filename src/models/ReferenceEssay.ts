@@ -3,11 +3,13 @@ export interface ReferenceEssay {
   title: string;
   content: string;
   year?: number;
+  pdf_url: string;
   createdAt?: string;
   updatedAt?: string;
   category?: {
     id: number;
     name: string;
+    description: string;
   };
 }
 

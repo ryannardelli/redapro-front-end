@@ -1,19 +1,10 @@
 import { 
   Star, Edit3, Trash2, Download, Calendar, Bookmark, FileText 
 } from "lucide-react";
-
-interface Essay {
-  id: number;
-  title: string;
-  content: string;
-  year: number;
-  pdf_url?: string | null;
-  categoryId?: number; 
-  categoryName?: string;
-}
+import type { ReferenceEssay } from "models/ReferenceEssay";
 
 interface EssaysReferenceProps {
-  essay: Essay;
+  essay: ReferenceEssay;
   onEdit?: (id: number) => void;
   onDelete?: (id: number) => void;
 }
@@ -53,7 +44,7 @@ export function EssaysReference({ essay, onEdit, onDelete }: EssaysReferenceProp
           </div>
           <div className="flex items-center gap-1.5 text-xs font-semibold">
             <Bookmark size={14} className="text-indigo-400" />
-            <span>{essay.categoryName || "Argumentativo"}</span>
+            <span>{essay.category?.name || "Argumentativa"}</span>
           </div>
         </div>
       </div>
