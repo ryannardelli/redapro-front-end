@@ -1,8 +1,12 @@
 import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
 import { EssaysReference } from "@components/ui/Card/EssaysReference";
-import { Star, Search, ChevronLeft, ChevronRight, Eye, Edit3, Trash2, CheckCircle2, Circle } from "lucide-react";
+import { useReferenceEssay } from "@hooks/useReferenceEssay";
+import { Search } from "lucide-react";
 
 export default function AdminModelsEssay() {
+  const { stateReferenceEssay } = useReferenceEssay();
+  console.log(stateReferenceEssay);
+  
   const essays = [
     {
       id: 1,
@@ -76,18 +80,6 @@ export default function AdminModelsEssay() {
             onDelete={(id) => alert("Deseja excluir?")}
           />
         ))}
-      </div>
-      
-      <div className="flex justify-between items-center mt-12">
-        <p className="text-sm text-gray-500 italic">Exibindo 3 de 48 modelos cadastrados</p>
-        <div className="flex gap-2">
-          <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all shadow-sm">
-            <ChevronLeft size={16} className="mr-1" /> Anterior
-          </button>
-          <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium hover:bg-gray-50 transition-all shadow-sm">
-            Próximo <ChevronRight size={16} className="ml-1" />
-          </button>
-        </div>
       </div>
     </section>
   );
