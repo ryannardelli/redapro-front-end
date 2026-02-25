@@ -87,6 +87,8 @@
 
 import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
 import { EssaysReference } from "@components/ui/Card/EssaysReference";
+import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceSkeleton";
+import { Skeleton } from "@components/ui/Loading/Skeleton";
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
 import { Search, Loader2, Filter } from "lucide-react";
 
@@ -139,9 +141,10 @@ export default function AdminModelsEssay() {
       </div>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-3">
-          <Loader2 className="animate-spin" size={32} />
-          <p className="font-medium">Carregando modelos...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Array.from({ length: stateReferenceEssay.essays.length }).map((_, i) => (
+            <EssaysReferenceSkeleton key={i} />
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
