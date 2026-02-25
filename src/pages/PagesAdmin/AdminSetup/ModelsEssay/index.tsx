@@ -91,19 +91,15 @@ import { useReferenceEssay } from "@hooks/useReferenceEssay";
 import { Search, Loader2, Filter } from "lucide-react";
 
 export default function AdminModelsEssay() {
-  // Pegamos os dados reais do seu hook
   const { stateReferenceEssay } = useReferenceEssay();
   const loading = stateReferenceEssay.loading;;
 
-  console.log(loading);
+  console.log(stateReferenceEssay);
 
-  // O back-end parece retornar um objeto que contém o array e o status de loading
-  // Ajuste conforme a estrutura exata do seu stateReferenceEssay
-  const essays = Array.isArray(stateReferenceEssay) ? stateReferenceEssay : [];
+  const essays = stateReferenceEssay.essays ?? [];
 
   return (
     <section className="px-6 py-10 max-w-7xl mx-auto bg-[#FAFAFA] min-h-screen">
-      {/* Header Minimalista */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
           <h1 className="text-4xl font-black text-slate-900 tracking-tight">
@@ -116,7 +112,6 @@ export default function AdminModelsEssay() {
         <NewEssaysReference />
       </div>
 
-      {/* Barra de Ferramentas Refinada */}
       <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
         <div className="relative flex-1 w-full">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -143,7 +138,6 @@ export default function AdminModelsEssay() {
         </div>
       </div>
 
-      {/* Grid de Conteúdo com State de Loading */}
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-3">
           <Loader2 className="animate-spin" size={32} />
