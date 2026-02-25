@@ -57,8 +57,8 @@ export const ReferenceEssayProvider = ({
   );
 
   useEffect(() => {
-    loadReferenceEssays();
-  }, [loadReferenceEssays]);
+  loadReferenceEssays();
+}, [loadReferenceEssays]);
 
   const createReferenceEssay = async (data: any) => {
     try {

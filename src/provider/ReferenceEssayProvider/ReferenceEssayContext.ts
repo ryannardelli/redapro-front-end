@@ -5,17 +5,11 @@ import type {
   ReferenceEssayState,
   CreateReferenceEssayPayload,
 } from "../../models/ReferenceEssay.ts";
-import { initialStateReferenceEssay } from "../../reducer/referenceEssayReducer";
+import { initialStateReferenceEssay } from "../../reducer/referenceEssayReducer.ts";
 
 type ReferenceEssayContextType = {
   stateReferenceEssay: ReferenceEssayState;
   dispatchReferenceEssay: (action: ReferenceEssayAction) => void;
-
-  loadReferenceEssays: (params?: {
-    year?: number;
-    categoryId?: number;
-    search?: string;
-  }) => Promise<void>;
 
   createReferenceEssay: (
     data: CreateReferenceEssayPayload
@@ -33,10 +27,6 @@ export const ReferenceEssayContext =
   createContext<ReferenceEssayContextType>({
     stateReferenceEssay: initialStateReferenceEssay,
     dispatchReferenceEssay: () => undefined,
-
-    loadReferenceEssays: async () => {
-      throw new Error("loadReferenceEssays not implemented");
-    },
 
     createReferenceEssay: async () => {
       throw new Error("createReferenceEssay not implemented");

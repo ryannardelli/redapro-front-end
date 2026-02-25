@@ -2,6 +2,7 @@ import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-rea
 import { useCategory } from '@hooks/useCategory';
 import { Skeleton } from "@components/ui/Loading/Skeleton";
 import { NewCategory } from '@components/domain/Categories/NewCategory';
+import { ListLoading } from '@components/ui/Loading/ListLoading';
 
 export function Categories() {
   const { stateCategory } = useCategory();
@@ -57,15 +58,13 @@ export function Categories() {
               <tbody className="divide-y divide-slate-50">
                 
                 {loading && (
-                  <>
-                    {[1, 2, 3].map((i) => (
-                      <tr key={i}>
-                        <td colSpan={3} className="p-4">
-                          <Skeleton className="max-w-full h-16 border-none bg-slate-50/50" />
-                        </td>
-                      </tr>
-                    ))}
-                  </>
+                   <tr>
+                    <td colSpan={3}>
+                      <div className="flex items-center justify-center py-20">
+                        <ListLoading text="Carregando categorias..." />
+                      </div>
+                    </td>
+                  </tr>
                 )}
 
                 {error && (
