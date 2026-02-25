@@ -1,5 +1,5 @@
+import { EssaysReferenceCard } from "@components/domain/EssaysReference/EssaysReferenceCard";
 import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
-import { EssaysReference } from "@components/ui/Card/EssaysReference";
 import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceSkeleton";
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
 import { Search, Filter } from "lucide-react";
@@ -61,7 +61,7 @@ export default function AdminModelsEssay() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {essays.map((essay) => (
-            <EssaysReference 
+            <EssaysReferenceCard 
               key={essay.id} 
               essay={essay} 
               onEdit={(id) => console.log("Editando...", id)}

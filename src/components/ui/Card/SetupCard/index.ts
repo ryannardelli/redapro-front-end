@@ -1,1 +1,1 @@
-export {} from './SetupCard';
+export { SetupCard } from './SetupCard';
