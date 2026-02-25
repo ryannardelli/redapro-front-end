@@ -50,7 +50,7 @@ export const ReferenceEssayProvider = ({
           payload: "Erro ao carregar redações de referência",
         });
       } finally {
-        dispatchReferenceEssay({ type: "SET_LOADING", payload: true });
+        dispatchReferenceEssay({ type: "SET_LOADING", payload: false });
       }
     },
     []
