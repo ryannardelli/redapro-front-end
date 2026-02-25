@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 import { Skeleton } from "@components/ui/Loading/Skeleton";
+import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 export function UsersBuilder() {
   const { stateUser } = useUsers();
@@ -68,9 +69,13 @@ export function UsersBuilder() {
 
             <tbody className="divide-y divide-slate-50">
               {loadingUsers ? (
-                <tr>
-                  <td colSpan={4} className="p-6"><Skeleton className="h-20 w-full" /></td>
-                </tr>
+                 <tr>
+                    <td colSpan={4}>
+                      <div className="flex items-center justify-center py-20">
+                        <ListLoading text="Carregando usuários..." />
+                      </div>
+                    </td>
+                  </tr>
               ) : users.length > 0 ? (
                 users.map((user) => (
                   <tr key={user.id} className="hover:bg-slate-50/80 transition-colors group">
