@@ -1,3 +1,4 @@
+import { useAuth } from "@hooks/useAuth";
 import { 
   Star, Edit3, Trash2, Download, Calendar, Bookmark, FileText 
 } from "lucide-react";
@@ -10,6 +11,9 @@ interface EssaysReferenceProps {
 }
 
 export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReferenceProps) {
+  const { state } = useAuth();
+  const profile = state.user?.profile.name;
+
   return (
     <div className="bg-white rounded-[24px] border border-slate-100 overflow-hidden flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-500">
       
@@ -50,7 +54,8 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
       </div>
 
       <div className="px-6 py-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-50">
-        <div className="flex items-center gap-1">
+        {profile === "Administrador" && (
+          <div className="flex items-center gap-1">
           <button 
             onClick={() => onEdit?.(essay.id)}
             className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
@@ -66,6 +71,7 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
             <Trash2 size={18} />
           </button>
         </div>
+        )}
 
         <button 
           disabled={!essay.pdf_url}

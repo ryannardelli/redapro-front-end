@@ -1,8 +1,15 @@
+export type ProfileName = "Estudante" | "Administrador" | "Corretor";
+
 export type User = {
     id: number,
     name: string;
     email: string;
     role: "admin" | "student" | "corrector";
+    profile: {
+      id: number;
+      name: ProfileName;
+      description: string;
+    };
     pictureUrl: string;
     createdAt: string;
 }
