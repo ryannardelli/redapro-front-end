@@ -8,7 +8,6 @@ import {
   Filter
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
-import { Skeleton } from "@components/ui/Loading/Skeleton";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 export function UsersBuilder() {

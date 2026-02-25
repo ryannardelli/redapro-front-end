@@ -1,6 +1,5 @@
 import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
-import { Skeleton } from "@components/ui/Loading/Skeleton";
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
 
