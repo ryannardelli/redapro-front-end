@@ -4,7 +4,7 @@ import { useEssay } from "../../../../hooks/useEssay";
 import { showMessage } from "../../../../adapters/showMessage";
 import type { EssayFormData } from "../../../../schemas/EssaySchema";
 import { EssayEditForm } from "../EssayEditForm";
-import { ModalBaseEdit } from "@components/ui/Modal/ModalEditBase";
+import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
 
 interface EditEssayProps {
   essay: {
@@ -61,7 +61,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
         <Edit3 size={16} /> Editar
       </button>
 
-      <ModalBaseEdit
+      <ModalEditBase
         title="Editar Redação"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
@@ -77,7 +77,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
             category: essay.category.id,
           }}
         />
-      </ModalBaseEdit>
+      </ModalEditBase>
     </>
   );
 }

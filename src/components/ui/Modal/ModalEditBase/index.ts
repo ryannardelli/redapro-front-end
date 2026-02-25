@@ -1,1 +1,1 @@
-export { ModalBaseEdit } from './ModalEditBase';
+export { ModalEditBase } from './ModalEditBase';

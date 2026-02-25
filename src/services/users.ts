@@ -47,7 +47,6 @@ export const catchInformationsUser: CatchInformationsUser = {
         }
 
         const data =  res.json() as Promise<User[]>;
-        console.log(data);
         return data;
     }
 };

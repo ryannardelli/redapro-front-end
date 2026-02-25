@@ -20,6 +20,7 @@ import { useProfile } from "@hooks/useProfile";
 import type { Menu } from "models/Menu";
 import type { Profile } from "models/Profile";
 import { Skeleton } from "@components/ui/Loading/Skeleton";
+import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 const AVAILABLE_ICONS = {
   Home,
@@ -158,14 +159,14 @@ export function MenuBuilder() {
           onChange={setActiveTab}
         />
       )}
-
-      <section className="space-y-4">
+      
+     <section className="space-y-4">
         {stateProfile.loadingMenus ? (
-          Array.from({ length: 4 }).map((_, index) => (
-            <Skeleton key={index} className="h-24 max-w-full" />
-          ))
+          <div className="flex items-center justify-center py-20">
+            <ListLoading text="Carregando menus..." />
+          </div>
         ) : (
-          backendMenus.map(menu => {
+          backendMenus.map((menu) => {
             const activeItem = currentMenus.find(m => m.route === menu.route);
             const isActive = !!activeItem;
             const isDisabled = hasActiveMenu && !isActive;
@@ -184,7 +185,9 @@ export function MenuBuilder() {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4 flex-1">
                     {React.createElement(
-                      AVAILABLE_ICONS[activeItem?.iconName || menu.icon as IconName] || HelpCircle,
+                      AVAILABLE_ICONS[
+                        (activeItem?.iconName || menu.icon) as IconName
+                      ] || HelpCircle,
                       { size: 22 }
                     )}
 
@@ -194,7 +197,9 @@ export function MenuBuilder() {
                           <input
                             type="text"
                             value={activeItem?.label}
-                            onChange={(e) => updateLabel(menu.route, e.target.value)}
+                            onChange={(e) =>
+                              updateLabel(menu.route, e.target.value)
+                            }
                             className="font-bold bg-transparent border-b border-blue-200 focus:border-blue-500 outline-none pr-6 w-full max-w-[250px]"
                           />
                           <PenLine
@@ -205,6 +210,7 @@ export function MenuBuilder() {
                       ) : (
                         <p className="font-bold">{menu.name}</p>
                       )}
+
                       <p className="text-xs text-slate-400">{menu.route}</p>
                     </div>
                   </div>

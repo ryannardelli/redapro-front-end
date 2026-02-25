@@ -2,20 +2,20 @@ import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresence
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
 import React, { type ReactNode } from "react";
 
-interface ModalEditBaseProps {
+interface ModalCreateBaseProps {
   isOpen: boolean;
   title: string;
   onClose: () => void;
-  onSave: () => void;
+  onCreate: () => void;
   isLoading?: boolean;
   children: ReactNode;
 }
 
-export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
+export const ModalCreateBase: React.FC<ModalCreateBaseProps> = ({
   isOpen,
   title,
   onClose,
-  onSave,
+  onCreate,
   isLoading = false,
   children,
 }) => {
@@ -39,6 +39,7 @@ export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
               <h3 className="text-xl font-semibold text-slate-800 dark:text-white">
                 {title}
               </h3>
+
               <button
                 onClick={onClose}
                 className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
@@ -61,11 +62,11 @@ export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
               </button>
 
               <button
-                onClick={onSave}
+                onClick={onCreate}
                 disabled={isLoading}
-                className="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+                className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
               >
-                Salvar
+                Criar
               </button>
             </footer>
           </MotionContainer>

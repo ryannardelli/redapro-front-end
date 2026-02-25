@@ -1,7 +1,6 @@
 import {
   Edit,
   Shield,
-  UserPlus,
   MoreVertical,
   Search,
   User as UserIcon,
@@ -9,7 +8,7 @@ import {
   Filter
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
-import { Skeleton } from "@components/ui/Loading/Skeleton";
+import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 export function UsersBuilder() {
   const { stateUser } = useUsers();
@@ -38,11 +37,6 @@ export function UsersBuilder() {
             Total de {users.length} usuários cadastrados no sistema.
           </p>
         </div>
-
-        <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 transition-colors text-white px-5 py-2.5 rounded-xl font-medium shadow-sm shadow-indigo-200">
-          <UserPlus size={18} />
-          <span>Novo Usuário</span>
-        </button>
       </div>
 
       <div className="max-w-7xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
@@ -74,9 +68,13 @@ export function UsersBuilder() {
 
             <tbody className="divide-y divide-slate-50">
               {loadingUsers ? (
-                <tr>
-                  <td colSpan={4} className="p-6"><Skeleton className="h-20 w-full" /></td>
-                </tr>
+                 <tr>
+                    <td colSpan={4}>
+                      <div className="flex items-center justify-center py-20">
+                        <ListLoading text="Carregando usuários..." />
+                      </div>
+                    </td>
+                  </tr>
               ) : users.length > 0 ? (
                 users.map((user) => (
                   <tr key={user.id} className="hover:bg-slate-50/80 transition-colors group">
