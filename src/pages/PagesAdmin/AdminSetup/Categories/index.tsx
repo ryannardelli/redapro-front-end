@@ -2,6 +2,7 @@ import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-rea
 import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
+import { StatCardSkeleton } from '@components/ui/Loading/StatCardSkeleton';
 
 export function Categories() {
   const { stateCategory } = useCategory();
@@ -20,8 +21,14 @@ export function Categories() {
           <NewCategory />
         </div>
 
-        {!loading && !error && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {loading ? (
+          <>
+            <StatCardSkeleton />
+            <StatCardSkeleton />
+          </>
+        ) : !error ? (
+          <>
             <StatCard 
               icon={<LayoutGrid size={20} className="text-indigo-600" />} 
               label="Total de Categorias" 
@@ -32,8 +39,9 @@ export function Categories() {
               label="Categorias Ativas" 
               value={categories?.length || 0} 
             />
-          </div>
-        )}
+          </>
+        ) : null}
+      </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="p-4 border-b border-slate-100 flex items-center gap-3">

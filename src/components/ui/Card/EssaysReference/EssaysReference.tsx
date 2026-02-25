@@ -7,7 +7,7 @@ interface Essay {
   title: string;
   content: string;
   year: number;
-  pdf_url?: string | null; // Conforme seu log do back-end
+  pdf_url?: string | null;
   categoryId?: number; 
   categoryName?: string;
 }
@@ -22,7 +22,6 @@ export function EssaysReference({ essay, onEdit, onDelete }: EssaysReferenceProp
   return (
     <div className="bg-white rounded-[24px] border border-slate-100 overflow-hidden flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-500">
       
-      {/* Header do Card */}
       <div className="p-6 pb-0 flex justify-between items-start">
         <div className="flex items-center gap-2">
            <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
@@ -39,7 +38,6 @@ export function EssaysReference({ essay, onEdit, onDelete }: EssaysReferenceProp
         </div>
       </div>
 
-      {/* Conteúdo Principal */}
       <div className="p-6 flex-1">
         <h2 className="text-lg font-bold text-slate-800 mb-3 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
           {essay.title}
@@ -60,30 +58,28 @@ export function EssaysReference({ essay, onEdit, onDelete }: EssaysReferenceProp
         </div>
       </div>
 
-      {/* Ações Minimalistas */}
       <div className="px-6 py-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-50">
         <div className="flex items-center gap-1">
           <button 
             onClick={() => onEdit?.(essay.id)}
-            className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all"
+            className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
             title="Editar"
           >
             <Edit3 size={18} />
           </button>
           <button 
             onClick={() => onDelete?.(essay.id)}
-            className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-sm rounded-xl transition-all"
+            className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
             title="Excluir"
           >
             <Trash2 size={18} />
           </button>
         </div>
 
-        {/* Botão de Download Condicional (conforme pdf_url do back) */}
         <button 
           disabled={!essay.pdf_url}
           onClick={() => essay.pdf_url && window.open(essay.pdf_url, '_blank')}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+          className={`flex cursor-pointer items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             essay.pdf_url 
             ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-200" 
             : "bg-slate-200 text-slate-400 cursor-not-allowed"
