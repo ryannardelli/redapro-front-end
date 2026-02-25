@@ -9,7 +9,7 @@ interface EssaysReferenceProps {
   onDelete?: (id: number) => void;
 }
 
-export function EssaysReference({ essay, onEdit, onDelete }: EssaysReferenceProps) {
+export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReferenceProps) {
   return (
     <div className="bg-white rounded-[24px] border border-slate-100 overflow-hidden flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-500">
       
