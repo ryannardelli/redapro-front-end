@@ -1,114 +1,171 @@
-import { useState } from "react";
-import { 
-  BookOpen, Calendar, FileText, HelpCircle, 
-  Home, PenLine, User, X 
-} from 'lucide-react';
+import { useState, useEffect } from "react";
+import {
+  Home,
+  Settings,
+  User,
+  FileText,
+  Calendar,
+  BookOpen,
+  HelpCircle,
+  PenLine,
+  Layout,
+  GraduationCap,
+  X
+} from "lucide-react";
+
 import { useAuth } from "@hooks/useAuth";
+import { useProfile } from "@hooks/useProfile";
 import { formatRole } from "utils/formatRole";
 import { RouterLinks } from "@components/ui/Links/RouterLinks";
 import { HeaderNav } from "../HeaderNav";
-import redaProLogo from '../../../assets/img/redapro.png';
 import { Logout } from "@components/domain/Auth/Logout";
 
-interface MenuItem {
-  title: string;
-  icon: React.ElementType;
-  path: string;
-}
+import redaProLogo from "../../../assets/img/redapro.png";
+import type { Menu } from "models/Menu";
+import { MenuSkeletonList } from "@components/ui/Loading/MenuSkeleton/MenuSkeletonList";
 
-const mainMenus: MenuItem[] = [
-  { title: "Início", icon: Home, path: "/" },
-  { title: "Minhas Redações", icon: FileText, path: "/my-essays" },
-  { title: "Enviar Redação", icon: PenLine, path: "/essay-upload" },
-  { title: "Modelos Nota 1000", icon: BookOpen, path: "/models" },
-];
+const AVAILABLE_ICONS = {
+  Home,
+  Settings,
+  User,
+  FileText,
+  Calendar,
+  BookOpen,
+  HelpCircle,
+  PenLine,
+  Layout,
+  GraduationCap
+};
 
-const secondaryMenus: MenuItem[] = [
-  { title: "Agendamentos", icon: Calendar, path: "/calendar" },
-  { title: "Meu Perfil", icon: User, path: "/my-profile" },
-  { title: "Ajuda e Suporte", icon: HelpCircle, path: "/support" },
-];
+type IconName = keyof typeof AVAILABLE_ICONS;
 
 export function Sidebar() {
-  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+
   const { state } = useAuth();
+  const { stateProfile, loadMenusByProfile } = useProfile();
+
   const user = state.user;
+  const menus: Menu[] = stateProfile.menus || [];
+
+  useEffect(() => {
+    if (!user?.profile.id) return;
+
+    loadMenusByProfile(user.profile.id);
+  }, [user?.profile.id, loadMenusByProfile]);
 
   return (
     <div className="bg-gray-50">
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white border-r border-gray-100 flex flex-col transition-transform duration-300 ease-in-out shadow-xl md:shadow-none ${
-          sideBarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0`}
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white
+        border-r border-gray-100 flex flex-col
+        transition-transform duration-300 ease-in-out
+        shadow-xl md:shadow-none
+        ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
+        md:translate-x-0`}
       >
+
         <div className="p-6 flex items-center justify-between">
           <RouterLinks href="/" className="flex items-center gap-3 group">
-            <img src={redaProLogo} alt="RedaPro" className="w-10 h-10 rounded-xl shadow-md" />
-            <span className="text-xl font-black text-indigo-600 tracking-tight">RedaPro</span>
+            <img
+              src={redaProLogo}
+              alt="RedaPro"
+              className="w-10 h-10 rounded-xl shadow-md"
+            />
+            <span className="text-xl font-black text-indigo-600 tracking-tight">
+              RedaPro
+            </span>
           </RouterLinks>
-          
-          <button onClick={() => setSideBarOpen(false)} className="md:hidden p-2 text-gray-400">
+
+          <button
+            onClick={() => setSideBarOpen(false)}
+            className="md:hidden p-2 text-gray-400"
+          >
             <X size={20} />
           </button>
         </div>
 
-        <nav className="flex-1 px-4 space-y-8 mt-4">
-          <div>
-            <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Menu Principal</p>
-            <div className="space-y-1">
-              {mainMenus.map((item) => (
-                <RouterLinks
-                  key={item.path}
-                  href={item.path}
-                  className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-600 rounded-xl transition-all hover:bg-indigo-50 hover:text-indigo-600 group"
-                >
-                  <item.icon size={20} className="group-hover:scale-110 transition-transform" />
-                  {item.title}
-                </RouterLinks>
-              ))}
-            </div>
-          </div>
+        <nav className="flex-1 px-4 mt-6">
+          <div className="space-y-1">
+            {stateProfile.loadingMenus ? (
+              <MenuSkeletonList items={5} />
+            ) : menus.length === 0 ? (
+              <p className="px-4 text-sm text-gray-400 px-4">
+                Nenhum menu disponível
+              </p>
+            ) : (
+              menus.map(menu => {
+                const Icon =
+                  AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
 
-          <div>
-            <p className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Preferências</p>
-            <div className="space-y-1">
-              {secondaryMenus.map((item) => (
-                <RouterLinks
-                  key={item.path}
-                  href={item.path}
-                  className="flex items-center gap-3 px-4 py-3 text-sm font-semibold text-gray-600 rounded-xl transition-all hover:bg-indigo-50 hover:text-indigo-600 group"
-                >
-                  <item.icon size={20} className="group-hover:scale-110 transition-transform" />
-                  {item.title}
-                </RouterLinks>
-              ))}
-            </div>
+                return (
+                  <RouterLinks
+                    key={menu.id}
+                    href={menu.route}
+                    className="flex items-center gap-3 px-4 py-3
+                              text-sm font-semibold text-gray-600
+                              rounded-xl transition-all
+                              hover:bg-indigo-50 hover:text-indigo-600
+                              group"
+                  >
+                    <Icon
+                      size={20}
+                      className="group-hover:scale-110 transition-transform"
+                    />
+                    {menu.name}
+                  </RouterLinks>
+                );
+              })
+            )}
+            {/* {stateProfile.loadingMenus ? (
+              <p className="px-4 text-sm text-gray-400">
+                Carregando menus...
+              </p>
+            ) : menus.length === 0 ? (
+              <p className="px-4 text-sm text-gray-400">
+                Nenhum menu disponível
+              </p>
+            ) : (
+              menus.map(menu => {
+                const Icon =
+                  AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
+
+                return (
+                  <RouterLinks
+                    key={menu.id}
+                    href={menu.route}
+                    className="flex items-center gap-3 px-4 py-3
+                               text-sm font-semibold text-gray-600
+                               rounded-xl transition-all
+                               hover:bg-indigo-50 hover:text-indigo-600
+                               group"
+                  >
+                    <Icon
+                      size={20}
+                      className="group-hover:scale-110 transition-transform"
+                    />
+                    {menu.name}
+                  </RouterLinks>
+                );
+              })
+            )} */}
           </div>
         </nav>
 
         <Logout />
       </aside>
-      
-      <div className={`transition-all duration-300 ${sideBarOpen ? "blur-sm md:blur-none" : ""} md:ml-64`}>
-        <HeaderNav 
-          onToggleSidebar={() => setSideBarOpen(true)} 
+
+      <div className={`md:ml-64 transition-all`}>
+        <HeaderNav
+          onToggleSidebar={() => setSideBarOpen(true)}
           userName={user?.name}
           userRole={formatRole(user?.role)}
         />
-        
+
         <main className="p-6 md:p-10">
-          {/* Aqui entrarão as páginas (Outlet se usar React Router) */}
-          <div className="max-w-7xl mx-auto">
-            {/* O conteúdo das suas rotas vai aqui */}
-          </div>
+          <div className="max-w-7xl mx-auto" />
         </main>
       </div>
-      {sideBarOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-gray-900/40 backdrop-blur-sm md:hidden transition-opacity"
-          onClick={() => setSideBarOpen(false)}
-        ></div>
-      )}
     </div>
   );
 }

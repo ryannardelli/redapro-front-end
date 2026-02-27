@@ -19,7 +19,6 @@ import { ProfileTabs } from "@components/ui/ProfileTabs";
 import { useProfile } from "@hooks/useProfile";
 import type { Menu } from "models/Menu";
 import type { Profile } from "models/Profile";
-import { Skeleton } from "@components/ui/Loading/Skeleton";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 const AVAILABLE_ICONS = {
@@ -42,6 +41,8 @@ export function MenuBuilder() {
 
   const profiles: Profile[] = stateProfile.profiles;
   const backendMenus: Menu[] = stateProfile.menus;
+
+  console.log(backendMenus);
 
   const [activeTab, setActiveTab] = useState<number | null>(null);
   const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
