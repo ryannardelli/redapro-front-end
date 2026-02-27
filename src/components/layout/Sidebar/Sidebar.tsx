@@ -21,7 +21,6 @@ import { HeaderNav } from "../HeaderNav";
 import { Logout } from "@components/domain/Auth/Logout";
 
 import redaProLogo from "../../../assets/img/redapro.png";
-import type { Menu } from "models/Menu";
 import { MenuSkeletonList } from "@components/ui/Loading/MenuSkeleton/MenuSkeletonList";
 
 const AVAILABLE_ICONS = {
@@ -43,16 +42,17 @@ export function Sidebar() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   const { state } = useAuth();
-  const { stateProfile, loadMenusByProfile } = useProfile();
+  const { stateProfile, loadMenusByLoggedUser } = useProfile();
 
   const user = state.user;
-  const menus: Menu[] = stateProfile.menus || [];
+  // const menus: Menu[] = stateProfile.loadingMenusByLoggedUser || [];
+  const menus = stateProfile.menusByLoggedUser || [];
+  console.log(menus);
 
   useEffect(() => {
     if (!user?.profile.id) return;
-
-    loadMenusByProfile(user.profile.id);
-  }, [user?.profile.id, loadMenusByProfile]);
+    loadMenusByLoggedUser(user.profile.id);
+  }, []);
 
   return (
     <div className="bg-gray-50">
@@ -87,8 +87,8 @@ export function Sidebar() {
 
         <nav className="flex-1 px-4 mt-6">
           <div className="space-y-1">
-            {stateProfile.loadingMenus ? (
-              <MenuSkeletonList items={5} />
+            {stateProfile.loadingMenusByLoggedUser ? (
+              <MenuSkeletonList items={menus.length} />
             ) : menus.length === 0 ? (
               <p className="px-4 text-sm text-gray-400 px-4">
                 Nenhum menu disponível
@@ -117,38 +117,6 @@ export function Sidebar() {
                 );
               })
             )}
-            {/* {stateProfile.loadingMenus ? (
-              <p className="px-4 text-sm text-gray-400">
-                Carregando menus...
-              </p>
-            ) : menus.length === 0 ? (
-              <p className="px-4 text-sm text-gray-400">
-                Nenhum menu disponível
-              </p>
-            ) : (
-              menus.map(menu => {
-                const Icon =
-                  AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
-
-                return (
-                  <RouterLinks
-                    key={menu.id}
-                    href={menu.route}
-                    className="flex items-center gap-3 px-4 py-3
-                               text-sm font-semibold text-gray-600
-                               rounded-xl transition-all
-                               hover:bg-indigo-50 hover:text-indigo-600
-                               group"
-                  >
-                    <Icon
-                      size={20}
-                      className="group-hover:scale-110 transition-transform"
-                    />
-                    {menu.name}
-                  </RouterLinks>
-                );
-              })
-            )} */}
           </div>
         </nav>
 

@@ -139,45 +139,64 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     }
   };
 
-   const loadMenusByProfile = useCallback(
-    async (profileId: number) => {
-      try {
-        dispatchProfile({ type: "SET_LOADING_MENU", payload: true });
+  const loadMenusByLoggedUser = useCallback(async (profileId: number) => {
+  try {
+    dispatchProfile({ type: "SET_LOADING_MENUS_LOGGED_USER", payload: true });
 
-        const menus = await getMenusByProfileId(profileId);
+    const menus = await getMenusByProfileId(profileId);
 
-        dispatchProfile({
-          type: "SET_MENU",
-          payload: menus,
-        });
-      } catch (error) {
-        console.error(error);
+    dispatchProfile({
+      type: "SET_MENUS_LOGGED_USER",
+      payload: menus,
+    });
+  } catch (error) {
+    dispatchProfile({
+      type: "SET_ERROR_MENUS_LOGGED_USER",
+      payload: "Erro ao carregar menus do usuário",
+    });
+  } finally {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_LOGGED_USER",
+      payload: false,
+    });
+  }
+}, []);
 
-        const message =
-          error instanceof Error
-            ? error.message
-            : "Erro ao carregar menus do perfil";
+const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
+  try {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_EDITING_PROFILE",
+      payload: true
+    });
 
-        dispatchProfile({
-          type: "SET_ERROR_PROFILES",
-          payload: message,
-        });
-      } finally {
-        dispatchProfile({ type: "SET_LOADING_MENU", payload: false });
-      }
-    },
-    []
-  );
+    const menus = await getMenusByProfileId(profileId);
 
+    dispatchProfile({
+      type: "SET_MENUS_EDITING_PROFILE",
+      payload: menus
+    });
+  } catch (error) {
+    dispatchProfile({
+      type: "SET_ERROR_MENUS_EDITING_PROFILE",
+      payload: "Erro ao carregar menus do perfil"
+    });
+  } finally {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_EDITING_PROFILE",
+      payload: false
+    });
+  }
+}, []);
 
-  return (
+   return (
     <ProfileContext.Provider
       value={{
         stateProfile,
         createProfile,
-        deleteProfile,
         updateProfile,
-        loadMenusByProfile
+        deleteProfile,
+        loadMenusByLoggedUser,
+        loadMenusByProfileForEdit
       }}
     >
       {children}
