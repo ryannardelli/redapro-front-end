@@ -145,7 +145,7 @@ export default function AdminModelsEssay() {
         <EmptyState
             icon={FileText}
             title="Nenhuma redação encontrada"
-            description="Não existem modelos cadastrados para os filtros selecionados ou não há nenhuma redação cadastrada."
+            description="Não encontramos resultados para sua busca ou ainda não há cadastros."
           />
       )}
     </section>
