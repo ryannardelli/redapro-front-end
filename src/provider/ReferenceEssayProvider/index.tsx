@@ -57,6 +57,10 @@ export const ReferenceEssayProvider = ({
   );
 
   useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
   loadReferenceEssays();
 }, [loadReferenceEssays]);
 

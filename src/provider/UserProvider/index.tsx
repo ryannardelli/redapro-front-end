@@ -39,10 +39,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       dispatchUser({ type: "SET_LOADING_USERS", payload: false });
     }
   }, []);
+  
+  useEffect(() => {
+  const token = localStorage.getItem("token");
 
-   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+  if (!token) return;
+
+  loadUsers();
+}, [loadUsers]);
 
   return (
     <UserContext.Provider

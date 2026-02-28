@@ -45,7 +45,6 @@ export function Sidebar() {
   const { stateProfile, loadMenusByLoggedUser } = useProfile();
 
   const user = state.user;
-  // const menus: Menu[] = stateProfile.loadingMenusByLoggedUser || [];
   const menus = stateProfile.menusByLoggedUser || [];
   console.log(menus);
 
