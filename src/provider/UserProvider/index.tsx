@@ -2,6 +2,7 @@ import { useReducer, type ReactNode, useCallback, useEffect } from "react";
 import { UserContext } from "./UserContext";
 import { userReducer, initialStateUser } from "../../reducer/userReducer";
 import { catchInformationsUser } from "@services/users";
+import { useAuth } from "@hooks/useAuth";
 
 type UserProviderProps = {
   children: ReactNode;
@@ -12,6 +13,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     userReducer,
     initialStateUser
   );
+
+  const { state } = useAuth();
 
   const loadUsers = useCallback(async () => {
     try {
@@ -40,9 +43,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, []);
 
-   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+  useEffect(() => {
+    if (state.isAuthenticated && !state.loading) {
+      loadUsers();
+    }
+  }, [loadUsers, state.isAuthenticated, state.loading]);
 
   return (
     <UserContext.Provider

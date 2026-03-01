@@ -2,79 +2,55 @@ import type { ProfileAction, ProfileState } from "../models/Profile";
 
 export const initialStateProfile: ProfileState = {
   profiles: [],
-  menus: [],
+
+  menusByLoggedUser: [],
+  loadingMenusByLoggedUser: false,
+  errorMenusByLoggedUser: null,
+
+  menusByEditingProfile: [],
+  loadingMenusByEditingProfile: false,
+  errorMenusByEditingProfile: null,
 
   loadingProfiles: false,
   errorProfiles: null,
-
-  loadingMenus: false,
-  errorMenus: null,
 };
 
-export function profileReducer(
-  state: ProfileState,
-  action: ProfileAction
-) {
+export function profileReducer(state: ProfileState, action: ProfileAction) {
   switch (action.type) {
+    
     case "SET_PROFILE":
-      return {
-        ...state,
-        profiles: action.payload,
-      };
-
-    case "ADD_PROFILE":
-      return {
-        ...state,
-        profiles: [...state.profiles, action.payload],
-      };
-
-    case "DELETE_PROFILE":
-      return {
-        ...state,
-        loadingProfiles: false,
-        profiles: state.profiles.filter(
-          (profile) => profile.id !== action.payload
-        ),
-      };
-
-    case "UPDATE_PROFILE":
-      return {
-        ...state,
-        profiles: state.profiles.map((profile) =>
-          profile.id === action.payload.id ? action.payload : profile
-        ),
-      };
+      return { ...state, profiles: action.payload };
 
     case "SET_LOADING_PROFILES":
-      return {
-        ...state,
-        loadingProfiles: action.payload,
-      };
+      return { ...state, loadingProfiles: action.payload };
 
     case "SET_ERROR_PROFILES":
+      return { ...state, errorProfiles: action.payload };
+
+    case "SET_MENUS_LOGGED_USER":
+      return { ...state, menusByLoggedUser: action.payload };
+
+    case "SET_LOADING_MENUS_LOGGED_USER":
+      return { ...state, loadingMenusByLoggedUser: action.payload };
+
+    case "SET_ERROR_MENUS_LOGGED_USER":
       return {
         ...state,
-        errorProfiles: action.payload,
-        loadingProfiles: false,
+        errorMenusByLoggedUser: action.payload,
+        loadingMenusByLoggedUser: false
       };
 
-    case "SET_MENU":
-      return {
-        ...state,
-        menus: action.payload,
-      };
+    case "SET_MENUS_EDITING_PROFILE":
+      return { ...state, menusByEditingProfile: action.payload };
 
-     case "SET_LOADING_MENU":
-      return {
-        ...state,
-        loadingMenus: action.payload,
-      };
+    case "SET_LOADING_MENUS_EDITING_PROFILE":
+      return { ...state, loadingMenusByEditingProfile: action.payload };
 
-    case "SET_ERROR_MENU":
+    case "SET_ERROR_MENUS_EDITING_PROFILE":
       return {
         ...state,
-        errorMenus: action.payload,
-        loadingMenus: false,
+        errorMenusByEditingProfile: action.payload,
+        loadingMenusByEditingProfile: false
       };
 
     default:

@@ -9,10 +9,13 @@ import {
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
+import { EmptyState } from "@components/feedback/EmptyState";
 
 export function UsersBuilder() {
   const { stateUser } = useUsers();
   const { users, loadingUsers } = stateUser;
+
+  console.log(users);
 
   const getRoleStyles = (role: string) => {
     switch (role?.toLowerCase()) {
@@ -128,15 +131,11 @@ export function UsersBuilder() {
               ) : (
                 <tr>
                   <td colSpan={4} className="px-6 py-20 text-center">
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="bg-slate-50 p-4 rounded-full mb-4">
-                         <UserIcon size={40} className="text-slate-300" />
-                      </div>
-                      <h3 className="text-lg font-medium text-slate-900">Nenhum usuário</h3>
-                      <p className="text-slate-500 max-w-xs mx-auto">
-                        Não encontramos resultados para sua busca ou ainda não há cadastros.
-                      </p>
-                    </div>
+                     <EmptyState
+                        icon={UserIcon}
+                        title="Nenhum usuário encontrado."
+                        description="Não encontramos resultados para sua busca ou ainda não há cadastros."
+                      />
                   </td>
                 </tr>
               )}

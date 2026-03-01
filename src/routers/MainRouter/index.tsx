@@ -13,6 +13,7 @@ import { AdminRoute } from "../AdminRouter";
 import { AdminSetupRoutes } from "../AdminSetupRoutes";
 import { useAuth } from "../../hooks/useAuth";
 import { Models } from "../../pages/PagesMember/Models";
+import NotFound from "pages/NotFound";
 
 export function MainRouter() {
   const { state } = useAuth();
@@ -25,6 +26,7 @@ export function MainRouter() {
         {/* rotas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound />} />
 
         {/* rotas privadas (membros) */}
         <Route element={<PrivateRoute isAuth={state.isAuthenticated}

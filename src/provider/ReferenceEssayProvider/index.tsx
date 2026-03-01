@@ -15,6 +15,7 @@ import {
   delete_reference_essay,
   update_reference_essay,
 } from "../../services/referenceEssay";
+import { useAuth } from "@hooks/useAuth";
 
 type ReferenceEssayProviderProps = {
   children: ReactNode;
@@ -57,8 +58,10 @@ export const ReferenceEssayProvider = ({
   );
 
   useEffect(() => {
-  loadReferenceEssays();
-}, [loadReferenceEssays]);
+    if (state.isAuthenticated && !state.loading) {
+      loadReferenceEssays();
+    }
+  }, [loadReferenceEssays, state.isAuthenticated, state.loading]);
 
   const createReferenceEssay = async (data: any) => {
     try {

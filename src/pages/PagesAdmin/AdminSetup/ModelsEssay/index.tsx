@@ -1,15 +1,13 @@
 import { EssaysReferenceCard } from "@components/domain/EssaysReference/EssaysReferenceCard";
 import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
+import { EmptyState } from "@components/feedback/EmptyState";
 import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceSkeleton";
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, FileText } from "lucide-react";
 
 export default function AdminModelsEssay() {
   const { stateReferenceEssay } = useReferenceEssay();
-  const loading = stateReferenceEssay.loading;;
-
-  console.log(stateReferenceEssay);
-
+  const loading = stateReferenceEssay.loading;
   const essays = stateReferenceEssay.essays ?? [];
 
   return (
@@ -54,11 +52,11 @@ export default function AdminModelsEssay() {
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.from({ length: stateReferenceEssay.essays.length }).map((_, i) => (
+          {Array.from({ length: essays.length }).map((_, i) => (
             <EssaysReferenceSkeleton key={i} />
           ))}
         </div>
-      ) : (
+      ) : essays.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {essays.map((essay) => (
             <EssaysReferenceCard 
@@ -69,6 +67,12 @@ export default function AdminModelsEssay() {
             />
           ))}
         </div>
+      ) : (
+        <EmptyState
+            icon={FileText}
+            title="Nenhuma redação encontrada"
+            description="Não encontramos resultados para sua busca ou ainda não há cadastros."
+          />
       )}
     </section>
   );
