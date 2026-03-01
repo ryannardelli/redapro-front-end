@@ -304,7 +304,7 @@ export function CardEssays() {
                   </h3>
 
                   <p className="mb-6 text-gray-500 text-sm line-clamp-3 leading-relaxed">
-                    {essay?.content
+                    {typeof essay.content === 'string'
                       ? essay.content.slice(0, 120)
                       : 'Conteúdo não disponível'}
                   </p>
