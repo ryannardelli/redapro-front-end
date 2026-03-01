@@ -23,6 +23,29 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
 
   const { state } = useAuth();
 
+  const loadMenusByLoggedUser = useCallback(async (profileId: number) => {
+  try {
+    dispatchProfile({ type: "SET_LOADING_MENUS_LOGGED_USER", payload: true });
+
+    const menus = await getMenusByProfileId(profileId);
+
+    dispatchProfile({
+      type: "SET_MENUS_LOGGED_USER",
+      payload: menus,
+    });
+  } catch (error) {
+    dispatchProfile({
+      type: "SET_ERROR_MENUS_LOGGED_USER",
+      payload: "Erro ao carregar menus do usuário",
+    });
+  } finally {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_LOGGED_USER",
+      payload: false,
+    });
+  }
+}, []);
+
   const loadUserProfiles = useCallback(async () => {
     if (!state.user) return;
 
@@ -52,6 +75,12 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
 
     loadUserProfiles();
   }, [state.loading, state.user, loadUserProfiles]);
+
+  useEffect(() => {
+  if (!state.loading && state.user?.profile?.id) {
+    loadMenusByLoggedUser(state.user.profile.id);
+  }
+}, [state.user?.profile?.id, state.loading, loadMenusByLoggedUser]);
 
   const createProfile = async (data: CreateProfilePayload) => {
     if (!state.user) return;
@@ -138,29 +167,6 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
       dispatchProfile({ type: "SET_LOADING_PROFILES", payload: false });
     }
   };
-
-  const loadMenusByLoggedUser = useCallback(async (profileId: number) => {
-  try {
-    dispatchProfile({ type: "SET_LOADING_MENUS_LOGGED_USER", payload: true });
-
-    const menus = await getMenusByProfileId(profileId);
-
-    dispatchProfile({
-      type: "SET_MENUS_LOGGED_USER",
-      payload: menus,
-    });
-  } catch (error) {
-    dispatchProfile({
-      type: "SET_ERROR_MENUS_LOGGED_USER",
-      payload: "Erro ao carregar menus do usuário",
-    });
-  } finally {
-    dispatchProfile({
-      type: "SET_LOADING_MENUS_LOGGED_USER",
-      payload: false,
-    });
-  }
-}, []);
 
 const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
   try {

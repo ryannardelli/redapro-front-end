@@ -42,16 +42,11 @@ export function Sidebar() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
 
   const { state } = useAuth();
-  const { stateProfile, loadMenusByLoggedUser } = useProfile();
+  const { stateProfile } = useProfile();
 
   const user = state.user;
   const menus = stateProfile.menusByLoggedUser || [];
   console.log(menus);
-
-  useEffect(() => {
-    if (!user?.profile.id) return;
-    loadMenusByLoggedUser(user.profile.id);
-  }, []);
 
   return (
     <div className="bg-gray-50">
