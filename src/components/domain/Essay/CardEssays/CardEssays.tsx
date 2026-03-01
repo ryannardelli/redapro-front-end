@@ -1,5 +1,5 @@
 import defaultEssay from '../../../../assets/img/defaultEssay.jpg';
-import { Edit3, Eye, Award, Calendar } from 'lucide-react'; 
+import { Edit3, Eye, Award, Calendar, Sparkles } from 'lucide-react'; 
 import { toast } from 'react-toastify';
 import { ActionButton } from '@components/ui/Button/ActionButton';
 import { showMessage } from 'adapters/showMessage';
@@ -16,34 +16,38 @@ export function CardEssays() {
   const essays = stateEssay.essays || [];
 
   const handleDelete = async (id: number) => {
-  showMessage.dismiss();
+    showMessage.dismiss();
 
-  toast(Dialog, {
-    data: "Tem certeza que deseja excluir esta redação?",
-    autoClose: false,
-    closeOnClick: false,
-    closeButton: false,
-    draggable: false,
-    onClose: async (props) => {
-      const isConfirmed = props?.data === true || props === true;
+    toast(Dialog, {
+      data: "Tem certeza que deseja excluir esta redação?",
+      autoClose: false,
+      closeOnClick: false,
+      closeButton: false,
+      draggable: false,
+      onClose: async (props) => {
+        const isConfirmed = props?.data === true || props === true;
 
-      if (isConfirmed) {
-        try {
-          const response = await deleteEssay(id);
-          console.log(response);
-          setTimeout(() => {
-            showMessage.success(response?.message || "Excluído com sucesso!");
-          }, 100);
-        } catch (err: any) {
-          const errorMessage = err?.response?.data?.message || err.message || "Erro desconhecido";
-          setTimeout(() => {
-            showMessage.error(errorMessage);
-          }, 100);
+        if (isConfirmed) {
+          try {
+            const response = await deleteEssay(id);
+            setTimeout(() => {
+              showMessage.success(response?.message || "Excluído com sucesso!");
+            }, 100);
+          } catch (err: any) {
+            const errorMessage = err?.response?.data?.message || err.message || "Erro desconhecido";
+            setTimeout(() => {
+              showMessage.error(errorMessage);
+            }, 100);
+          }
         }
       }
-    }
-  });
-};
+    });
+  };
+
+  const handleAICorrection = (id: number) => {
+    showMessage.info("Iniciando correção com Inteligência Artificial...");
+    console.log("Corrigindo redação via IA:", id);
+  };
 
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
@@ -86,7 +90,7 @@ export function CardEssays() {
                     <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
                       hasGrade ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                     }`}>
-                      {hasGrade ? 'Corrigida' : 'A ser corrigida'}
+                      {hasGrade ? 'Corrigida' : 'Pendente'}
                     </span>
                   </div>
 
@@ -129,19 +133,29 @@ export function CardEssays() {
                     </div>
                   </div>
 
-                  <div className="mt-auto flex gap-3">
-                    <EditEssay essay={essay} />
-
-                    <ActionButton
-                        disabled={!hasGrade}
-                        tooltip="Nota ainda não disponível"
-                        icon={<Eye size={16} />}
-                        onClick={() => {
-                          // ação de ver nota
-                        }}
+                  <div className="mt-auto flex flex-col gap-3">
+                    {!hasGrade ? (
+                      <button
+                        onClick={() => handleAICorrection(essay.id)}
+                        disabled={loading}
+                        className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white rounded-xl font-bold shadow-md hover:shadow-indigo-200 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                       >
-                        Ver Nota
-                    </ActionButton>
+                        <Sparkles size={18} className="animate-pulse" />
+                        Corrigir com IA
+                      </button>
+                    ) : (
+                      <ActionButton
+                        className="w-full bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
+                        icon={<Eye size={16} />}
+                        onClick={() => {/* Ação ver nota */}}
+                      >
+                        Ver Detalhes da Nota
+                      </ActionButton>
+                    )}
+                    
+                    <div className="flex gap-2 w-full">
+                      <EditEssay essay={essay} />
+                    </div>
                   </div>
                 </div>
               </div>
