@@ -118,3 +118,27 @@ export async function update_essay(
   }
 }
 
+export async function correctEssayWithAI(essayId: number): Promise<{ message: string; essay: string }> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}/correct-ai`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao corrigir redação com IA.");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+

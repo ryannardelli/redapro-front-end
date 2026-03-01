@@ -19,10 +19,6 @@ export const EssaySchema = z.object({
     .nonempty("A redação não pode ficar vazia.")
     .min(1000, "A redação deve ter no mínimo 1000 caracteres.")
     .max(5001, "A redação ultrapassou o limite de caracteres."),
-
-  mode: z.enum(["ia", "corretor"], {
-    required_error: "Selecione o tipo de correção.",
-  }),
 });
 
 export type EssayFormData = z.infer<typeof EssaySchema>;

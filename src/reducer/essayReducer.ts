@@ -41,6 +41,16 @@ export function essayReducer(state: EssayState, action: EssayAction) {
                 error: action.payload,
                 loading: false,
         };
+
+        case "UPDATE_ESSAY_CORRECTED":
+            return {
+                ...state,
+                essays: state.essays.map((essay) =>
+                essay.id === action.payload.id
+                    ? { ...essay, content: action.payload.correctedContent }
+                    : essay
+                ),
+            };
         default:
             return state
     }
