@@ -194,7 +194,16 @@ export function CardEssays() {
         const isConfirmed = props?.data === true || props === true;
 
         if (isConfirmed) {
-          await deleteEssay(id);
+          try {
+            const responseDeleteEssay = await deleteEssay(id);
+            showMessage.success(responseDeleteEssay.message);
+          } catch(err) {
+            const errorMessage =
+            err instanceof Error ? err.message : err?.message;
+
+            console.error(err);
+            showMessage.error(errorMessage);
+          }
         }
       }
     });
