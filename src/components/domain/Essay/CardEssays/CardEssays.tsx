@@ -214,6 +214,7 @@ export function CardEssays() {
 
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
+      {loading && <SpinnerLoading />}
       <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
           <h2 className="text-4xl font-black tracking-tight text-gray-900">
