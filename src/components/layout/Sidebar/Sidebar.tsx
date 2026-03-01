@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Home,
   Settings,
@@ -46,7 +46,6 @@ export function Sidebar() {
 
   const user = state.user;
   const menus = stateProfile.menusByLoggedUser || [];
-  console.log(menus);
 
   return (
     <div className="bg-gray-50">
