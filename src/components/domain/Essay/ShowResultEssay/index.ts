@@ -1,0 +1,1 @@
+export { ShowResultEssay } from './ShowResultEssay';

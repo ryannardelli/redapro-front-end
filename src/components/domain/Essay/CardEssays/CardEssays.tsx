@@ -1,7 +1,6 @@
 import defaultEssay from '../../../../assets/img/defaultEssay.jpg';
-import { Edit3, Eye, Award, Calendar, Sparkles } from 'lucide-react'; 
+import { Edit3, Award, Calendar, Sparkles } from 'lucide-react'; 
 import { toast } from 'react-toastify';
-import { ActionButton } from '@components/ui/Button/ActionButton';
 import { showMessage } from 'adapters/showMessage';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { DeleteEssay } from '../DeleteEssay';
@@ -9,6 +8,7 @@ import { EditEssay } from '../EditEssay';
 import { useEssay } from '@hooks/useEssay';
 import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
+import { ShowResultEssay } from '../ShowResultEssay';
 
 export function CardEssays() {
   const { stateEssay, deleteEssay } = useEssay();
@@ -144,13 +144,7 @@ export function CardEssays() {
                         Corrigir com IA
                       </button>
                     ) : (
-                      <ActionButton
-                        className="w-full bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100"
-                        icon={<Eye size={16} />}
-                        onClick={() => {/* Ação ver nota */}}
-                      >
-                        Ver Detalhes da Nota
-                      </ActionButton>
+                      <ShowResultEssay essay={essay} key={essay.id} />
                     )}
                     
                     <div className="flex gap-2 w-full">

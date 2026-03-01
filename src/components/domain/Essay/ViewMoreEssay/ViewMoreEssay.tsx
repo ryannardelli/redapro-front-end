@@ -2,9 +2,10 @@ import { Eye } from "lucide-react";
 import { useState } from "react";
 import { ExibitionMoreEssay } from "../ExibitionMoreEssay";
 import { ModalShowBase } from "@components/ui/Modal/ModalShowBase";
+import type { Essay } from "models/Essay";
 
 interface ViewMoreEssayProps {
-  essay: any;
+  essay: Essay;
   loading?: boolean;
   title?: string;
   className?: string;
