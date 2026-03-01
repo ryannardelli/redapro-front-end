@@ -139,6 +139,8 @@ const correctEssayAI = async (essayId: number) => {
 
       dispatchEssay({ type: "UPDATE_ESSAY_CORRECTED", payload: { id: essayId, correctedContent: response.essay } });
 
+      await loadUserEssays();
+
       return response;
     } catch (error) {
       const message = error instanceof Error ? error.message : "Erro ao corrigir redação com IA";

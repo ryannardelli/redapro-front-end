@@ -201,8 +201,13 @@ export function CardEssays() {
   };
 
   const handleAICorrection = async (id: number) => {
+    showMessage.dismiss();
+
+
     try {
-      await correctEssayAI(id);
+      const AIcorrectResponse = await correctEssayAI(id);
+      showMessage.success(AIcorrectResponse.message);
+      
     } catch (err: any) {
       const errorMessage =
         err instanceof Error ? err.message : err?.message;
