@@ -29,8 +29,6 @@ export const ReferenceEssayProvider = ({
     initialStateReferenceEssay
   );
 
-  const { state } = useAuth();
-
   const loadReferenceEssays = useCallback(
     async (params?: {
       year?: number;

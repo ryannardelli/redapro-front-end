@@ -15,6 +15,8 @@ export function UsersBuilder() {
   const { stateUser } = useUsers();
   const { users, loadingUsers } = stateUser;
 
+  console.log(users);
+
   const getRoleStyles = (role: string) => {
     switch (role?.toLowerCase()) {
       case "admin":

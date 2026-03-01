@@ -9,8 +9,6 @@ export function ModelsEssays() {
  const loading = stateReferenceEssay.loading;
  const essays = stateReferenceEssay.essays ?? [];
 
- console.log(essays);
-
   return (
     <section className="px-6 py-16 max-w-7xl mx-auto bg-slate-50 min-h-screen">
       <div className="text-center mb-12">
