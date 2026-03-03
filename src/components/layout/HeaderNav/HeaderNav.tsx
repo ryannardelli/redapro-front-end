@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Bell, Menu, User, LogOut, Settings } from 'lucide-react';
 import { useAuth } from '@hooks/useAuth';
 import { SearchInput } from '@components/domain/Header/SearchInput';
@@ -9,6 +9,8 @@ import { MenuBurgerSidebar } from '@components/ui/Button/MenuBurgerSidebar';
 import { NotificationButton } from '@components/domain/Header/NotificationButton';
 import { ProfileButton } from '@components/domain/Header/ProfileButton';
 import { formatRole } from 'utils/formatRole';
+import { NotificationPanel } from '@components/domain/Header/NotificationPanel';
+import { socket } from '@services/socket';
 
 interface HeaderNavProps {
   onSearch?: (term: string) => void;
@@ -24,11 +26,43 @@ export function HeaderNav({
 }: HeaderNavProps) {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
   const [hasNotifications] = useState<boolean>(true);
   const navigate = useNavigate();
 
   const { logout, state} = useAuth();
   const user = state.user;
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    socket.connect();
+
+    socket.on("connect", () => {
+      socket.emit("join", user.id);
+    });
+
+    const onEssayStatus = (data: { message: string }) => {
+
+      setNotifications(prev => [
+        {
+          id: crypto.randomUUID(),
+          message: data.message,
+          read: false,
+          createdAt: new Date()
+        },
+        ...prev
+      ]);
+    };
+
+    socket.on("essay:status", onEssayStatus);
+
+    return () => {
+      socket.off("essay:status", onEssayStatus);
+    };
+  }, [user?.id]);
 
   const searchResults = [
   {
@@ -63,12 +97,39 @@ export function HeaderNav({
       </ContainerSubHeaderSidebar>
 
       <div className="flex items-center space-x-3 md:space-x-6">
-        <div className="relative">
+        {/* <div className="relative">
           <NotificationButton
             icon={<Bell size={22} />}
             hasNotification={hasNotifications}
             label="Abrir notificações"
           />
+        </div> */}
+
+        <div className="relative">
+          <NotificationButton
+            icon={<Bell size={22} />}
+            hasNotification={hasNotifications}
+            label="Abrir notificações"
+            onClick={() => setIsNotificationOpen(prev => !prev)}
+          />
+
+          {isNotificationOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-10"
+                onClick={() => setIsNotificationOpen(false)}
+              />
+
+              <NotificationPanel
+                notifications={notifications}
+                onReadAll={() =>
+                  setNotifications(prev =>
+                    prev.map(n => ({ ...n, read: true }))
+                  )
+                }
+              />
+            </>
+          )}
         </div>
 
         <div className="h-8 w-[1px] bg-gray-100 hidden sm:block"></div>
