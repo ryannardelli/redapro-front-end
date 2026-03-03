@@ -10,9 +10,9 @@ import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
 import { AICorrectionButton } from '../AICorrectionButton';
-import { SpinnerLoading } from '@components/ui/Loading/SpinnerLoading';
 import { useMemo } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
+import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
@@ -103,8 +103,6 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
 
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
-      {loading && <SpinnerLoading />}
-
       <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
           <h2 className="text-4xl font-black tracking-tight text-gray-900">
@@ -126,7 +124,139 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
         )}
       </header>
 
-      {filteredEssays.length === 0 ? (
+      {loading ? (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: essays.length || 6 }).map((_, i) => (
+            <EssayCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : filteredEssays.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+          <p className="mb-6 text-xl text-gray-500 font-medium">
+            Nenhuma redação encontrada com os filtros aplicados.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {filteredEssays.map((essay) => {
+            const hasGrade =
+              essay.note !== null && essay.note !== undefined;
+
+            return (
+              <div
+                key={essay.id}
+                className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+              >
+                <div
+                      key={essay.id}
+                      className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={defaultEssay}
+                          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                          alt={essay.title}
+                        />
+
+                        <div className="absolute top-4 left-4">
+                          <span
+                            className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
+                              hasGrade
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-amber-100 text-amber-700'
+                            }`}
+                          >
+                            {hasGrade ? 'Corrigida' : 'Pendente'}
+                          </span>
+                        </div>
+
+                        <div className="absolute top-4 right-4 flex gap-2">
+                          <ViewMoreEssay
+                            essay={essay}
+                            loading={loading}
+                            title="Ver redação completa"
+                          />
+
+                          <DeleteEssay
+                            onDelete={() => handleDelete(essay.id)}
+                            loading={loading}
+                            title="Excluir redação"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="p-6 flex flex-col flex-grow">
+                        <span className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">
+                          {essay.category?.name}
+                        </span>
+
+                        <h3 className="mb-3 text-xl font-bold text-gray-900 line-clamp-1 group-hover:text-indigo-600 transition-colors">
+                          {essay.title}
+                        </h3>
+
+                        <p className="mb-6 text-gray-500 text-sm line-clamp-3 leading-relaxed">
+                          {typeof essay.content === 'string'
+                            ? essay.content.slice(0, 120)
+                            : 'Conteúdo não disponível'}
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
+                          <div className="flex items-center text-gray-600 text-xs">
+                            <Calendar size={14} className="mr-1.5 opacity-70" />
+                            {new Date(essay.createdAt).toLocaleDateString()}
+                          </div>
+
+                          <div className="flex items-center text-gray-600 text-xs">
+                            <Award size={14} className="mr-1.5 opacity-70" />
+                            Nota:
+                            <span
+                              className={`ml-1 font-bold ${
+                                hasGrade
+                                  ? 'text-green-600'
+                                  : 'text-gray-400'
+                              }`}
+                            >
+                              {hasGrade ? essay.note : '--'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-auto flex flex-col gap-3">
+                          {!hasGrade ? (
+                            <AICorrectionButton
+                              onClick={() => handleAICorrection(essay.id)}
+                              loading={loading}
+                            >
+                              <Sparkles size={18} className="animate-pulse" />
+                              Corrigir com IA
+                            </AICorrectionButton>
+                          ) : (
+                            <ShowResultEssay essay={essay} />
+                          )}
+
+                          <div className="flex gap-2 w-full">
+                            {hasGrade ? (
+                              <div 
+                                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-gray-100 text-gray-400 rounded-xl font-medium cursor-not-allowed border border-gray-200 transition-colors"
+                                title="Esta redação já foi corrigida e não pode mais ser editada."
+                              >
+                                <Lock size={16} className="opacity-60" />
+                                <span>Edição desativada</span>
+                              </div>
+                            ) : (
+                              <EditEssay essay={essay} />
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* {filteredEssays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
           <p className="mb-6 text-xl text-gray-500 font-medium">
             Nenhuma redação encontrada com os filtros aplicados.
@@ -245,7 +375,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
             );
           })}
         </div>
-      )}
+      )} */}
     </section>
   );
 }
