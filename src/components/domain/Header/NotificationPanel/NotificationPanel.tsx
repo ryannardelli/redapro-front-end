@@ -3,36 +3,46 @@ interface NotificationPanelProps {
     id: string;
     message: string;
     read: boolean;
-    createdAt: Date;
+    createdAt: string;
   }[];
   onReadAll: () => void;
+  onClear: () => void;
 }
 
 export function NotificationPanel({
   notifications,
-  onReadAll
+  onReadAll,
+  onClear
 }: NotificationPanelProps) {
   return (
-    <div className="
-      absolute right-0 mt-3 w-80
-      bg-white border border-gray-100
-      rounded-2xl shadow-2xl
-      z-20
-      animate-in zoom-in-95 duration-200
-      origin-top-right
-    ">
+    <div
+      className="
+        absolute right-0 mt-3 w-80
+        bg-white border border-gray-100
+        rounded-2xl shadow-2xl z-20
+      "
+    >
       <header className="flex items-center justify-between p-4 border-b">
         <span className="font-medium text-gray-800">
           Notificações
         </span>
 
         {notifications.length > 0 && (
-          <button
-            onClick={onReadAll}
-            className="text-sm text-indigo-600 hover:underline"
-          >
-            Marcar todas como lidas
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={onReadAll}
+              className="text-sm text-indigo-600 hover:underline"
+            >
+              Marcar todas
+            </button>
+
+            <button
+              onClick={onClear}
+              className="text-sm text-red-500 hover:underline"
+            >
+              Limpar
+            </button>
+          </div>
         )}
       </header>
 
@@ -52,7 +62,7 @@ export function NotificationPanel({
             `}
           >
             <p className="text-gray-700">{n.message}</p>
-            <span className="text-xs text-gray-400 mt-1 block">
+            <span className="text-xs text-gray-400 block mt-1">
               agora mesmo
             </span>
           </li>
