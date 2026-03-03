@@ -31,11 +31,11 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       }
 
       if (
-        filters.categoryId &&
-        essay.category?.id !== filters.categoryId
-      ) {
-        return false;
-      }
+          filters.categoryId &&
+          String(essay.category?.id) !== String(filters.categoryId)
+        ) {
+          return false;
+        }
 
       if (filters.scoreRange) {
         if (essay.note === null || essay.note === undefined) return false;
