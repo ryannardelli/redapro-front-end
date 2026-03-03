@@ -34,12 +34,13 @@ export type EssayState = {
 }
 
 export type EssayAction =
-    | {type: "ADD_ESSAY"; payload: Essay}
-    | {type: "SET_ESSAY"; payload: Essay[]}
-    | { type: "SET_LOADING"; payload: boolean }
-    | {type: "DELETE_ESSAY"; payload: number}
-    | { type: "UPDATE_ESSAY"; payload: Essay }
-    | { type: "SET_ERROR"; payload: string | null };
+  | { type: "ADD_ESSAY"; payload: Essay }
+  | { type: "SET_ESSAY"; payload: Essay[] }
+  | { type: "SET_LOADING"; payload: boolean }
+  | { type: "DELETE_ESSAY"; payload: number }
+  | { type: "UPDATE_ESSAY"; payload: Essay }
+  | { type: "UPDATE_ESSAY_CORRECTED"; payload: { id: number; correctedContent: string } }
+  | { type: "SET_ERROR"; payload: string | null };
 
 export type CreateEssayPayload = {
     title: string;

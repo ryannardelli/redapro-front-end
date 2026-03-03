@@ -70,44 +70,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 };
 
-//   const login = async (email: string, password: string) => {
-//   try {
-//     dispatch({ type: "SET_LOADING", payload: true });
-
-//     const { token }: LoginResponse = await userAuthentication.login({ email, password });
-//     localStorage.setItem("token", token);
-
-//     const user = await getMe(); 
-
-//     dispatch({ type: "LOGIN", payload: { token, user } });
-
-//     return user;
-//   } catch (err: any) {
-//     dispatch({ type: "SET_ERROR", payload: err.message});
-//   } finally {
-//     dispatch({ type: "SET_LOADING", payload: false });
-//   }
-// };
-
-  // const login = async (email: string, password: string) => {
-  //   try {
-  //     dispatch({ type: "SET_LOADING", payload: true });
-
-  //     const { token, user }: LoginResponse = await userAuthentication.login({ email, password });
-
-  //     localStorage.setItem("token", token);
-
-  //     dispatch({ type: "LOGIN", payload: { token, user } });
-
-  //     return user;
-  //   } catch (err: any) {
-  //     dispatch({ type: "SET_ERROR", payload: err.message});
-  //     throw err;
-  //   } finally {
-  //     dispatch({ type: "SET_LOADING", payload: false });
-  //   }
-  // };
-
   const registerUser = async (name: string, email: string, password: string) => {
   dispatch({ type: "SET_LOADING", payload: true });
 

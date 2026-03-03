@@ -14,6 +14,7 @@ type EssayContextType = {
   createEssay: (data: CreateEssayPayload) => Promise<Essay>;
   updateEssay: (id: number, data: CreateEssayPayload) => Promise<Essay>;
   deleteEssay: (id: number) => Promise<void>;
+  correctEssayAI: (essayId: number) => Promise<{ message: string; essay: string }>;
 };
 
 export const EssayContext = createContext<EssayContextType>({
@@ -31,4 +32,6 @@ export const EssayContext = createContext<EssayContextType>({
   deleteEssay: async () => {
     throw new Error("deleteEssay not implemented");
   },
+
+  correctEssayAI: async () => { throw new Error("correctEssayAI not implemented"); },
 });

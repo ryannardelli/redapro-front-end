@@ -1,7 +1,7 @@
 import { useEffect, useReducer, type ReactNode, useCallback } from "react";
 import { EssayContext } from "./EssayContext";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { getUserEssays, create_essay, delete_essay, update_essay } from "../../services/essay";
+import { getUserEssays, create_essay, delete_essay, update_essay, correctEssayWithAI } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload } from "../../models/Essay";
 
@@ -132,12 +132,31 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
   }
 };
 
+const correctEssayAI = async (essayId: number) => {
+    try {
+      dispatchEssay({ type: "SET_LOADING", payload: true });
+      const response = await correctEssayWithAI(essayId);
 
+      dispatchEssay({ type: "UPDATE_ESSAY_CORRECTED", payload: { id: essayId, correctedContent: response.essay } });
+
+      await loadUserEssays();
+
+      return response;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Erro ao corrigir redação com IA";
+      dispatchEssay({ type: "SET_ERROR", payload: message });
+      throw error;
+    } finally {
+      dispatchEssay({ type: "SET_LOADING", payload: false });
+    }
+  };
+  
   return (
     <EssayContext.Provider
       value={{
         stateEssay,
         createEssay,
+        correctEssayAI,
         deleteEssay,
         updateEssay,
       }}
