@@ -8,11 +8,13 @@ import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceS
 
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
 import { FileText } from "lucide-react";
+import { Pagination } from "@components/domain/EssaysReference/Pagination/Pagination";
 
 export default function AdminModelsEssay() {
   const { stateReferenceEssay } = useReferenceEssay();
   const loading = stateReferenceEssay.loading;
   const essays = stateReferenceEssay.essays ?? [];
+  const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -95,6 +97,12 @@ export default function AdminModelsEssay() {
           description="Não encontramos resultados para sua busca ou ainda não há cadastros."
         />
       )}
+
+       <Pagination
+          currentPage={page}
+          totalPages={3}
+          onPageChange={setPage}
+        />
     </section>
   );
 }

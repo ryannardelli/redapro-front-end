@@ -1,16 +1,18 @@
 import { useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 
 import { EssaysReferenceCard } from "../EssaysReferenceCard";
 import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceSkeleton";
 import { ModelsEssayFilter } from "@components/ui/Filters/ModelsEssayFilter";
 import { EmptyState } from "@components/feedback/EmptyState";
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
+import { Pagination } from "../Pagination/Pagination";
 
 export function ModelsEssays() {
   const { stateReferenceEssay } = useReferenceEssay();
   const loading = stateReferenceEssay.loading;
   const essays = stateReferenceEssay.essays ?? [];
+  const [page, setPage] = useState(1);
 
   const [filters, setFilters] = useState({
     search: "",
@@ -90,38 +92,11 @@ export function ModelsEssays() {
         />
       )}
 
-      <div className="flex justify-center items-center mt-16 gap-6">
-        <button className="group flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-purple-600 transition-all cursor-pointer">
-          <ChevronLeft
-            size={20}
-            className="group-hover:-translate-x-1 transition-transform"
-          />
-          Anterior
-        </button>
-
-        <div className="flex gap-2">
-          {[1, 2, 3].map((n) => (
-            <button
-              key={n}
-              className={`w-10 h-10 rounded-full font-bold text-sm transition-all ${
-                n === 1
-                  ? "bg-purple-600 text-white"
-                  : "text-slate-400 hover:bg-slate-200"
-              }`}
-            >
-              {n}
-            </button>
-          ))}
-        </div>
-
-        <button className="group flex items-center gap-2 text-sm font-bold text-slate-500 hover:text-purple-600 transition-all cursor-pointer">
-          Próximo
-          <ChevronRight
-            size={20}
-            className="group-hover:translate-x-1 transition-transform"
-          />
-        </button>
-      </div>
+      <Pagination
+        currentPage={page}
+        totalPages={3}
+        onPageChange={setPage}
+      />
     </section>
   );
 }
