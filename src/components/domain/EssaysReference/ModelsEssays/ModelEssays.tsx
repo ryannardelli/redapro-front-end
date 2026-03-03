@@ -33,12 +33,10 @@ export function ModelsEssays() {
       }
 
       if (filters.year) {
-        const essayYear = essay.createdAt
-          ? new Date(essay.createdAt).getFullYear().toString()
-          : "";
+      if (!essay.year) return false;
 
-        if (essayYear !== filters.year) return false;
-      }
+      if (essay.year.toString() !== filters.year) return false;
+    }
 
       return true;
     });
@@ -59,7 +57,7 @@ export function ModelsEssays() {
       <ModelsEssayFilter
         search={filters.search}
         year={filters.year}
-        years={["2024", "2023", "2022"]}
+        years={["2024", "2023", "2022", "2021", "2020"]}
         total={filteredEssays.length}
         onSearchChange={(value) =>
           setFilters((prev) => ({ ...prev, search: value }))

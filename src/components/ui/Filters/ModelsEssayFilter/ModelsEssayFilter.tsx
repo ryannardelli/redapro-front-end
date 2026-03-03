@@ -11,7 +11,6 @@ export function ModelsEssayFilter({
 }: ModelsEssayFilterProps) {
   return (
     <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
-      {/* Search */}
       <div className="relative flex-1 w-full">
         <Search
           size={18}
@@ -26,7 +25,6 @@ export function ModelsEssayFilter({
         />
       </div>
 
-      {/* Filters */}
       <div className="flex items-center gap-3 w-full md:w-auto">
         <div className="relative flex-1 md:flex-none">
           <Filter
