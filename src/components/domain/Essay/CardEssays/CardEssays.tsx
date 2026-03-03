@@ -1,5 +1,5 @@
 import defaultEssay from '../../../../assets/img/defaultEssay.jpg';
-import { Edit3, Award, Calendar, Sparkles, Locate, Lock } from 'lucide-react';
+import { Edit3, Award, Calendar, Sparkles, Lock } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { showMessage } from 'adapters/showMessage';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
@@ -11,12 +11,52 @@ import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
 import { AICorrectionButton } from '../AICorrectionButton';
 import { SpinnerLoading } from '@components/ui/Loading/SpinnerLoading';
+import { useMemo } from 'react';
+import type { EssayFilters } from 'types/EssayFilters';
 
-export function CardEssays() {
+export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
 
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
+
+  const filteredEssays = useMemo(() => {
+    return essays.filter((essay) => {
+
+      if (
+        filters.search &&
+        !essay.title.toLowerCase().includes(filters.search.toLowerCase())
+      ) {
+        return false;
+      }
+
+      if (
+        filters.categoryId &&
+        essay.category?.id !== filters.categoryId
+      ) {
+        return false;
+      }
+
+      if (filters.scoreRange) {
+        if (essay.note === null || essay.note === undefined) return false;
+
+        const [min, max] = filters.scoreRange.split('-').map(Number);
+        if (essay.note < min || essay.note > max) return false;
+      }
+
+      if (filters.status) {
+        const status = filters.status.toLowerCase();
+
+        const hasGrade =
+          essay.note !== null && essay.note !== undefined;
+
+        if (status === 'corrigida' && !hasGrade) return false;
+        if (status === 'pendente' && hasGrade) return false;
+      }
+
+      return true;
+    });
+  }, [essays, filters]);
 
   const handleDelete = async (id: number) => {
     showMessage.dismiss();
@@ -34,9 +74,9 @@ export function CardEssays() {
           try {
             const responseDeleteEssay = await deleteEssay(id);
             showMessage.success(responseDeleteEssay.message);
-          } catch(err) {
+          } catch (err) {
             const errorMessage =
-            err instanceof Error ? err.message : err?.message;
+              err instanceof Error ? err.message : err?.message;
 
             console.error(err);
             showMessage.error(errorMessage);
@@ -49,11 +89,9 @@ export function CardEssays() {
   const handleAICorrection = async (id: number) => {
     showMessage.dismiss();
 
-
     try {
       const AIcorrectResponse = await correctEssayAI(id);
       showMessage.success(AIcorrectResponse.message);
-      
     } catch (err: any) {
       const errorMessage =
         err instanceof Error ? err.message : err?.message;
@@ -66,6 +104,7 @@ export function CardEssays() {
   return (
     <section className="px-4 py-12 mx-auto max-w-7xl">
       {loading && <SpinnerLoading />}
+
       <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
           <h2 className="text-4xl font-black tracking-tight text-gray-900">
@@ -76,7 +115,7 @@ export function CardEssays() {
           </p>
         </div>
 
-        {essays.length > 0 && (
+        {filteredEssays.length > 0 && (
           <RouterLinks
             className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-all shadow-sm cursor-pointer"
             href="/essay-upload"
@@ -87,22 +126,15 @@ export function CardEssays() {
         )}
       </header>
 
-      {essays.length === 0 ? (
+      {filteredEssays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
           <p className="mb-6 text-xl text-gray-500 font-medium">
-            Você ainda não submeteu nenhuma redação.
+            Nenhuma redação encontrada com os filtros aplicados.
           </p>
-
-          <RouterLinks
-            className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all transform hover:scale-105 shadow-xl cursor-pointer"
-            href="/essay-upload"
-          >
-            Começar minha primeira redação
-          </RouterLinks>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {essays.map((essay) => {
+          {filteredEssays.map((essay) => {
             const hasGrade =
               essay.note !== null && essay.note !== undefined;
 
@@ -194,20 +226,20 @@ export function CardEssays() {
                       <ShowResultEssay essay={essay} />
                     )}
 
-                            <div className="flex gap-2 w-full">
-                              {hasGrade ? (
-                                <div 
-                                  className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-gray-100 text-gray-400 rounded-xl font-medium cursor-not-allowed border border-gray-200 transition-colors"
-                                  title="Esta redação já foi corrigida e não pode mais ser editada."
-                                >
-                                  <Lock size={16} className="opacity-60" />
-                                  <span>Edição desativada</span>
-                                </div>
-                              ) : (
-                                <EditEssay essay={essay} />
-                              )}
-                            </div>
-                          </div>
+                    <div className="flex gap-2 w-full">
+                      {hasGrade ? (
+                        <div 
+                          className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-gray-100 text-gray-400 rounded-xl font-medium cursor-not-allowed border border-gray-200 transition-colors"
+                          title="Esta redação já foi corrigida e não pode mais ser editada."
+                        >
+                          <Lock size={16} className="opacity-60" />
+                          <span>Edição desativada</span>
+                        </div>
+                      ) : (
+                        <EditEssay essay={essay} />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
