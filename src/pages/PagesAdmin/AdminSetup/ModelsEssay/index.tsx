@@ -35,12 +35,10 @@ export default function AdminModelsEssay() {
       }
 
       if (filters.year) {
-        const essayYear = essay.createdAt
-          ? new Date(essay.createdAt).getFullYear().toString()
-          : "";
+      if (!essay.year) return false;
 
-        if (essayYear !== filters.year) return false;
-      }
+      if (essay.year.toString() !== filters.year) return false;
+    }
 
       return true;
     });
