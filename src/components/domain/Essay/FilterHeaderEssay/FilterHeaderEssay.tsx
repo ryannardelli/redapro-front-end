@@ -1,10 +1,15 @@
+import { useCategory } from "@hooks/useCategory";
 import { Search, RotateCcw, Tag, Award, Activity } from "lucide-react";
+import { useState } from "react";
 
 export function FilterHeaderEssay() {
+  const { stateCategory } = useCategory();
+  const categories = stateCategory.categories;
+  const [categoryId, setCategoryId] = useState<string>("");
+
   return (
     <div className="w-full bg-white p-2 md:p-3 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col lg:flex-row gap-3 items-stretch lg:items-center">
       
-      {/* Container do Campo de Pesquisa */}
       <div className="relative flex-1 group">
         <Search 
           size={18} 
@@ -17,21 +22,28 @@ export function FilterHeaderEssay() {
         />
       </div>
 
-      {/* Grid de Filtros - No mobile fica 2x2 ou 1x1, no desktop fica em linha */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
         
-        {/* Filtro de Tema */}
         <div className="relative flex items-center">
           <Tag size={14} className="absolute left-3 text-slate-400 pointer-events-none" />
-          <select className="w-full appearance-none bg-slate-50 border-none rounded-xl pl-9 pr-8 py-2.5 text-xs font-bold text-slate-600 focus:ring-2 focus:ring-purple-500/20 outline-none cursor-pointer hover:bg-slate-100 transition-colors">
-            <option value="">Temas</option>
-            <option value="meio-ambiente">Meio Ambiente</option>
-            <option value="tecnologia">Tecnologia</option>
-            <option value="educacao">Educação</option>
+          
+          <select
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            className="w-full appearance-none bg-slate-50 border-none rounded-xl pl-9 pr-8 py-2.5 text-xs font-bold text-slate-600 focus:ring-2 focus:ring-purple-500/20 outline-none cursor-pointer hover:bg-slate-100 transition-colors"
+          >
+            <option value="" disabled>
+              Selecione uma categoria
+            </option>
+
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
         </div>
 
-        {/* Filtro de Nota */}
         <div className="relative flex items-center">
           <Award size={14} className="absolute left-3 text-slate-400 pointer-events-none" />
           <select className="w-full appearance-none bg-slate-50 border-none rounded-xl pl-9 pr-8 py-2.5 text-xs font-bold text-slate-600 focus:ring-2 focus:ring-purple-500/20 outline-none cursor-pointer hover:bg-slate-100 transition-colors">
