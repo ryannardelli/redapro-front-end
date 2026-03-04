@@ -1,9 +1,9 @@
 import React, { type RefObject } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type EssayFormData } from "schemas/EssaySchema";
+import { type EssayFormData } from "schemas/Essay/EssaySchema";
 import { useCategory } from "@hooks/useCategory";
-import { EssayEditSchema } from "schemas/EssayEditSchema";
+import { EssayEditSchema } from "schemas/Essay/EssayEditSchema";
 
 interface EssayEditFormProps {
   formRef: RefObject<HTMLFormElement | null>;

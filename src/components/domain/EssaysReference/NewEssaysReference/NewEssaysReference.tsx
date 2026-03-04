@@ -5,7 +5,7 @@ import { showMessage } from "../../../../adapters/showMessage";
 
 import { ModalCreateBase } from "@components/ui/Modal/ModalCreateBase";
 import { EssaysReferenceCreateForm } from "../EssaysReferenceCreateForm";
-import type { EssaysReferenceData } from "schemas/EssayReferenceNewSchema";
+import type { EssaysReferenceData } from "schemas/EssayReference/EssayReferenceNewSchema";
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
 
 export function NewEssaysReference() {

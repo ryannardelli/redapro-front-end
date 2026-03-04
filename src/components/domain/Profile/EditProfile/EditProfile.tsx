@@ -1,30 +1,37 @@
 import { useRef, useState } from "react";
-import { Plus } from "lucide-react";
+import { Edit3 } from "lucide-react";
 
 import { showMessage } from "../../../../adapters/showMessage";
 
-import { ModalCreateBase } from "@components/ui/Modal/ModalCreateBase";
-import { ProfileCreateForm } from "../ProfileCreateForm";
-import type { NewProfileData } from "schemas/Profile/NewProfileSchema";
+import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
+import { ProfileEditForm } from "../ProfileEditForm";
+
+import type { EditProfileData } from "schemas/Profile/EditProfileSchema";
+import type { Profile } from "models/Profile";
+
 import { useProfile } from "@hooks/useProfile";
 
-export function NewProfile() {
+interface EditProfileProps {
+  profile: Profile;
+}
+
+export function EditProfile({ profile }: EditProfileProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { createProfile, stateProfile } = useProfile();
+  const { updateProfile, stateProfile } = useProfile();
   const loading = stateProfile.loadingProfiles;
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleCreateTrigger = () => {
+  const handleSaveTrigger = () => {
     if (!loading) {
       formRef.current?.requestSubmit();
     }
   };
 
-  const onFormSubmit = async (data: NewProfileData) => {
+  const onFormSubmit = async (data: EditProfileData) => {
     try {
-      const response = await createProfile({
+      const response = await updateProfile(profile.id, {
         name: data.name.trim(),
         description: data.description?.trim() || null,
       });
@@ -44,30 +51,29 @@ export function NewProfile() {
   return (
     <>
       <button
+        title="Editar"
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-100 font-medium text-sm cursor-pointer"
-        title="Criar novo perfil"
+        className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition cursor-pointer"
       >
-        <Plus size={16} />
-        Criar Perfil
+        <Edit3 size={18} />
       </button>
 
-      <ModalCreateBase
-        title="Criar Novo Perfil"
+      <ModalEditBase
+        title="Editar Perfil"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        onCreate={handleCreateTrigger}
+        onSave={handleSaveTrigger}
         isLoading={loading}
       >
-        <ProfileCreateForm
-          initialData={{
-            name: "",
-            description: "",
-          }}
+        <ProfileEditForm
           formRef={formRef}
+          initialData={{
+            name: profile.name,
+            description: profile.description ?? "",
+          }}
           onSubmit={onFormSubmit}
         />
-      </ModalCreateBase>
+      </ModalEditBase>
     </>
   );
 }

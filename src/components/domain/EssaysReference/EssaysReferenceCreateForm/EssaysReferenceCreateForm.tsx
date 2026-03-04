@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EssaysReferenceSchema, type EssaysReferenceData } from "schemas/EssayReferenceNewSchema";
+import { EssaysReferenceSchema, type EssaysReferenceData } from "schemas/EssayReference/EssayReferenceNewSchema";
 import { useCategory } from "@hooks/useCategory";
 
 interface EssaysReferenceCreateFormProps {

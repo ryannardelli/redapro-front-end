@@ -1,5 +1,5 @@
 import type { UseFormRegister, FieldErrors } from "react-hook-form";
-import type { RegisterFormData } from "schemas/RegisterSchema";
+import type { RegisterFormData } from "schemas/Auth/RegisterSchema";
 
 type Props = {
   register: UseFormRegister<RegisterFormData>;

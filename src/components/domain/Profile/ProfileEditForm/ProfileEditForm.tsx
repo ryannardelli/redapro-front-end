@@ -1,27 +1,29 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  NewProfileSchema,
-  type NewProfileData,
-} from "schemas/Profile/NewProfileSchema";
 
-interface ProfileCreateFormProps {
-  initialData: NewProfileData;
-  onSubmit: (data: NewProfileData) => void;
+import {
+  EditProfileSchema,
+  type EditProfileData,
+} from "schemas/Profile/EditProfileSchema";
+
+interface ProfileEditFormProps {
+  initialData: EditProfileData;
+  onSubmit: (data: EditProfileData) => void;
   formRef: React.Ref<HTMLFormElement>;
 }
 
-export function ProfileCreateForm({
+export function ProfileEditForm({
   initialData,
   onSubmit,
   formRef,
-}: ProfileCreateFormProps) {
+}: ProfileEditFormProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewProfileData>({
-    resolver: zodResolver(NewProfileSchema),
+  } = useForm<EditProfileData>({
+    resolver: zodResolver(EditProfileSchema),
     defaultValues: initialData,
   });
 
@@ -50,7 +52,7 @@ export function ProfileCreateForm({
         <input
           {...register("name")}
           className={inputStyle(!!errors.name)}
-          placeholder="Ex: Professor"
+          placeholder="Ex: Administrador"
         />
 
         {errors.name && (
@@ -71,7 +73,7 @@ export function ProfileCreateForm({
           className={`${inputStyle(
             !!errors.description
           )} resize-none leading-relaxed`}
-          placeholder="Ex: Perfil com acesso restrito no sistema"
+          placeholder="Ex: Perfil com permissões administrativas"
         />
 
         {errors.description && (

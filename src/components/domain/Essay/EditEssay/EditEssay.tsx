@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Edit3 } from "lucide-react";
 import { useEssay } from "../../../../hooks/useEssay";
 import { showMessage } from "../../../../adapters/showMessage";
-import type { EssayFormData } from "../../../../schemas/EssaySchema";
+import type { EssayFormData } from "../../../../schemas/Essay/EssaySchema";
 import { EssayEditForm } from "../EssayEditForm";
 import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
 

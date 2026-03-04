@@ -6,7 +6,7 @@ import { showMessage } from "../../../../adapters/showMessage";
 
 import { ModalCreateBase } from "@components/ui/Modal/ModalCreateBase";
 import { CategoryCreateForm } from "../CategoryCreateForm";
-import type { CategoryCreateData } from "schemas/CategoryNewSchema";
+import type { CategoryCreateData } from "schemas/Category/CategoryNewSchema";
 
 export function NewCategory() {
   const [isOpen, setIsOpen] = useState(false);
