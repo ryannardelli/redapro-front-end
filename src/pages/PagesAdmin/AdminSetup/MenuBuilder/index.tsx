@@ -305,7 +305,6 @@ export function MenuBuilder() {
 
   const profiles: Profile[] = stateProfile.profiles;
   const backendMenus = stateProfile.menusByEditingProfile;
-  // const backendMenus: Menu[] = stateProfile.menus;
   
   const [activeTab, setActiveTab] = useState<number | null>(null);
   const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
