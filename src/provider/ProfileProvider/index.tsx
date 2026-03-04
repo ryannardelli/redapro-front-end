@@ -117,6 +117,8 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
 
       const response = await delete_profile(profileId);
 
+      await loadUserProfiles();
+
       dispatchProfile({
         type: "DELETE_PROFILE",
         payload: profileId,

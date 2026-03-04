@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
+
 import {
-  Trash2,
   Edit3,
   UserPlus,
   ShieldCheck,
@@ -10,6 +10,10 @@ import {
 import { useProfile } from "@hooks/useProfile";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { NewProfile } from "@components/domain/Profile/NewProfile";
+import { DeleteProfile } from "@components/domain/Profile/DeleteProfile/DeleteProfile";
+import { Dialog } from "@components/feedback/DialogConfirm/Dialog";
+import { toast } from "react-toastify";
+import { showMessage } from "adapters/showMessage";
 
 const profileColorMap: Record<string, string> = {
   Administrador: "bg-purple-100 text-purple-600",
@@ -18,7 +22,8 @@ const profileColorMap: Record<string, string> = {
 };
 
 export function ProfileBuilder() {
-  const { stateProfile } = useProfile();
+  const { stateProfile, deleteProfile } = useProfile();
+  const loading = stateProfile.loadingProfiles;
   const backendProfiles = stateProfile.profiles || [];
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,9 +33,33 @@ export function ProfileBuilder() {
     setProfiles(backendProfiles);
   }, [backendProfiles]);
 
-  const deleteProfile = (id: number) => {
-    setProfiles(prev => prev.filter(p => p.id !== id));
-  };
+   const handleDelete = async (id: number) => {
+      showMessage.dismiss();
+  
+      toast(Dialog, {
+        data: "Tem certeza que deseja excluir este perfil?",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        onClose: async (props) => {
+          const isConfirmed = props?.data === true || props === true;
+  
+          if (isConfirmed) {
+            try {
+              const responseDeleteEssay = await deleteProfile(id);
+              showMessage.success(responseDeleteEssay.message);
+            } catch (err) {
+              const errorMessage =
+                err instanceof Error ? err.message : err?.message;
+  
+              console.error(err);
+              showMessage.error(errorMessage);
+            }
+          }
+        }
+      });
+    };
 
   const filteredProfiles = useMemo(() => {
     return profiles.filter(profile =>
@@ -155,22 +184,11 @@ export function ProfileBuilder() {
                           <Edit3 size={18} />
                         </button>
 
-                        <button
-                          onClick={() => deleteProfile(profile.id)}
-                          disabled={profile.system}
-                          title={
-                            profile.system
-                              ? "Perfis do sistema não podem ser excluídos"
-                              : "Excluir"
-                          }
-                          className={`p-2 rounded-lg transition-colors ${
-                            profile.system
-                              ? "text-gray-300 cursor-not-allowed"
-                              : "text-gray-400 hover:text-red-600 hover:bg-red-50"
-                          }`}
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        <DeleteProfile
+                           onDelete={() => handleDelete(profile.id)}
+                           loading={loading}
+                           title="Excluir"
+                        />
                       </div>
                     </td>
                   </tr>
