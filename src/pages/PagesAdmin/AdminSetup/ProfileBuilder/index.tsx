@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useProfile } from "@hooks/useProfile";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
+import { NewProfile } from "@components/domain/Profile/NewProfile";
 
 export function ProfileBuilder() {
   const { stateProfile } = useProfile();
@@ -53,13 +54,7 @@ export function ProfileBuilder() {
             />
           </div>
 
-          <button
-            type="button"
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition-colors"
-          >
-            <Plus size={18} />
-            Criar Perfil
-          </button>
+          <NewProfile />
         </div>
       </header>
 
