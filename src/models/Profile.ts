@@ -47,3 +47,7 @@ export type UpdateProfilePayload = {
     name: string;
     description: string;
 };
+
+export type CreateProfileResponse = {
+  message: string;
+};

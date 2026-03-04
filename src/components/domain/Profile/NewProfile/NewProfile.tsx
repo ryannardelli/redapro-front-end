@@ -37,6 +37,7 @@ export function NewProfile() {
 
       console.error(err);
       showMessage.error(errorMessage);
+      setIsOpen(false);
     }
   };
 

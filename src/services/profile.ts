@@ -1,5 +1,5 @@
 import type { Menu } from "models/Menu";
-import type { Profile } from "../models/Profile";
+import type { CreateProfileResponse, Profile } from "../models/Profile";
 import { userAuthentication } from "./auth";
 
 const API_URL = "/api/profile";
@@ -60,30 +60,24 @@ export async function create_profile(
     description: string;
     system?: boolean;
   }
-): Promise<Profile> {
+): Promise<CreateProfileResponse> {
   const token = userAuthentication.getTokenFromStorage();
 
-  try {
-    const res = await fetch(`${API_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    });
+  const res = await fetch(`${API_URL}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
 
-    if (!res.ok) {
-      const errorData = await res.json().catch(() => null);
-      throw new Error(errorData?.message ?? "Erro ao criar perfil.");
-    }
-
-    const profile: Profile = await res.json();
-    return profile;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+    throw new Error(errorData?.message ?? "Erro ao criar perfil.");
   }
+
+  return await res.json();
 }
 
 export async function update_profile(
