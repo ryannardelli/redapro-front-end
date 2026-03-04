@@ -4,6 +4,8 @@ export interface Profile {
     id: number;
     name: string;
     description: string;
+    active: boolean;
+    system: boolean;
 };
 
 export type ProfileState = {

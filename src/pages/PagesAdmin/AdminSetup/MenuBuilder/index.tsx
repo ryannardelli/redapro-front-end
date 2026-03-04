@@ -305,6 +305,10 @@ export function MenuBuilder() {
 
   const profiles: Profile[] = stateProfile.profiles;
   const backendMenus = stateProfile.menusByEditingProfile;
+
+  const systemProfiles = useMemo(() => {
+      return profiles.filter(profile => profile.system);
+  }, [profiles]);
   
   const [activeTab, setActiveTab] = useState<number | null>(null);
   const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
@@ -331,8 +335,8 @@ export function MenuBuilder() {
     setLastSavedMenus(prev => ({ ...prev, [activeTab]: formattedMenus }));
   }, [backendMenus, activeTab]);
 
-  const profileTabs = useMemo(() => {
-    return profiles.map(profile => ({
+   const profileTabs = useMemo(() => {
+    return systemProfiles.map(profile => ({
       value: profile.id,
       label: profile.name,
       icon:
@@ -340,13 +344,13 @@ export function MenuBuilder() {
         profile.name === "Corretor" ? <UserCheck size={18} /> :
         <GraduationCap size={18} />
     }));
-  }, [profiles]);
+  }, [systemProfiles]);
 
   useEffect(() => {
-    if (profiles.length && activeTab === null) {
-      setActiveTab(profiles[0].id);
-    }
-  }, [profiles, activeTab]);
+  if (systemProfiles.length && activeTab === null) {
+    setActiveTab(systemProfiles[0].id);
+  }
+}, [systemProfiles, activeTab]);
 
   const currentMenus = activeTab ? activeMenus[activeTab] || [] : [];
   const hasActiveMenu = currentMenus.length === 1;
