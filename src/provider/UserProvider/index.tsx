@@ -49,12 +49,47 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, [loadUsers, state.isAuthenticated, state.loading]);
 
+  const deleteUser = useCallback(async (id: number) => {
+  try {
+    dispatchUser({ type: "SET_LOADING_USERS", payload: true });
+
+    const response = await catchInformationsUser.deleteUser(id);
+
+    dispatchUser({
+      type: "DELETE_USER",
+      payload: id,
+    });
+
+    return response;
+
+  } catch (error) {
+    console.error(error);
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao excluir usuário";
+
+    if(error instanceof Error) {
+      dispatchUser({
+        type: "SET_ERROR_USERS",
+        payload: error.message,
+      });
+    }
+
+    throw error;
+  } finally {
+    dispatchUser({ type: "SET_LOADING_USERS", payload: false });
+  }
+}, []);
+
   return (
     <UserContext.Provider
       value={{
         stateUser,
         dispatchUser,
         loadUsers,
+        deleteUser
       }}
     >
       {children}

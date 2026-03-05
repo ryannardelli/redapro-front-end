@@ -5,18 +5,52 @@ import {
   Mail,
   Trash2,
   UserX,
-  XCircle
+  XCircle,
+  Eye
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { EmptyState } from "@components/feedback/EmptyState";
 import { useState, useMemo } from "react";
+import { DeleteUser } from "@components/domain/Users/DeleteUser";
+import { toast } from "react-toastify";
+import { showMessage } from "adapters/showMessage";
+import { Dialog } from "@components/feedback/DialogConfirm/Dialog";
 
 export function UsersBuilder() {
-  const { stateUser } = useUsers();
+  const { stateUser, deleteUser } = useUsers();
   const { users, loadingUsers } = stateUser;
+  const loading = stateUser.loadingUsers;
 
   const [search, setSearch] = useState("");
+
+  const handleDelete = async (id: number) => {
+      showMessage.dismiss();
+  
+      toast(Dialog, {
+        data: "Tem certeza que deseja excluir este usuário?",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        onClose: async (props) => {
+          const isConfirmed = props?.data === true || props === true;
+  
+          if (isConfirmed) {
+            try {
+              const responseDeleteUser = await deleteUser(id);
+              showMessage.success(responseDeleteUser.message);
+            } catch (err) {
+              const errorMessage =
+                err instanceof Error ? err.message : err?.message;
+  
+              console.error(err);
+              showMessage.error(errorMessage);
+            }
+          }
+        }
+      });
+    };
 
   const filteredUsers = useMemo(() => {
     if (!search) return users;
@@ -127,7 +161,15 @@ export function UsersBuilder() {
                     </td>
 
                     <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-1">                
+                      <div className="flex justify-end gap-1">
+
+                       <button 
+                          title="Ver mais" 
+                          className="p-2 text-slate-400 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all cursor-pointer"
+                        >
+                          <Eye size={18} />
+                      </button>
+
                         <button 
                           title="Desativar" 
                           className="p-2 text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all cursor-pointer"
@@ -142,12 +184,11 @@ export function UsersBuilder() {
                           <XCircle size={18} />
                         </button>
 
-                        <button 
-                          title="Excluir" 
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
-                        >
-                          <Trash2 size={18} />
-                        </button>
+                        <DeleteUser
+                          onDelete={() => handleDelete(user.id)}
+                          loading={loading}
+                          title="Excluir usuário"
+                        />
                       </div>
                     </td>
                   </tr>

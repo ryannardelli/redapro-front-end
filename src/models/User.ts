@@ -24,4 +24,5 @@ export type UserState = {
 export type UserAction =
   | { type: "SET_USERS"; payload: User[] }
   | { type: "SET_LOADING_USERS"; payload: boolean }
-  | { type: "SET_ERROR_USERS"; payload: string | null };
+  | { type: "SET_ERROR_USERS"; payload: string | null }
+  | { type: "DELETE_USER"; payload: number };

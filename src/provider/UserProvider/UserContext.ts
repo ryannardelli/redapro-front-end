@@ -7,6 +7,7 @@ type UserContextType = {
   dispatchUser: (action: UserAction) => void;
 
   loadUsers: () => Promise<void>;
+  deleteUser: (id: number) => Promise<void>;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -16,4 +17,8 @@ export const UserContext = createContext<UserContextType>({
   loadUsers: async () => {
     throw new Error("loadUsers not implemented");
   },
+
+  deleteUser: async () => {
+    throw new Error("deleteUser not implemented");
+  }
 });
