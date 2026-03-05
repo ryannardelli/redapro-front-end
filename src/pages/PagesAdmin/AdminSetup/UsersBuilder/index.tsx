@@ -1,21 +1,67 @@
-import {
-  Edit,
+import { 
   Shield,
-  MoreVertical,
   Search,
   User as UserIcon,
   Mail,
-  Filter
+  Trash2,
+  UserX,
+  XCircle,
+  Eye
 } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { EmptyState } from "@components/feedback/EmptyState";
+import { useState, useMemo } from "react";
+import { DeleteUser } from "@components/domain/Users/DeleteUser";
+import { toast } from "react-toastify";
+import { showMessage } from "adapters/showMessage";
+import { Dialog } from "@components/feedback/DialogConfirm/Dialog";
 
 export function UsersBuilder() {
-  const { stateUser } = useUsers();
+  const { stateUser, deleteUser } = useUsers();
   const { users, loadingUsers } = stateUser;
+  const loading = stateUser.loadingUsers;
 
-  console.log(users);
+  const [search, setSearch] = useState("");
+
+  const handleDelete = async (id: number) => {
+      showMessage.dismiss();
+  
+      toast(Dialog, {
+        data: "Tem certeza que deseja excluir este usuário?",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        onClose: async (props) => {
+          const isConfirmed = props?.data === true || props === true;
+  
+          if (isConfirmed) {
+            try {
+              const responseDeleteUser = await deleteUser(id);
+              showMessage.success(responseDeleteUser.message);
+            } catch (err) {
+              const errorMessage =
+                err instanceof Error ? err.message : err?.message;
+  
+              console.error(err);
+              showMessage.error(errorMessage);
+            }
+          }
+        }
+      });
+    };
+
+  const filteredUsers = useMemo(() => {
+    if (!search) return users;
+    const lowerSearch = search.toLowerCase();
+    return users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(lowerSearch) ||
+        user.email.toLowerCase().includes(lowerSearch) ||
+        user.role.toLowerCase().includes(lowerSearch)
+    );
+  }, [search, users]);
 
   const getRoleStyles = (role: string) => {
     switch (role?.toLowerCase()) {
@@ -48,14 +94,12 @@ export function UsersBuilder() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
             <input
               type="text"
-              placeholder="Buscar por nome, email ou cargo..."
+              placeholder="Buscar nome..."
               className="w-full pl-10 pr-4 py-2 bg-slate-50 border-transparent focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 rounded-lg transition-all outline-none text-sm"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <button className="flex items-center gap-2 px-3 py-2 text-slate-600 hover:bg-slate-50 rounded-lg border border-slate-200 transition-colors text-sm font-medium">
-            <Filter size={16} />
-            Filtros
-          </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -71,15 +115,15 @@ export function UsersBuilder() {
 
             <tbody className="divide-y divide-slate-50">
               {loadingUsers ? (
-                 <tr>
-                    <td colSpan={4}>
-                      <div className="flex items-center justify-center py-20">
-                        <ListLoading text="Carregando usuários..." />
-                      </div>
-                    </td>
-                  </tr>
-              ) : users.length > 0 ? (
-                users.map((user) => (
+                <tr>
+                  <td colSpan={4}>
+                    <div className="flex items-center justify-center py-20">
+                      <ListLoading text="Carregando usuários..." />
+                    </div>
+                  </td>
+                </tr>
+              ) : filteredUsers.length > 0 ? (
+                filteredUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-slate-50/80 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -102,7 +146,7 @@ export function UsersBuilder() {
                     <td className="px-6 py-4">
                       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium ${getRoleStyles(user.role)}`}>
                         <Shield size={12} />
-                        {user.role === "admin" ? "Administrador" : "Aluno"}
+                        {user.role === "admin" ? "Administrador" : "Estudante"}
                       </div>
                     </td>
 
@@ -118,12 +162,33 @@ export function UsersBuilder() {
 
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-1">
-                        <button title="Editar" className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all">
-                          <Edit size={18} />
+
+                       <button 
+                          title="Ver mais" 
+                          className="p-2 text-slate-400 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all cursor-pointer"
+                        >
+                          <Eye size={18} />
+                      </button>
+
+                        <button 
+                          title="Desativar" 
+                          className="p-2 text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all cursor-pointer"
+                        >
+                          <UserX size={18} />
                         </button>
-                        <button title="Mais opções" className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all">
-                          <MoreVertical size={18} />
+
+                        <button 
+                          title="Bloquear" 
+                          className="p-2 text-slate-400 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all cursor-pointer"
+                        >
+                          <XCircle size={18} />
                         </button>
+
+                        <DeleteUser
+                          onDelete={() => handleDelete(user.id)}
+                          loading={loading}
+                          title="Excluir usuário"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -141,14 +206,6 @@ export function UsersBuilder() {
               )}
             </tbody>
           </table>
-        </div>
-        
-        <div className="px-6 py-4 bg-slate-50/50 border-t border-slate-100 flex items-center justify-between text-sm text-slate-500">
-           <span>Exibindo {users.length} usuários</span>
-           <div className="flex gap-2">
-              <button className="px-3 py-1 border rounded bg-white disabled:opacity-50">Anterior</button>
-              <button className="px-3 py-1 border rounded bg-white hover:bg-slate-50 transition-colors">Próximo</button>
-           </div>
         </div>
       </div>
     </div>

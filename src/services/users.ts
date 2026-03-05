@@ -3,6 +3,7 @@ const API_URL = "/api/users";
 interface CatchInformationsUser {
     getUserById: (id: number) => Promise<User>;
     findAll: () => Promise<User[]>;
+    deleteUser: (id: number) => Promise<void>;
 }
 
 import type { User } from "../models/User";
@@ -48,7 +49,31 @@ export const catchInformationsUser: CatchInformationsUser = {
 
         const data =  res.json() as Promise<User[]>;
         return data;
+    },
+
+    deleteUser: async (id: number) => {
+    const token = userAuthentication.getTokenFromStorage();
+
+    try {
+        const res = await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!res.ok) {
+            const errorData = await res.json().catch(() => null);
+            throw new Error(errorData?.message || "Erro ao excluir usuário");
     }
+
+    return await res.json();
+    } catch(error) {
+        console.error(error);
+        throw error;
+    }
+}
 };
 
 export async function getMe(): Promise<User> {

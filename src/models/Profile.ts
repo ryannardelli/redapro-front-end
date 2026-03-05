@@ -4,6 +4,8 @@ export interface Profile {
     id: number;
     name: string;
     description: string;
+    active: boolean;
+    system: boolean;
 };
 
 export type ProfileState = {
@@ -46,4 +48,8 @@ export type CreateProfilePayload = {
 export type UpdateProfilePayload = {
     name: string;
     description: string;
+};
+
+export type CreateProfileResponse = {
+  message: string;
 };

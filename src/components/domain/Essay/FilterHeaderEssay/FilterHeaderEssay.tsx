@@ -99,7 +99,8 @@ export function FilterHeaderEssay({
             status: ""
           })
         }
-        className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-95 border border-transparent hover:border-rose-100"
+        title="Limpar filtros"
+        className="flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-rose-500 hover:bg-rose-50 rounded-xl transition-all active:scale-95 border border-transparent hover:border-rose-100 cursor-pointer"
       >
         <RotateCcw size={14} />
         <span className="lg:hidden">Limpar filtros</span>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterSchema, type RegisterFormData } from "../../schemas/RegisterSchema";
+import { RegisterSchema, type RegisterFormData } from "../../schemas/Auth/RegisterSchema";
 import { useAuth } from "../../hooks/useAuth";
 import { showMessage } from "../../adapters/showMessage";
 import { useNavigate } from "react-router";

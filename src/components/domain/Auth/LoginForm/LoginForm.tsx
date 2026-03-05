@@ -2,7 +2,7 @@ import { useAuth } from '@hooks/useAuth';
 import imageLogin from '../../../../assets/img/image-login.svg';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router';
-import { LoginSchema, type LoginFormData } from 'schemas/LoginSchema';
+import { LoginSchema, type LoginFormData } from 'schemas/Auth/LoginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { showMessage } from 'adapters/showMessage';
 import { SpinnerLoading } from '@components/ui/Loading/SpinnerLoading';

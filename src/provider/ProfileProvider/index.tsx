@@ -88,7 +88,10 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     try {
       dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
-      const response = await create_profile(state.user.id, data);
+      const response = await create_profile({
+        name: data.name,
+        description: data.description
+      });
 
       await loadUserProfiles();
 
@@ -113,6 +116,8 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
       dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
       const response = await delete_profile(profileId);
+
+      await loadUserProfiles();
 
       dispatchProfile({
         type: "DELETE_PROFILE",

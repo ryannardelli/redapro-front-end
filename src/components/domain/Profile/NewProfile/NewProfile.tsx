@@ -1,18 +1,18 @@
 import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
 
-import { useCategory } from "../../../../hooks/useCategory";
 import { showMessage } from "../../../../adapters/showMessage";
 
 import { ModalCreateBase } from "@components/ui/Modal/ModalCreateBase";
-import { CategoryCreateForm } from "../CategoryCreateForm";
-import type { CategoryCreateData } from "schemas/Category/CategoryNewSchema";
+import { ProfileCreateForm } from "../ProfileCreateForm";
+import type { NewProfileData } from "schemas/Profile/NewProfileSchema";
+import { useProfile } from "@hooks/useProfile";
 
-export function NewCategory() {
+export function NewProfile() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { createCategory, stateCategory } = useCategory();
-  const loading = stateCategory.loading;
+  const { createProfile, stateProfile } = useProfile();
+  const loading = stateProfile.loadingProfiles;
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -22,21 +22,22 @@ export function NewCategory() {
     }
   };
 
-  const onFormSubmit = async (data: CategoryCreateData) => {
+  const onFormSubmit = async (data: NewProfileData) => {
     try {
-      const response = await createCategory({
-        name: data.name,
-        description: data.description,
+      const response = await createProfile({
+        name: data.name.trim(),
+        description: data.description?.trim() || null,
       });
 
       showMessage.success(response.message);
       setIsOpen(false);
-    } catch (err) {
+    } catch (err: any) {
       const errorMessage =
         err instanceof Error ? err.message : err?.message;
 
       console.error(err);
       showMessage.error(errorMessage);
+      setIsOpen(false);
     }
   };
 
@@ -44,21 +45,25 @@ export function NewCategory() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-indigo-100 font-medium text-sm cursor-pointer"
-        title="Nova categoria"
+        className="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl transition-all shadow-sm shadow-blue-100 font-medium text-sm cursor-pointer"
+        title="Criar novo perfil"
       >
         <Plus size={16} />
-        Nova Categoria
+        Criar Perfil
       </button>
 
       <ModalCreateBase
-        title="Nova Categoria"
+        title="Criar Novo Perfil"
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onCreate={handleCreateTrigger}
         isLoading={loading}
       >
-        <CategoryCreateForm
+        <ProfileCreateForm
+          initialData={{
+            name: "",
+            description: "",
+          }}
           formRef={formRef}
           onSubmit={onFormSubmit}
         />

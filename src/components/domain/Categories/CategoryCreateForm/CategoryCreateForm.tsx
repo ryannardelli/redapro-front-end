@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { CategoryNewSchema, type CategoryCreateData } from "../../../../schemas/CategoryNewSchema";
+import { CategoryNewSchema, type CategoryCreateData } from "../../../../schemas/Category/CategoryNewSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CategoryCreateFormProps {

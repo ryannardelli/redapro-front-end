@@ -1,14 +1,50 @@
+import { useMemo, useState } from "react";
+
 import { EssaysReferenceCard } from "@components/domain/EssaysReference/EssaysReferenceCard";
 import { NewEssaysReference } from "@components/domain/EssaysReference/NewEssaysReference";
 import { EmptyState } from "@components/feedback/EmptyState";
+import { ModelsEssayFilter } from "@components/ui/Filters/ModelsEssayFilter";
 import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceSkeleton";
+
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
-import { Search, Filter, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
+import { Pagination } from "@components/domain/EssaysReference/Pagination/Pagination";
 
 export default function AdminModelsEssay() {
   const { stateReferenceEssay } = useReferenceEssay();
   const loading = stateReferenceEssay.loading;
   const essays = stateReferenceEssay.essays ?? [];
+  const [page, setPage] = useState(1);
+
+  const [filters, setFilters] = useState({
+    search: "",
+    year: "",
+  });
+
+  const filteredEssays = useMemo(() => {
+    return essays.filter((essay) => {
+      if (filters.search) {
+        const search = filters.search.toLowerCase();
+
+        const titleMatch =
+          essay.title?.toLowerCase().includes(search);
+
+        const contentMatch =
+          typeof essay.content === "string" &&
+          essay.content.toLowerCase().includes(search);
+
+        if (!titleMatch && !contentMatch) return false;
+      }
+
+      if (filters.year) {
+      if (!essay.year) return false;
+
+      if (essay.year.toString() !== filters.year) return false;
+    }
+
+      return true;
+    });
+  }, [essays, filters]);
 
   return (
     <section className="px-6 py-10 max-w-7xl mx-auto bg-[#FAFAFA] min-h-screen">
@@ -24,44 +60,31 @@ export default function AdminModelsEssay() {
         <NewEssaysReference />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
-        <div className="relative flex-1 w-full">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            placeholder="Pesquisar por título ou conteúdo..."
-            className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all shadow-sm"
-          />
-        </div>
-        
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="relative flex-1 md:flex-none">
-            <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <select className="pl-9 pr-8 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-500/10 text-slate-600 appearance-none font-medium cursor-pointer shadow-sm">
-              <option value="">Todos os anos</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-            </select>
-          </div>
-          
-          <div className="bg-white border border-slate-200 px-4 py-3 rounded-2xl text-sm font-semibold text-slate-600 shadow-sm">
-            {essays.length} <span className="text-slate-400 font-normal ml-1 text-xs uppercase tracking-wider">itens</span>
-          </div>
-        </div>
-      </div>
+      <ModelsEssayFilter
+        search={filters.search}
+        year={filters.year}
+        years={["2024", "2023", "2022"]}
+        total={filteredEssays.length}
+        onSearchChange={(value) =>
+          setFilters((prev) => ({ ...prev, search: value }))
+        }
+        onYearChange={(value) =>
+          setFilters((prev) => ({ ...prev, year: value }))
+        }
+      />
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Array.from({ length: essays.length }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <EssaysReferenceSkeleton key={i} />
           ))}
         </div>
-      ) : essays.length > 0 ? (
+      ) : filteredEssays.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {essays.map((essay) => (
-            <EssaysReferenceCard 
-              key={essay.id} 
-              essay={essay} 
+          {filteredEssays.map((essay) => (
+            <EssaysReferenceCard
+              key={essay.id}
+              essay={essay}
               onEdit={(id) => console.log("Editando...", id)}
               onDelete={(id) => confirm("Deseja realmente excluir?")}
             />
@@ -69,11 +92,17 @@ export default function AdminModelsEssay() {
         </div>
       ) : (
         <EmptyState
-            icon={FileText}
-            title="Nenhuma redação encontrada"
-            description="Não encontramos resultados para sua busca ou ainda não há cadastros."
-          />
+          icon={FileText}
+          title="Nenhuma redação encontrada"
+          description="Não encontramos resultados para sua busca ou ainda não há cadastros."
+        />
       )}
+
+       <Pagination
+          currentPage={page}
+          totalPages={3}
+          onPageChange={setPage}
+        />
     </section>
   );
 }
