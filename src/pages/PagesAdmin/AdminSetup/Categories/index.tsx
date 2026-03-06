@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Search, LayoutGrid, Tag } from 'lucide-react';
+import { Search, LayoutGrid, Tag } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
@@ -7,6 +7,7 @@ import { DeleteCategory } from '@components/domain/Categories/DeleteCategory';
 import { toast } from 'react-toastify';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { showMessage } from 'adapters/showMessage';
+import { EditCategory } from '@components/domain/Categories/EditCategory';
 
 export function Categories() {
   const { stateCategory, delete_category } = useCategory();
@@ -121,11 +122,10 @@ export function Categories() {
                         {cat.description || "Sem descrição disponível para esta categoria."}
                       </p>
                     </td>
-                    <td className="px-6 py-5 text-right">
+                    <td className="px-6 py-5">
                       <div className="flex justify-end gap-2">
-                        <button title="Editar" className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all border border-transparent hover:border-indigo-100">
-                          <Pencil size={18} />
-                        </button>
+
+                        <EditCategory category={cat} />
 
                         <DeleteCategory
                           onDelete={() => handleDelete(cat.id)}

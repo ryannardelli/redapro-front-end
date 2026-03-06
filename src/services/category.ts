@@ -83,3 +83,32 @@ export async function deleteCategory(id: number): Promise<{ message: string }> {
     throw error;
   }
 }
+
+export async function updateCategory(
+  id: number,
+  data: { name: string; description?: string }
+): Promise<{ message: string }> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message || "Erro ao atualizar categoria");
+    }
+
+    const response = await res.json();
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

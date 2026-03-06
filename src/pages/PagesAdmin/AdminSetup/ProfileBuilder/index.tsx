@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
 import {
-  Edit3,
   UserPlus,
   ShieldCheck,
   Search
