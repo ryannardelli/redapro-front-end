@@ -1,4 +1,4 @@
-import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-react';
+import { Pencil, Trash2, Search, LayoutGrid, Tag } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
@@ -74,18 +74,7 @@ export function Categories() {
                   </tr>
                 )}
 
-                {error && (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center">
-                      <div className="flex flex-col items-center text-red-500 gap-2">
-                        <AlertCircle size={32} />
-                        <p className="font-medium">Erro ao carregar categorias.</p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-
-                {!loading && !error && categories?.map((cat) => (
+                {!loading && categories?.map((cat) => (
                   <tr key={cat.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
