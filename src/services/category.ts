@@ -27,3 +27,34 @@ export async function getAllCategories(): Promise<Category[]> {
     throw error;
   }
 }
+
+export async function createCategory(data: {
+  name: string;
+  description?: string;
+}): Promise<{ message: string; }> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  console.log("Payload enviado para API:", data);
+  
+  try {
+    const res = await fetch(`${API_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message);
+    }
+
+    const response = await res.json();
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

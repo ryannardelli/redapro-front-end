@@ -1,18 +1,18 @@
 import { createContext } from "react";
-import type { Category, CategoryAction, CategoryState, CreateCategoryPayload } from "../../models/Category"
+import type { CategoryAction, CategoryState, CreateCategoryPayload } from "../../models/Category"
 import { initialStateCategory } from "../../reducer/categoryReducer";
 
 type CategoryContextType = {
     stateCategory: CategoryState;
     dispatchCategory: (action: CategoryAction) => void;
-    createCategory: (data: CreateCategoryPayload) => Promise<Category>;
+    create_category: (data: CreateCategoryPayload) => Promise<{ message: string }>;
     deleteCategory: (id: number) => Promise<void>;
 }
 
 export const CategoryContext = createContext<CategoryContextType>({
     stateCategory: initialStateCategory,
     dispatchCategory: () => undefined,
-    createCategory: async () => {
+    create_category: async () => {
         throw new Error("categoryCreate not implemented");
     },
     deleteCategory: async () => {
