@@ -70,33 +70,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 };
 
-  const registerUser = async (name: string, email: string, password: string) => {
+const registerUser = async (name: string, email: string, password: string) => {
   dispatch({ type: "SET_LOADING", payload: true });
 
   try {
     const response = await userAuthentication.register({ name, email, password });
+    const { token, user: initialUser } = response;
 
-    const { message, token, user } = response;
+    localStorage.setItem("token", token);
+
+    let finalUser = initialUser;
+    try {
+      const fullUser = await getMe();
+      if (fullUser) finalUser = fullUser;
+    } catch (e) {
+      console.warn("Erro ao buscar dados completos do usuário:", e);
+    }
 
     dispatch({
       type: "REGISTER",
       payload: {
         token,
-        user,
+        user: finalUser,
       },
     });
 
-    localStorage.setItem("token", token);
+    return { token, user: finalUser };
 
-    return { message, token, user };
-
-  } catch (err: unknown) {
-     const message =
-    err instanceof Error ? err.message : "Erro inesperado";
-    
+  } catch (err: any) {
+    const message = err.response?.data?.message || err.message || "Erro ao registrar usuário";
     dispatch({ type: "SET_ERROR", payload: message });
-
-    throw new Error(message);
+    throw err;
+  } finally {
+    dispatch({ type: "SET_LOADING", payload: false });
   }
 };
 

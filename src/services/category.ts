@@ -33,8 +33,6 @@ export async function createCategory(data: {
   description?: string;
 }): Promise<{ message: string; }> {
   const token = userAuthentication.getTokenFromStorage();
-
-  console.log("Payload enviado para API:", data);
   
   try {
     const res = await fetch(`${API_URL}`, {
