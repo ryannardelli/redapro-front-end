@@ -58,3 +58,28 @@ export async function createCategory(data: {
     throw error;
   }
 }
+
+export async function deleteCategory(id: number): Promise<{ message: string }> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message);
+    }
+
+    const response = await res.json();
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

@@ -1,6 +1,6 @@
 import { useEffect, useReducer, type ReactNode } from "react";
 import { categoryReducer, initialStateCategory } from "../../reducer/categoryReducer";
-import { getAllCategories, createCategory } from "../../services/category";
+import { getAllCategories, createCategory, deleteCategory } from "../../services/category";
 import { CategoryContext } from "./CategoryContext";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -73,9 +73,33 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
     }
   };
 
+  const delete_category = async (id: number): Promise<{ message: string }> => {
+  try {
+    dispatchCategory({ type: "SET_LOADING", payload: true });
+
+    const response = await deleteCategory(id);
+
+    await loadCategories();
+
+    return response;
+  } catch (error) {
+    dispatchCategory({
+      type: "SET_ERROR",
+      payload:
+        error instanceof Error
+          ? error.message
+          : "Erro ao excluir categoria",
+    });
+
+    throw error;
+  } finally {
+    dispatchCategory({ type: "SET_LOADING", payload: false });
+  }
+};
+
   return (
     <CategoryContext.Provider
-      value={{ stateCategory, dispatchCategory, create_category }}
+      value={{ stateCategory, dispatchCategory, create_category, delete_category }}
     >
       {children}
     </CategoryContext.Provider>

@@ -3,10 +3,42 @@ import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
 import { StatCardSkeleton } from '@components/ui/Loading/StatCardSkeleton';
+import { DeleteCategory } from '@components/domain/Categories/DeleteCategory';
+import { toast } from 'react-toastify';
+import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
+import { showMessage } from 'adapters/showMessage';
 
 export function Categories() {
-  const { stateCategory } = useCategory();
+  const { stateCategory, delete_category } = useCategory();
   const { categories, loading, error } = stateCategory;
+
+   const handleDelete = async (id: number) => {
+        showMessage.dismiss();
+    
+        toast(Dialog, {
+          data: "Tem certeza que deseja excluir esta categoria?",
+          autoClose: false,
+          closeOnClick: false,
+          closeButton: false,
+          draggable: false,
+          onClose: async (props) => {
+            const isConfirmed = props?.data === true || props === true;
+    
+            if (isConfirmed) {
+              try {
+                const responseDeleteEssay = await delete_category(id);
+                showMessage.success(responseDeleteEssay.message);
+              } catch (err) {
+                const errorMessage =
+                  err instanceof Error ? err.message : err?.message;
+    
+                console.error(err);
+                showMessage.error(errorMessage);
+              }
+            }
+          }
+        });
+      };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8 font-sans text-slate-900">
@@ -94,9 +126,12 @@ export function Categories() {
                         <button title="Editar" className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all border border-transparent hover:border-indigo-100">
                           <Pencil size={18} />
                         </button>
-                        <button title="Excluir" className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all border border-transparent hover:border-red-100">
-                          <Trash2 size={18} />
-                        </button>
+
+                        <DeleteCategory
+                          onDelete={() => handleDelete(cat.id)}
+                          loading={loading}
+                          title="Excluir Categoria"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -118,7 +153,6 @@ export function Categories() {
   );
 }
 
-// Componentes Auxiliares
 function StatCard({ icon, label, value }) {
   return (
     <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-indigo-200 transition-colors">

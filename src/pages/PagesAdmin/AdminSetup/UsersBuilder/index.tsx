@@ -3,7 +3,6 @@ import {
   Search,
   User as UserIcon,
   Mail,
-  Trash2,
   UserX,
   XCircle,
   Eye

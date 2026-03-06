@@ -133,7 +133,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       ) : filteredEssays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
           <p className="mb-6 text-xl text-gray-500 font-medium">
-            Nenhuma redação encontrada com os filtros aplicados.
+            Não encontramos resultados para sua busca ou ainda não há cadastros.
           </p>
         </div>
       ) : (

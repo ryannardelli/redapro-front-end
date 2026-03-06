@@ -6,7 +6,7 @@ type CategoryContextType = {
     stateCategory: CategoryState;
     dispatchCategory: (action: CategoryAction) => void;
     create_category: (data: CreateCategoryPayload) => Promise<{ message: string }>;
-    deleteCategory: (id: number) => Promise<void>;
+    delete_category: (id: number) => Promise<{ message: string }>;
 }
 
 export const CategoryContext = createContext<CategoryContextType>({
@@ -15,7 +15,7 @@ export const CategoryContext = createContext<CategoryContextType>({
     create_category: async () => {
         throw new Error("categoryCreate not implemented");
     },
-    deleteCategory: async () => {
+    delete_category: async () => {
         throw new Error("deleteCategory not implemented");
     }
 })
