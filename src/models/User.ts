@@ -1,3 +1,5 @@
+import type { Profile } from "./Profile";
+
 export type ProfileName = "Estudante" | "Administrador" | "Corretor";
 
 export type User = {
@@ -5,11 +7,7 @@ export type User = {
     name: string;
     email: string;
     role: "admin" | "student" | "corrector";
-    profile: {
-      id: number;
-      name: ProfileName;
-      description: string;
-    };
+    profile: Profile;
     pictureUrl: string;
     createdAt: string;
 }
