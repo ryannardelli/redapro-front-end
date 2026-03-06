@@ -6,6 +6,7 @@ import { MainRouter } from "./routers/MainRouter"
 import { ProfileProvider } from "provider/ProfileProvider"
 import { UserProvider } from "provider/UserProvider"
 import { ReferenceEssayProvider } from "provider/ReferenceEssayProvider"
+import { DashboardProvider } from "provider/DashboardProvider"
 
 function App() {
   return (
@@ -15,9 +16,11 @@ function App() {
       <ProfileProvider>
       <UserProvider>
       <ReferenceEssayProvider>
+      <DashboardProvider>
       <MessageContainer>
         <MainRouter />
       </MessageContainer>
+      </DashboardProvider>
       </ReferenceEssayProvider>
       </UserProvider>
       </ProfileProvider>

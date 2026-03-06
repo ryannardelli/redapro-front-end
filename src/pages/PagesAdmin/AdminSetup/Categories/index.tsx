@@ -1,4 +1,4 @@
-import { Search, LayoutGrid, Tag } from 'lucide-react';
+import { Search, LayoutGrid, Tag, TagIcon } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { showMessage } from 'adapters/showMessage';
 import { EditCategory } from '@components/domain/Categories/EditCategory';
+import { EmptyState } from '@components/feedback/EmptyState';
 
 export function Categories() {
   const { stateCategory, delete_category } = useCategory();
@@ -140,7 +141,11 @@ export function Categories() {
                 {!loading && categories?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="px-6 py-12 text-center text-slate-400 italic">
-                      Nenhuma categoria cadastrada.
+                     <EmptyState
+                        icon={TagIcon}
+                        title="Nenhuma categoria encontrada"
+                        description="Não encontramos resultados para sua busca ou ainda não há cadastros."
+                      />
                     </td>
                   </tr>
                 )}
