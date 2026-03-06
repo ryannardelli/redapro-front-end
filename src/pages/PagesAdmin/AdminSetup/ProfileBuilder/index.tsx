@@ -178,14 +178,40 @@ export function ProfileBuilder() {
                           <UserPlus size={18} />
                         </button>
 
-                        <EditProfile profile={profile} />
+                       {profile.system ? (
+                        <div className="group/tooltip relative flex items-center justify-end pr-2">
+                          <div 
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-100 text-amber-600 cursor-help transition-all hover:bg-amber-100"
+                          >
+                            <ShieldCheck size={16} className="opacity-80" />
+                            <span className="text-xs font-semibold tracking-wide uppercase">Protegido</span>
+                          </div>
 
-                        <DeleteProfile
-                           onDelete={() => handleDelete(profile.id)}
-                           loading={loading}
-                           title="Excluir"
-                        />
-                      </div>
+                          <div className="absolute bottom-full mb-2 hidden group-hover/tooltip:block w-48 p-2 bg-gray-900 text-white text-[11px] rounded shadow-xl z-10 text-center leading-tight">
+                            Este perfil é essencial para o sistema e não permite alterações ou exclusão.
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-gray-900" />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex justify-end gap-2">
+                          <button
+                            title="Atribuir Usuário"
+                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          >
+                            <UserPlus size={18} />
+                          </button>
+                          
+                          <EditProfile profile={profile} />
+                          
+                          <DeleteProfile
+                            onDelete={() => handleDelete(profile.id)}
+                            loading={loading}
+                            title="Excluir Perfil"
+                          />
+                        </div>
+                      )}
+                        </div>
+                      
                     </td>
                   </tr>
                 );
