@@ -8,6 +8,7 @@ import {
   MenuIcon,
   BookOpen,
   Tags,
+  Layers,
   UserCog,
   HelpCircle
 } from "lucide-react";
@@ -25,7 +26,8 @@ const AVAILABLE_ICONS = {
   MenuIcon,
   BookOpen,
   Tags,
-  UserCog
+  UserCog,
+  Layers
 };
 
 type IconName = keyof typeof AVAILABLE_ICONS;
