@@ -24,7 +24,6 @@ export function Profile() {
   return (
     <section className="px-4 py-8 md:py-12 max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       
-      {/* --- HEADER DO PERFIL --- */}
       <div className="relative bg-white border border-slate-200 p-6 rounded-3xl shadow-sm flex flex-col md:flex-row items-center gap-6">
         <div className="relative">
           <img
@@ -39,7 +38,7 @@ export function Profile() {
           <div className="flex flex-col md:flex-row md:items-center gap-2 mb-1">
             <h1 className="text-2xl md:text-3xl font-black text-slate-900">{user?.name}</h1>
             <span className="inline-block px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wider self-center">
-              {formatRole(user.role)}
+              {user.profile.name}
             </span>
           </div>
           <p className="text-slate-500 text-sm mb-4">{user?.email}</p>
@@ -60,7 +59,6 @@ export function Profile() {
         </button>
       </div>
 
-      {/* --- CARDS DE ESTATÍSTICAS --- */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {stats.map((item, i) => (
           <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 flex items-center gap-4 hover:shadow-md transition-shadow">
@@ -75,7 +73,6 @@ export function Profile() {
         ))}
       </div>
 
-      {/* --- TABELA DE HISTÓRICO RESPONSIVA --- */}
       <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex justify-between items-center">
           <h2 className="font-bold text-slate-800 flex items-center gap-2">
@@ -117,7 +114,6 @@ export function Profile() {
         </div>
       </div>
 
-      {/* --- CONQUISTAS DO ESTUDANTE --- */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="group bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-100 p-4 rounded-2xl flex items-center gap-4 transition-transform hover:-translate-y-1">
           <div className="text-2xl">🏆</div>

@@ -1,7 +1,7 @@
 import { useReducer, useEffect, type ReactNode } from "react";
 import { dashboardReducer, initialStateDashboard } from "../../reducer/dashboardReducer";
 import { DashboardContext } from "./DashboardContext";
-import { getStudentStats } from "../../services/dashboard";
+import { getRecentEssays, getStudentStats } from "../../services/dashboard";
 import { useAuth } from "../../hooks/useAuth";
 
 type Props = {
@@ -66,11 +66,29 @@ export const DashboardProvider = ({ children }: Props) => {
     }
   };
 
+  const loadRecentEssays = async () => {
+  try {
+    dispatchDashboard({ type: "SET_LOADING", payload: true });
+
+    const essays = await getRecentEssays();
+
+    dispatchDashboard({ type: "SET_RECENT_ESSAYS", payload: essays });
+  } catch (error) {
+    dispatchDashboard({
+      type: "SET_ERROR",
+      payload: error instanceof Error ? error.message : "Erro ao carregar últimas redações",
+    });
+  } finally {
+    dispatchDashboard({ type: "SET_LOADING", payload: false });
+  }
+};
+
   useEffect(() => {
     if (!isAuthenticated) return;
 
     if (profile === "Estudante") {
       loadStudentStats();
+      loadRecentEssays();
     }
 
     if (profile === "Corretor") {

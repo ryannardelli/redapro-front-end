@@ -17,5 +17,5 @@ export const DashboardContext = createContext<DashboardContextType>({
   },
   loadCorrectorStats: async () => {
     throw new Error("loadCorrectorStats not implemented");
-  }
+  },
 });

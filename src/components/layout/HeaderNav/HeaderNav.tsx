@@ -9,7 +9,6 @@ import { MenuBurgerSidebar } from "@components/ui/Button/MenuBurgerSidebar";
 import { NotificationButton } from "@components/domain/Header/NotificationButton";
 import { NotificationPanel } from "@components/domain/Header/NotificationPanel";
 import { ProfileButton } from "@components/domain/Header/ProfileButton";
-import { formatRole } from "utils/formatRole";
 import { useNotifications } from "@hooks/useNotification";
 
 interface HeaderNavProps {
@@ -95,7 +94,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <div className="relative">
           <ProfileButton
             name={user?.name || "Usuário"}
-            role={formatRole(user?.role) || "Admin"}
+            role={user?.profile.name}
             avatarUrl={
               user?.pictureUrl ||
               `https://ui-avatars.com/api/?name=${user?.name}`

@@ -3,6 +3,7 @@ import type { DashboardState, DashboardAction } from "../models/Dashboard";
 export const initialStateDashboard: DashboardState = {
   studentStats: null,
   correctorStats: null,
+  recentEssays: [],
   loading: false,
   error: null
 };
@@ -17,6 +18,9 @@ export function dashboardReducer(
 
     case "SET_CORRECTOR_STATS":
       return { ...state, correctorStats: action.payload, error: null };
+
+    case "SET_RECENT_ESSAYS":
+      return { ...state, recentEssays: action.payload, error: null };
 
     case "SET_LOADING":
       return { ...state, loading: action.payload };
