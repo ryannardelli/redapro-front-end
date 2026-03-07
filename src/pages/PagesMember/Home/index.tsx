@@ -2,7 +2,6 @@ import { Shortcuts } from "@components/ui/Dashboard/ShortCuts";
 import { HistoryEssays } from "@components/domain/Essay/HistoryEssays";
 import { ActivityTable } from "@components/domain/Essay/ActivityTable";
 import { StatsStudent } from "@components/domain/Dashboard/StatsStudent";
-import { Heading } from "lucide-react";
 
 export function Home() {
     return(
