@@ -67,7 +67,6 @@ export function UsersBuilder() {
       case "admin":
         return "bg-amber-50 text-amber-700 border-amber-200";
       case "student":
-      case "aluno":
         return "bg-blue-50 text-blue-700 border-blue-200";
       default:
         return "bg-slate-50 text-slate-700 border-slate-200";
@@ -145,7 +144,7 @@ export function UsersBuilder() {
                     <td className="px-6 py-4">
                       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium ${getRoleStyles(user.role)}`}>
                         <Shield size={12} />
-                        {user.role === "admin" ? "Administrador" : "Estudante"}
+                        {user.profile.name}
                       </div>
                     </td>
 

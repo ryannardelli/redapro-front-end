@@ -21,6 +21,8 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
 
+  console.log(stateEssay.essays);
+
   const filteredEssays = useMemo(() => {
     return essays.filter((essay) => {
 
@@ -46,14 +48,16 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       }
 
       if (filters.status) {
-        const status = filters.status.toLowerCase();
+          const status = filters.status.toLowerCase();
 
-        const hasGrade =
-          essay.note !== null && essay.note !== undefined;
+          const hasGrade = essay.note !== null && essay.note !== undefined;
 
-        if (status === 'corrigida' && !hasGrade) return false;
-        if (status === 'pendente' && hasGrade) return false;
-      }
+              if (status === 'corrigida' && !hasGrade) return false;
+              if (status === 'pendente' && hasGrade) return false;
+
+              if (status === 'em_correccao' && essay.status.toLowerCase() !== 'em_correccao')
+                  return false;
+          }
 
       return true;
     });

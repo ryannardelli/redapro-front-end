@@ -14,37 +14,45 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
   const { state } = useAuth();
 
   const loadUserEssays = useCallback(async () => {
-    if (!state.user) return;
+  if (!state.user) return;
 
-    try {
-      dispatchEssay({ type: "SET_LOADING", payload: true });
-
-      const essays = await getUserEssays(state.user.id);
-
-      dispatchEssay({
-        type: "SET_ESSAY",
-        payload: essays,
-      });
-    } catch (error) {
-      console.error(error);
-      dispatchEssay({
-        type: "SET_ERROR",
-        payload: "Erro ao carregar redações",
-      });
-    } finally {
-      dispatchEssay({ type: "SET_LOADING", payload: false });
-    }
-  }, [state.user]);
-
-  const loadPendingEssays = async () => {
   try {
     dispatchEssay({ type: "SET_LOADING", payload: true });
 
-    const essays = await getEssaysByStatus("PENDENTE");
+    const allEssays = await getUserEssays(state.user.id);
+    const pendingEssays = await getEssaysByStatus("PENDENTE");
+
+    const combinedEssays = [
+      ...allEssays,
+      ...pendingEssays.filter(
+        (p) => !allEssays.some((a) => a.id === p.id)
+      ),
+    ];
 
     dispatchEssay({
       type: "SET_ESSAY",
-      payload: essays,
+      payload: combinedEssays,
+    });
+  } catch (error) {
+    console.error(error);
+    dispatchEssay({
+      type: "SET_ERROR",
+      payload: "Erro ao carregar redações",
+    });
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+}, [state.user]);
+
+const loadPendingEssays = async () => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const pendingEssays = await getEssaysByStatus("PENDENTE");
+
+    dispatchEssay({
+      type: "SET_ESSAY",
+      payload: [...stateEssay.essays, ...pendingEssays],
     });
 
   } catch (error) {
