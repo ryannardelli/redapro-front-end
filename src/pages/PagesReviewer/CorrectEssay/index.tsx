@@ -91,7 +91,7 @@ export function CorrectEssay() {
                       <td className="px-6 py-5 text-right">
                         <button
                           onClick={() => setSelectedEssay(essay)}
-                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-indigo-600 active:scale-95 transition-all shadow-sm hover:shadow-indigo-200"
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-indigo-600 active:scale-95 transition-all shadow-sm hover:shadow-indigo-200 cursor-pointer"
                         >
                           Iniciar Correção
                           <Play size={14} fill="currentColor" />

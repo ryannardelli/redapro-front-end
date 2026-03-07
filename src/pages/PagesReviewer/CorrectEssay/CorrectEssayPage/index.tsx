@@ -1,6 +1,10 @@
-import { ChevronLeft, Highlighter, MessageSquare, Info, Send } from "lucide-react";
+import { EssayEditor } from "@components/ui/EssayEditor";
+import { ChevronLeft, Highlighter, Send, Strikethrough, Underline } from "lucide-react";
+import { useState } from "react";
 
 export function CorrectEssayPage({ essay, goBack }) {
+
+  const [editor, setEditor] = useState(null);
 
   const finalScore =
     (essay.c1 || 0) +
@@ -47,17 +51,30 @@ export function CorrectEssayPage({ essay, goBack }) {
 
       <main className="flex-1 flex flex-col lg:flex-row overflow-hidden">
 
-        <aside className="w-full lg:w-16 border-b lg:border-r border-slate-200 bg-white flex lg:flex-col items-center justify-center lg:py-6 gap-4 py-2 px-4">
-          <button className="p-2 md:p-3 text-indigo-600 bg-indigo-50 rounded-xl">
+        <aside className="w-full lg:w-16 border-b lg:border-r border-slate-200 bg-white flex lg:flex-col items-center justify-center gap-4 py-2 px-4 lg:py-6 sticky top-20 h-fit">
+
+          <button
+            title="Destacar trecho (erro ou ponto importante)"
+            onClick={() => editor?.chain().focus().toggleHighlight().run()}
+            className="p-2 md:p-3 text-indigo-600 rounded-xl cursor-pointer hover:bg-indigo-100 transition-colors"
+          >
             <Highlighter size={20} />
           </button>
 
-          <button className="p-2 md:p-3 text-slate-400 hover:text-indigo-600 transition-colors">
-            <MessageSquare size={20} />
+          <button
+            title="Riscar palavra incorreta"
+            onClick={() => editor?.chain().focus().toggleStrike().run()}
+            className="p-2 md:p-3 text-slate-400 cursor-pointer hover:text-red-600 transition-colors"
+          >
+            <Strikethrough size={20} />
           </button>
 
-          <button className="p-2 md:p-3 text-slate-400 hover:text-indigo-600 transition-colors">
-            <Info size={20} />
+          <button
+            title="Sublinhar erro gramatical"
+            onClick={() => editor?.chain().focus().toggleUnderline().run()}
+            className="p-2 md:p-3 text-slate-400 cursor-pointer hover:text-blue-600 transition-colors"
+          >
+            <Underline size={20} />
           </button>
         </aside>
 
@@ -72,9 +89,14 @@ export function CorrectEssayPage({ essay, goBack }) {
               Autor: <b>{essay.user?.name}</b>
             </p>
 
-            <p className="leading-relaxed text-lg md:text-xl text-slate-800 font-serif whitespace-pre-line">
-              {essay.content}
-            </p>
+            <div className="leading-relaxed text-lg md:text-xl text-slate-800 font-serif whitespace-pre-line">
+
+              <EssayEditor
+                content={essay.content}
+                onEditorReady={setEditor}
+              />
+
+            </div>
 
           </article>
         </section>
@@ -141,6 +163,7 @@ export function CorrectEssayPage({ essay, goBack }) {
             </button>
 
           </div>
+
         </aside>
       </main>
     </div>
