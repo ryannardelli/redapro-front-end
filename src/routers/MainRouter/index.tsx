@@ -14,6 +14,7 @@ import { AdminSetupRoutes } from "../AdminSetupRoutes";
 import { useAuth } from "../../hooks/useAuth";
 import { Models } from "../../pages/PagesMember/Models";
 import NotFound from "pages/NotFound";
+import { CorrectEssay } from "pages/PagesReviewer/CorrectEssay";
 
 export function MainRouter() {
   const { state } = useAuth();
@@ -28,7 +29,7 @@ export function MainRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* rotas privadas (membros) */}
+        {/* rotas privadas (membros e corretor) */}
         <Route element={<PrivateRoute isAuth={state.isAuthenticated}
         loading={state.loading} />}>
           <Route element={<MainTemplate />}>
@@ -39,6 +40,7 @@ export function MainRouter() {
             <Route path="/models" element={<Models />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/support" element={<Support />} />
+             <Route path="/essays-corrector" element={<CorrectEssay />} />
           </Route>
 
           {/* admin setup */}

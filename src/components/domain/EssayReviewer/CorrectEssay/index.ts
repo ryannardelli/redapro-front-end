@@ -1,0 +1,1 @@
+export { CorrectEssay } from './CorrectEssay';
