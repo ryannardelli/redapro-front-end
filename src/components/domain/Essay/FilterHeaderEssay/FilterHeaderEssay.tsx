@@ -85,6 +85,7 @@ export function FilterHeaderEssay({
             <option value="">Status</option>
             <option value="pendente">Pendente</option>
             <option value="corrigida">Corrigida</option>
+             <option value="em_correcao">Em Correção</option>
           </select>
         </div>
 

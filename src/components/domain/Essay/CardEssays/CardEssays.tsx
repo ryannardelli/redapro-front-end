@@ -55,7 +55,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
               if (status === 'corrigida' && !hasGrade) return false;
               if (status === 'pendente' && hasGrade) return false;
 
-              if (status === 'em_correccao' && essay.status.toLowerCase() !== 'em_correccao')
+              if (status === 'em_correcao' && essay.status.toLowerCase() !== 'em_correcao')
                   return false;
           }
 
@@ -164,12 +164,18 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
                         <div className="absolute top-4 left-4">
                           <span
                             className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
-                              hasGrade
+                              essay.status === 'CORRIGIDA'
                                 ? 'bg-green-100 text-green-700'
+                                : essay.status === 'EM_CORRECAO'
+                                ? 'bg-blue-100 text-blue-700'
                                 : 'bg-amber-100 text-amber-700'
                             }`}
                           >
-                            {hasGrade ? 'Corrigida' : 'Pendente'}
+                            {essay.status === 'CORRIGIDA'
+                              ? 'Corrigida'
+                              : essay.status === 'EM_CORRECAO'
+                              ? 'Em correção'
+                              : 'Pendente'}
                           </span>
                         </div>
 
