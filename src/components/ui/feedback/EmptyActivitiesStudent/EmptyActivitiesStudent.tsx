@@ -1,5 +1,6 @@
 import React from "react";
 import { FileText } from "lucide-react";
+import { RouterLinks } from "@components/ui/Links/RouterLinks";
 
 export const EmptyActivitiesStudent: React.FC = () => {
   return (
@@ -11,9 +12,10 @@ export const EmptyActivitiesStudent: React.FC = () => {
       <p className="text-sm text-slate-400">
         Comece criando sua primeira redação para acompanhar seu progresso!
       </p>
-      <button className="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition cursor-pointer">
-        Criar Redação
-      </button>
+      
+      <RouterLinks href="/essay-upload" className="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition cursor-pointer">
+          Criar Redação
+      </RouterLinks>
     </div>
   );
 };

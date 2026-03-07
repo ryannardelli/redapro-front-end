@@ -17,7 +17,7 @@ export interface Essay {
   id: number;
   title: string;
   content: string;
-  note?: string | null;
+  note?: number | null;
   status?: "PENDENTE" | "CORRIGIDA" | "EM_CORRECAO" | "ERRO" | null;
   createdAt?: string | null;
   updatedAt?: string | null;

@@ -7,7 +7,6 @@ export function StatsStudent() {
   const { stateDashboard } = useDashboard();
 
   const { studentStats, loading } = stateDashboard;
-  console.log(stateDashboard);
 
   if (loading) {
     return (
@@ -63,9 +62,11 @@ export function StatsStudent() {
           </div>
 
           <div className="ml-3">
-            <h2 className="mb-1 text-lg font-bold text-gray-900">
-              {formatDate(studentStats?.lastEssay ?? "-")}
-            </h2>
+           <h2 className="mb-1 text-lg font-bold text-gray-900">
+            {studentStats?.lastEssay
+              ? formatDate(studentStats.lastEssay)
+              : "-"}
+          </h2>
 
             <p className="text-sm text-gray-600">
               Última redação

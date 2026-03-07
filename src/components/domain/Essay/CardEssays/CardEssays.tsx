@@ -13,7 +13,7 @@ import { AICorrectionButton } from '../AICorrectionButton';
 import { useMemo } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
-import { EmptyActivitiesStudent } from '@components/ui/Dashboard/EmptyActivitiesStudent';
+import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useEssay();

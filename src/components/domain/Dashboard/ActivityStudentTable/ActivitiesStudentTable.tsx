@@ -4,7 +4,8 @@ import type { Essay } from "models/Essay";
 import { useDashboard } from "@hooks/useDashboard";
 import { formatDate } from "utils/formatDate";
 import { TableSkeleton } from "@components/ui/Loading/TableSkeleton";
-import { EmptyActivitiesStudent } from "@components/ui/Dashboard/EmptyActivitiesStudent";
+import { EmptyActivitiesStudent } from "@components/ui/feedback/EmptyActivitiesStudent";
+import { getScoreStyle } from "utils/getScoreStyle";
 
 export const ActivitiesStudentTable: React.FC = () => {
   const { stateDashboard } = useDashboard();
@@ -71,8 +72,6 @@ export const ActivitiesStudentTable: React.FC = () => {
                   </div>
                 </td>
 
-                
-
                 <td className="p-4">
                   <p className="text-sm text-slate-700 font-medium">{formatDate(essay.createdAt)}</p>
                 </td>
@@ -84,9 +83,17 @@ export const ActivitiesStudentTable: React.FC = () => {
                     {essay.status}
                   </span>
                 </td>
-
-                <td className="p-4">
-                  <p className="text-sm font-bold text-slate-700">{essay.note || "-"}</p>
+                
+                 <td className="p-4">
+                  {essay.note ? (
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${getScoreStyle(essay.note)}`}
+                    >
+                      {essay.note}
+                    </span>
+                  ) : (
+                    <span className="text-sm font-bold text-slate-500">-</span>
+                  )}
                 </td>
               </tr>
             );
