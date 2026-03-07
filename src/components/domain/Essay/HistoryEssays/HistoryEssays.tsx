@@ -15,7 +15,6 @@ export function HistoryEssays() {
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      {/* Título da Seção (Opcional, mas ajuda no contexto) */}
       <div className="p-6 border-b border-slate-100">
         <h2 className="text-lg font-bold text-slate-800">Histórico de Produção</h2>
         <p className="text-sm text-slate-500">Acompanhe seu desempenho em cada tema praticado.</p>

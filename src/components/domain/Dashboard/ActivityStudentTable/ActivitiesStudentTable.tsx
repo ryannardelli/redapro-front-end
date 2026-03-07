@@ -4,6 +4,7 @@ import type { Essay } from "models/Essay";
 import { useDashboard } from "@hooks/useDashboard";
 import { formatDate } from "utils/formatDate";
 import { TableSkeleton } from "@components/ui/Loading/TableSkeleton";
+import { EmptyActivitiesStudent } from "@components/ui/Dashboard/EmptyActivitiesStudent";
 
 export const ActivitiesStudentTable: React.FC = () => {
   const { stateDashboard } = useDashboard();
@@ -15,9 +16,7 @@ export const ActivitiesStudentTable: React.FC = () => {
 
   if (!recentEssays || recentEssays.length === 0) {
     return (
-      <div className="flex justify-center items-center p-8 text-slate-500 font-bold">
-        Nenhuma atividade encontrada.
-      </div>
+     <EmptyActivitiesStudent />
     );
   }
 

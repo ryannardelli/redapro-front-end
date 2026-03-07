@@ -13,6 +13,7 @@ import { AICorrectionButton } from '../AICorrectionButton';
 import { useMemo } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
+import { EmptyActivitiesStudent } from '@components/ui/Dashboard/EmptyActivitiesStudent';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
@@ -132,9 +133,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
         </div>
       ) : filteredEssays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-          <p className="mb-6 text-xl text-gray-500 font-medium">
-            Não encontramos resultados para sua busca ou ainda não há cadastros.
-          </p>
+          <EmptyActivitiesStudent />
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
