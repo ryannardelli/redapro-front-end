@@ -21,7 +21,7 @@ export function CorrectEssayPage({ essay, goBack }) {
         <div className="flex items-center gap-3">
           <button
             onClick={goBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
           >
             <ChevronLeft size={20} />
           </button>
