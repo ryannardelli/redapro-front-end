@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Play } from 'lucide-react'; // novo componente de correção
+import { useState } from 'react';
+import { Play } from 'lucide-react';
 import { CorrectEssayPage } from './CorrectEssayPage';
 
 export function CorrectEssay() {
@@ -11,42 +11,44 @@ export function CorrectEssay() {
     { id: '88293', student: "Carla Souza", theme: "Saúde Mental no Século XXI", status: "completed", date: "12/05/2024" },
   ];
 
-  // se selectedEssay estiver preenchido, renderiza a tela de correção
   if (selectedEssay) {
     return <CorrectEssayPage essay={selectedEssay} goBack={() => setSelectedEssay(null)} />;
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
-      <h1 className="text-3xl font-extrabold text-slate-900 mb-6">Painel do Corretor</h1>
+    <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans">
+      <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 mb-6">Painel do Corretor</h1>
 
-      <table className="w-full bg-white rounded-xl shadow-sm overflow-hidden">
-        <thead className="bg-slate-50 border-b border-slate-200">
-          <tr>
-            <th className="px-6 py-4 text-left">Estudante</th>
-            <th className="px-6 py-4 text-left">Tema</th>
-            <th className="px-6 py-4 text-center">Data</th>
-            <th className="px-6 py-4 text-right">Ação</th>
-          </tr>
-        </thead>
-        <tbody>
-          {essays.map((essay) => (
-            <tr key={essay.id} className="hover:bg-indigo-50/30 transition-colors">
-              <td className="px-6 py-4">{essay.student}</td>
-              <td className="px-6 py-4">{essay.theme}</td>
-              <td className="px-6 py-4 text-center">{essay.date}</td>
-              <td className="px-6 py-4 text-right">
-                <button
-                  onClick={() => setSelectedEssay(essay)}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all"
-                >
-                  Corrigir <Play size={14} fill="white" />
-                </button>
-              </td>
+      {/* Wrapper para scroll horizontal em mobile */}
+      <div className="w-full bg-white rounded-xl shadow-sm overflow-x-auto">
+        <table className="w-full min-w-[600px] border-collapse">
+          <thead className="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">Estudante</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">Tema</th>
+              <th className="px-6 py-4 text-center text-sm font-semibold text-slate-600">Data</th>
+              <th className="px-6 py-4 text-right text-sm font-semibold text-slate-600">Ação</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {essays.map((essay) => (
+              <tr key={essay.id} className="hover:bg-indigo-50/30 transition-colors">
+                <td className="px-6 py-4 text-slate-700 font-medium">{essay.student}</td>
+                <td className="px-6 py-4 text-slate-600">{essay.theme}</td>
+                <td className="px-6 py-4 text-center text-slate-500">{essay.date}</td>
+                <td className="px-6 py-4 text-right">
+                  <button
+                    onClick={() => setSelectedEssay(essay)}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-all whitespace-nowrap"
+                  >
+                    Corrigir <Play size={14} fill="white" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
