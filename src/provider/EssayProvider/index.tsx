@@ -1,7 +1,7 @@
 import { useEffect, useReducer, type ReactNode, useCallback } from "react";
 import { EssayContext } from "./EssayContext";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { getUserEssays, create_essay, delete_essay, update_essay, correctEssayWithAI } from "../../services/essay";
+import { getUserEssays, create_essay, delete_essay, update_essay, correctEssayWithAI, getEssaysByStatus } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload } from "../../models/Essay";
 
@@ -36,11 +36,35 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
     }
   }, [state.user]);
 
+  const loadPendingEssays = async () => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const essays = await getEssaysByStatus("PENDENTE");
+
+    dispatchEssay({
+      type: "SET_ESSAY",
+      payload: essays,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    dispatchEssay({
+      type: "SET_ERROR",
+      payload: "Erro ao carregar redações pendentes",
+    });
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+};
+
   useEffect(() => {
     if (state.loading) return;
     if (!state.user) return;
 
     loadUserEssays();
+    loadPendingEssays();
   }, [state.loading, state.user, loadUserEssays]);
 
   const createEssay = async (data: CreateEssayPayload) => {
@@ -156,6 +180,7 @@ const correctEssayAI = async (essayId: number) => {
       value={{
         stateEssay,
         createEssay,
+        loadPendingEssays,
         correctEssayAI,
         deleteEssay,
         updateEssay,

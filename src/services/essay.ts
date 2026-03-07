@@ -142,3 +142,28 @@ export async function correctEssayWithAI(essayId: number): Promise<{ message: st
   }
 }
 
+export async function getEssaysByStatus(status: string): Promise<Essay[]> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/findAll?status=${status}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao buscar redações.");
+    }
+
+    const essays: Essay[] = await res.json();
+    return essays;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
