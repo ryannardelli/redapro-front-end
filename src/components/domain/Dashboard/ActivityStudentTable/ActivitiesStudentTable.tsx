@@ -3,17 +3,14 @@ import { FileText } from "lucide-react";
 import type { Essay } from "models/Essay";
 import { useDashboard } from "@hooks/useDashboard";
 import { formatDate } from "utils/formatDate";
+import { TableSkeleton } from "@components/ui/Loading/TableSkeleton";
 
 export const ActivitiesStudentTable: React.FC = () => {
   const { stateDashboard } = useDashboard();
   const { recentEssays, loading } = stateDashboard;
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center p-8 text-slate-500 font-bold">
-        Carregando atividades...
-      </div>
-    );
+    return <TableSkeleton columns={recentEssays.length} rows={recentEssays.length} />;
   }
 
   if (!recentEssays || recentEssays.length === 0) {
