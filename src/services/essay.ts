@@ -167,3 +167,28 @@ export async function getEssaysByStatus(status: string): Promise<Essay[]> {
   }
 }
 
+export async function startReviewEssay(essayId: number): Promise<Essay> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}/start-review`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao iniciar correção da redação.");
+    }
+
+    const essay: Essay = await res.json();
+    return essay;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+

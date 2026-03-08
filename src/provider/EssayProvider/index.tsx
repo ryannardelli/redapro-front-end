@@ -1,7 +1,7 @@
 import { useEffect, useReducer, type ReactNode, useCallback } from "react";
 import { EssayContext } from "./EssayContext";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { getUserEssays, create_essay, delete_essay, update_essay, correctEssayWithAI, getEssaysByStatus } from "../../services/essay";
+import { getUserEssays, create_essay, delete_essay, update_essay, correctEssayWithAI, getEssaysByStatus, startReviewEssay } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload } from "../../models/Essay";
 
@@ -44,35 +44,72 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
   }
 }, [state.user]);
 
-const loadPendingEssays = async () => {
+// const loadEssaysByStatus = useCallback(
+//   async (status?: "PENDENTE" | "EM_CORRECAO") => {
+//     if (!state.user) return;
+
+//     try {
+//       dispatchEssay({ type: "SET_LOADING", payload: true });
+
+//       let essaysByStatus: typeof stateEssay.essays = [];
+
+//       if (status) {
+//         essaysByStatus = await getEssaysByStatus(status);
+//       } else {
+//         essaysByStatus = await getUserEssays(state.user.id);
+//       }
+
+//       const combined = [
+//         ...stateEssay.essays,
+//         ...essaysByStatus.filter((e) => !stateEssay.essays.some((a) => a.id === e.id)),
+//       ];
+
+//       dispatchEssay({ type: "SET_ESSAY", payload: combined });
+//     } catch (error) {
+//       console.error(error);
+//       dispatchEssay({ type: "SET_ERROR", payload: "Erro ao carregar redações" });
+//     } finally {
+//       dispatchEssay({ type: "SET_LOADING", payload: false });
+//     }
+//   },
+//   [state.user, stateEssay.essays]
+// );
+
+const loadAllEssays = useCallback(async () => {
+  if (!state.user) return;
+
   try {
     dispatchEssay({ type: "SET_LOADING", payload: true });
 
+    // pega todas do usuário
+    const userEssays = await getUserEssays(state.user.id);
+
+    // pega pendentes e em correção
     const pendingEssays = await getEssaysByStatus("PENDENTE");
+    const inReviewEssays = await getEssaysByStatus("EM_CORRECAO");
 
-    dispatchEssay({
-      type: "SET_ESSAY",
-      payload: [...stateEssay.essays, ...pendingEssays],
-    });
+    // combinar sem duplicar
+    const combined = [
+      ...userEssays,
+      ...pendingEssays.filter((p) => !userEssays.some((e) => e.id === p.id)),
+      ...inReviewEssays.filter((r) => !userEssays.some((e) => e.id === r.id)),
+    ];
 
+    dispatchEssay({ type: "SET_ESSAY", payload: combined });
   } catch (error) {
     console.error(error);
-
-    dispatchEssay({
-      type: "SET_ERROR",
-      payload: "Erro ao carregar redações pendentes",
-    });
+    dispatchEssay({ type: "SET_ERROR", payload: "Erro ao carregar redações" });
   } finally {
     dispatchEssay({ type: "SET_LOADING", payload: false });
   }
-};
+}, [state.user]);
 
   useEffect(() => {
     if (state.loading) return;
     if (!state.user) return;
 
     loadUserEssays();
-    loadPendingEssays();
+    loadAllEssays();
   }, [state.loading, state.user, loadUserEssays]);
 
   const createEssay = async (data: CreateEssayPayload) => {
@@ -182,14 +219,39 @@ const correctEssayAI = async (essayId: number) => {
       dispatchEssay({ type: "SET_LOADING", payload: false });
     }
   };
+
+  const startReview = async (essayId: number) => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const updatedEssay = await startReviewEssay(essayId);
+
+    dispatchEssay({
+      type: "UPDATE_ESSAY",
+      payload: updatedEssay,
+    });
+
+    await loadUserEssays();
+    await loadAllEssays();
+
+    return updatedEssay;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Erro ao iniciar correção da redação";
+    dispatchEssay({ type: "SET_ERROR", payload: message });
+    throw error;
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+};
   
   return (
     <EssayContext.Provider
       value={{
         stateEssay,
         createEssay,
-        loadPendingEssays,
+        loadAllEssays,
         correctEssayAI,
+        startReview,
         deleteEssay,
         updateEssay,
       }}
