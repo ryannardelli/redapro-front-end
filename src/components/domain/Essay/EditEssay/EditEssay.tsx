@@ -1,10 +1,10 @@
 import { useState, useRef } from "react";
 import { Edit3 } from "lucide-react";
-import { useEssay } from "../../../../hooks/useEssay";
 import { showMessage } from "../../../../adapters/showMessage";
 import type { EssayFormData } from "../../../../schemas/Essay/EssaySchema";
 import { EssayEditForm } from "../EssayEditForm";
 import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
+import { useProfileStudentEssay } from "@hooks/useProfileStudentEssay";
 
 interface EditEssayProps {
   essay: {
@@ -20,7 +20,7 @@ interface EditEssayProps {
 
 export function EditEssay({ essay }: EditEssayProps ) {
   const [isOpen, setIsOpen] = useState(false);
-  const { updateEssay, stateEssay} = useEssay();
+  const { updateEssay, stateEssay} = useProfileStudentEssay();
   const loading = stateEssay.loading;
   
   const formRef = useRef<HTMLFormElement>(null);
