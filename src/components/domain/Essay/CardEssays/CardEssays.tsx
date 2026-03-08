@@ -15,14 +15,14 @@ import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
 import { EmptyState } from '@components/feedback/EmptyState';
+import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
-  const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
+  const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
 
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
 
-  console.log(stateEssay.essays);
 
   const filteredEssays = useMemo(() => {
     return essays.filter((essay) => {

@@ -2,7 +2,6 @@ import { useEffect, useReducer } from "react";
 import { authReducer, initialState } from "../../reducer/authReducer";
 import { AuthContext } from "./AuthContext";
 import { userAuthentication } from "../../services/auth";
-import type { LoginResponse } from "../../models/Auth";
 import { getMe } from "../../services/users";
 
 type AuthProviderProps = {

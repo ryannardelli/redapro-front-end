@@ -75,7 +75,7 @@ const loadAllEssays = useCallback(async () => {
     if (!state.user) return;
 
     loadUserEssays();
-    loadAllEssays();
+    // loadAllEssays();
   }, [state.loading, state.user, loadUserEssays]);
 
   const createEssay = async (data: CreateEssayPayload) => {

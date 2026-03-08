@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { CorrectEssayPage } from "./CorrectEssayPage";
-import { useEssay } from "@hooks/useEssay";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { Calendar, FileText, Play, Loader2 } from "lucide-react";
+import { useProfileCorrectorEssay } from "@hooks/useProfileCorrectorEssay";
 
 export function CorrectEssay() {
   const [selectedEssay, setSelectedEssay] = useState(null);
-  const { stateEssay, startReview } = useEssay();
+  const { stateEssay, startReview } = useProfileCorrectorEssay();
   const { essays, loading } = stateEssay;
   const [starting, setStarting] = useState<number | null>(null);
 
@@ -19,7 +19,7 @@ export function CorrectEssay() {
         goBack={() => setSelectedEssay(null)}
       />
     );
-  }
+  };
 
   const handleStartCorrection = async (essayId: number) => {
     try {
