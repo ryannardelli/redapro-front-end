@@ -1,5 +1,5 @@
 import defaultEssay from '../../../../assets/img/defaultEssay.jpg';
-import { Edit3, Award, Calendar, Sparkles, Lock } from 'lucide-react';
+import { Edit3, Award, Calendar, Sparkles, Lock, FileText } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { showMessage } from 'adapters/showMessage';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
@@ -14,6 +14,7 @@ import { useMemo } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
+import { EmptyState } from '@components/feedback/EmptyState';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
@@ -62,6 +63,13 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       return true;
     });
   }, [essays, filters]);
+
+  const isFiltering = Boolean(
+      filters.search ||
+      filters.categoryId ||
+      filters.scoreRange ||
+      filters.status
+    );
 
   const handleDelete = async (id: number) => {
     showMessage.dismiss();
@@ -135,10 +143,16 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
             <EssayCardSkeleton key={i} />
           ))}
         </div>
-      ) : filteredEssays.length === 0 ? (
+      ) : essays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-          <EmptyActivitiesStudent />
+          <EmptyActivitiesStudent message="Você ainda não possui redações." />
         </div>
+      ) : filteredEssays.length === 0 && isFiltering ? (
+          <EmptyState
+            icon={FileText}
+            title="Nenhuma redação encontrada"
+            description="Não encontramos resultados para sua busca."
+          />
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredEssays.map((essay) => {

@@ -7,30 +7,23 @@ import { Profile } from "../../pages/PagesMember/Profile";
 import { Essays } from "../../pages/PagesMember/Essays";
 import { EssayUpload } from "../../pages/PagesMember/EssayUpload";
 import { Support } from "../../pages/PagesMember/Support";
-import { PrivateRoute } from "../PrivateRouter";
 import { AdminRoute } from "../AdminRouter";
 import { AdminSetupRoutes } from "../AdminSetupRoutes";
-import { useAuth } from "../../hooks/useAuth";
 import { Models } from "../../pages/PagesMember/Models";
 import NotFound from "pages/NotFound";
 import { CorrectEssay } from "pages/PagesReviewer/CorrectEssay";
+import { MemberRoute } from "routers/MemberRouter";
 
 export function MainRouter() {
-  const { state } = useAuth();
-  
-  const isAdmin = state.user?.role === "admin" ? true : false;
-
   return (
     <BrowserRouter>
       <Routes>
-        {/* rotas públicas */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* rotas privadas (membros e corretor) */}
-        <Route element={<PrivateRoute isAuth={state.isAuthenticated}
-        loading={state.loading} />}>
+        {/* Rotas de membro (estudante e corretor) */}
+        <Route element={<MemberRoute allowedProfile={["Estudante", "Corretor"]} />}>
           <Route element={<MainTemplate />}>
             <Route path="/" element={<Home />} />
             <Route path="/my-profile" element={<Profile />} />
@@ -38,16 +31,13 @@ export function MainRouter() {
             <Route path="/essay-upload" element={<EssayUpload />} />
             <Route path="/models" element={<Models />} />
             <Route path="/support" element={<Support />} />
-             <Route path="/essays-corrector" element={<CorrectEssay />} />
+            <Route path="/essays-corrector" element={<CorrectEssay />} />
           </Route>
+        </Route>
 
-          {/* admin setup */}
-          <Route element={
-            <AdminRoute isAdmin={isAdmin} />
-          }>
-            {AdminSetupRoutes()}
-          </Route>
-
+        {/* Rotas de admin */}
+        <Route element={<AdminRoute />}>
+          {AdminSetupRoutes()}
         </Route>
       </Routes>
     </BrowserRouter>

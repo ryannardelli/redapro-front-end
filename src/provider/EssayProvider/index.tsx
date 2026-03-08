@@ -44,51 +44,17 @@ export const EssayProvider = ({ children }: EssayProviderProps) => {
   }
 }, [state.user]);
 
-// const loadEssaysByStatus = useCallback(
-//   async (status?: "PENDENTE" | "EM_CORRECAO") => {
-//     if (!state.user) return;
-
-//     try {
-//       dispatchEssay({ type: "SET_LOADING", payload: true });
-
-//       let essaysByStatus: typeof stateEssay.essays = [];
-
-//       if (status) {
-//         essaysByStatus = await getEssaysByStatus(status);
-//       } else {
-//         essaysByStatus = await getUserEssays(state.user.id);
-//       }
-
-//       const combined = [
-//         ...stateEssay.essays,
-//         ...essaysByStatus.filter((e) => !stateEssay.essays.some((a) => a.id === e.id)),
-//       ];
-
-//       dispatchEssay({ type: "SET_ESSAY", payload: combined });
-//     } catch (error) {
-//       console.error(error);
-//       dispatchEssay({ type: "SET_ERROR", payload: "Erro ao carregar redações" });
-//     } finally {
-//       dispatchEssay({ type: "SET_LOADING", payload: false });
-//     }
-//   },
-//   [state.user, stateEssay.essays]
-// );
-
 const loadAllEssays = useCallback(async () => {
   if (!state.user) return;
 
   try {
     dispatchEssay({ type: "SET_LOADING", payload: true });
 
-    // pega todas do usuário
     const userEssays = await getUserEssays(state.user.id);
 
-    // pega pendentes e em correção
     const pendingEssays = await getEssaysByStatus("PENDENTE");
     const inReviewEssays = await getEssaysByStatus("EM_CORRECAO");
 
-    // combinar sem duplicar
     const combined = [
       ...userEssays,
       ...pendingEssays.filter((p) => !userEssays.some((e) => e.id === p.id)),
@@ -120,7 +86,6 @@ const loadAllEssays = useCallback(async () => {
 
       const response = await create_essay(state.user.id, data);
 
-      // Refetch após criar
       await loadUserEssays();
 
       return response;
