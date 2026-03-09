@@ -1,7 +1,5 @@
 import type { Profile } from "./Profile";
 
-export type ProfileName = "Estudante" | "Administrador" | "Corretor";
-
 export type User = {
     id: number,
     name: string;

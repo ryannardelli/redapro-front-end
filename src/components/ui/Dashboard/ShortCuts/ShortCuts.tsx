@@ -1,5 +1,5 @@
 import { RouterLinks } from "@components/ui/Links/RouterLinks";
-import { Plus, GraduationCap, History, LineChart, FileText, User, HelpCircle } from "lucide-react";
+import { Plus, FileText, User, HelpCircle } from "lucide-react";
 
 export function Shortcuts() {
   return (

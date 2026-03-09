@@ -182,7 +182,7 @@ export function CorrectEssayPage() {
 
           <div className="mt-6 p-4 md:p-6 bg-slate-50 rounded-xl border border-slate-200">
             <label className="block text-slate-700 font-semibold mb-2">
-              Enviar Feedback
+              Feedback
             </label>
             <textarea
               rows={4}
@@ -190,9 +190,6 @@ export function CorrectEssayPage() {
               className="w-full p-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none text-sm"
               placeholder="Escreva aqui seu feedback..."
             />
-            <button className="mt-3 w-full flex items-center justify-center gap-2 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold shadow-sm transition-all">
-              <Send size={18} /> Enviar Feedback
-            </button>
           </div>
         </aside>
       </main>

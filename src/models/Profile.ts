@@ -1,8 +1,10 @@
 import type { Menu } from "./Menu";
 
+export type ProfileName = "Estudante" | "Administrador" | "Corretor";
+
 export interface Profile {
     id: number;
-    name: string;
+    name: ProfileName;
     description: string;
     active: boolean;
     system: boolean;
