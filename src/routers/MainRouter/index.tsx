@@ -32,6 +32,7 @@ export function MainRouter() {
             <Route path="/models" element={<Models />} />
             <Route path="/support" element={<Support />} />
             <Route path="/essays-corrector" element={<CorrectEssay />} />
+            <Route path="/essays-corrector/:id" element={<CorrectEssay />} />
           </Route>
         </Route>
 

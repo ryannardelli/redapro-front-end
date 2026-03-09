@@ -1,38 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CorrectEssayPage } from "./CorrectEssayPage";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { Calendar, FileText, Play, Loader2 } from "lucide-react";
 import { useProfileCorrectorEssay } from "@hooks/useProfileCorrectorEssay";
+import { useNavigate, useParams } from "react-router";
 
 export function CorrectEssay() {
-  const [selectedEssay, setSelectedEssay] = useState(null);
-  const { stateEssay, startReview } = useProfileCorrectorEssay();
-  const { essays, loading } = stateEssay;
+  const { id } = useParams<{ id: string }>();
+  const essayId = id ? Number(id) : null;
+
+  const navigate = useNavigate();
+
+  const { stateEssay, startReview, loadEssays } = useProfileCorrectorEssay();
   const [starting, setStarting] = useState<number | null>(null);
-
   const [activeTab, setActiveTab] = useState<"PENDENTE" | "EM_CORRECAO">("PENDENTE");
+  const [essay, setEssay] = useState<any>(null); // essay selecionado
 
-  if (selectedEssay) {
-    return (
-      <CorrectEssayPage
-        essay={selectedEssay}
-        goBack={() => setSelectedEssay(null)}
-      />
-    );
-  };
+  const { essays, loading } = stateEssay;
 
-  const handleStartCorrection = async (essayId: number) => {
+  // Carrega redações ao montar
+  useEffect(() => {
+    loadEssays();
+  }, [loadEssays]);
+
+  // Se veio ID pela URL, pega a redação correspondente
+  useEffect(() => {
+    if (essayId !== null) {
+      const found = stateEssay.essays.find(e => e.id === essayId);
+      if (found) setEssay(found);
+    }
+  }, [essayId, stateEssay.essays]);
+
+  // Função para iniciar correção
+  const handleStartCorrection = async (id: number) => {
     try {
-      setStarting(essayId);
-      const updatedEssay = await startReview(essayId);
-      setSelectedEssay(updatedEssay);
-    } catch (error) {
+      setStarting(id);
+      await startReview(id);
+
+      // Navega para a URL da redação
+      navigate(`/essays-corrector/${id}`);
+    } catch (error: any) {
       console.error(error);
       alert(error.message || "Erro ao iniciar correção.");
     } finally {
       setStarting(null);
     }
   };
+
+  if (essay) {
+    return (
+      <CorrectEssayPage
+        essay={essay}
+        goBack={() => {
+          setEssay(null);
+          navigate("/"); // volta para lista de redações
+        }}
+      />
+    );
+  }
 
   const filteredEssays = essays.filter(e => e.status === activeTab);
 
@@ -49,7 +74,7 @@ export function CorrectEssay() {
 
       <main className="max-w-6xl mx-auto">
         <div className="flex gap-4 mb-6">
-          {["PENDENTE", "EM_CORRECAO"].map((tab) => (
+          {["PENDENTE", "EM_CORRECAO"].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab as "PENDENTE" | "EM_CORRECAO")}
@@ -90,25 +115,23 @@ export function CorrectEssay() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50">
-                  {filteredEssays.map((essay) => (
-                    <tr key={essay.id} className="group hover:bg-indigo-50/40 transition-all duration-200">
+                  {filteredEssays.map(e => (
+                    <tr key={e.id} className="group hover:bg-indigo-50/40 transition-all duration-200">
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-200">
-                            {essay.user?.name?.charAt(0) || "U"}
+                            {e.user?.name?.charAt(0) || "U"}
                           </div>
                           <div>
-                            <p className="font-semibold text-slate-800 leading-none">{essay.user?.name}</p>
-                            <p className="text-xs text-slate-400 mt-1">ID: #{essay.id}</p>
+                            <p className="font-semibold text-slate-800 leading-none">{e.user?.name}</p>
+                            <p className="text-xs text-slate-400 mt-1">ID: #{e.id}</p>
                           </div>
                         </div>
                       </td>
 
                       <td className="px-6 py-5">
                         <div className="max-w-[300px]">
-                          <p className="text-slate-700 font-medium truncate group-hover:text-indigo-900 transition-colors">
-                            {essay.title}
-                          </p>
+                          <p className="text-slate-700 font-medium truncate group-hover:text-indigo-900 transition-colors">{e.title}</p>
                         </div>
                       </td>
 
@@ -116,7 +139,7 @@ export function CorrectEssay() {
                         <div className="flex flex-col items-center">
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold">
                             <Calendar size={12} />
-                            {new Date(essay.createdAt).toLocaleDateString("pt-BR")}
+                            {new Date(e.createdAt).toLocaleDateString("pt-BR")}
                           </span>
                         </div>
                       </td>
@@ -124,20 +147,16 @@ export function CorrectEssay() {
                       <td className="px-6 py-5 text-right">
                         {activeTab === "PENDENTE" ? (
                           <button
-                            onClick={() => handleStartCorrection(essay.id)}
-                            disabled={starting === essay.id}
+                            onClick={() => handleStartCorrection(e.id)}
+                            disabled={starting === e.id}
                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-indigo-600 active:scale-95 transition-all shadow-sm hover:shadow-indigo-200 cursor-pointer disabled:opacity-50"
                           >
-                            {starting === essay.id ? (
-                              <Loader2 className="animate-spin" size={14} />
-                            ) : (
-                              <Play size={14} fill="currentColor" />
-                            )}
-                            {starting === essay.id ? "Iniciando..." : "Iniciar Correção"}
+                            {starting === e.id ? <Loader2 className="animate-spin" size={14} /> : <Play size={14} fill="currentColor" />}
+                            {starting === e.id ? "Iniciando..." : "Iniciar Correção"}
                           </button>
                         ) : (
                           <button
-                            onClick={() => setSelectedEssay(essay)}
+                            onClick={() => navigate(`/essays-corrector/${e.id}`)}
                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 active:scale-95 transition-all shadow-sm hover:shadow-indigo-200 cursor-pointer"
                           >
                             Continuar Correção

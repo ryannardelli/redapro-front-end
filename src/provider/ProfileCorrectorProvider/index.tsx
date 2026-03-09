@@ -15,6 +15,7 @@ export const ProfileCorrectorProvider = ({ children }: CorretorProviderProps) =>
       const inReview = await getEssaysByStatus("EM_CORRECAO");
       dispatchEssay({ type: "SET_ESSAY", payload: [...pending, ...inReview] });
     } catch (error) {
+      console.log(error);
       dispatchEssay({ type: "SET_ERROR", payload: "Erro ao carregar redações" });
     } finally {
       dispatchEssay({ type: "SET_LOADING", payload: false });
