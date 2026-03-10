@@ -1,4 +1,5 @@
-import { ChevronLeft, Send, Loader2 } from "lucide-react";
+import { FinishCorrectEssay } from "@components/ui/Button/FinishCorrectEssay";
+import { ChevronLeft } from "lucide-react";
 import type { Essay } from "models/Essay";
 import { useNavigate } from "react-router";
 
@@ -39,30 +40,10 @@ export function CorrectionHeader({ essay, onFinish, loading }: CorrectionHeaderP
       </div>
 
       <div className="flex-shrink-0">
-        <button
+        <FinishCorrectEssay
           onClick={onFinish}
-          disabled={loading}
-          className={`
-            relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm
-            transition-all duration-200 active:scale-95 cursor-pointer
-            ${loading 
-              ? "bg-slate-100 text-slate-400 cursor-not-allowed" 
-              : "bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:shadow-indigo-200"
-            }
-          `}
-        >
-          {loading ? (
-            <>
-              <Loader2 size={18} className="animate-spin" />
-              <span className="hidden sm:inline">Enviando...</span>
-            </>
-          ) : (
-            <>
-              <Send size={18} className={loading ? "opacity-0" : "opacity-100"} />
-              <span>Finalizar</span>
-            </>
-          )}
-        </button>
+          loading={loading}
+        />
       </div>
 
     </header>
