@@ -55,3 +55,11 @@ export type UpdateProfilePayload = {
 export type CreateProfileResponse = {
   message: string;
 };
+
+export const ProfileType = {
+  ADMIN: "Administrador",
+  STUDENT: "Estudante",
+  CORRECTOR: "Corretor"
+} as const;
+
+export type ProfileType = typeof ProfileType[keyof typeof ProfileType];

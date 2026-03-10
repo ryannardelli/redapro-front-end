@@ -13,6 +13,7 @@ import { Models } from "../../pages/PagesMember/Models";
 import NotFound from "pages/NotFound";
 import { CorrectEssay } from "pages/PagesReviewer/CorrectEssay";
 import { MemberRoute } from "routers/MemberRouter";
+import { ProfileType } from "models/Profile";
 
 export function MainRouter() {
   return (
@@ -22,15 +23,28 @@ export function MainRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<NotFound />} />
 
-        {/* Rotas de membro (estudante e corretor) */}
-        <Route element={<MemberRoute allowedProfile={["Estudante", "Corretor"]} />}>
+         {/* Rotas de estudante e corretor */}
+        <Route element={<MemberRoute allowedProfile={[ProfileType.STUDENT, ProfileType.CORRECTOR]} />}>
           <Route element={<MainTemplate />}>
             <Route path="/" element={<Home />} />
             <Route path="/my-profile" element={<Profile />} />
+            <Route path="/support" element={<Support />} />
+          </Route>
+        </Route>
+
+        {/* Rotas de estudante */}
+        <Route element={<MemberRoute allowedProfile={[ProfileType.STUDENT]} />}>
+          <Route element={<MainTemplate />}>
             <Route path="/my-essays" element={<Essays />} />
             <Route path="/essay-upload" element={<EssayUpload />} />
             <Route path="/models" element={<Models />} />
             <Route path="/support" element={<Support />} />
+          </Route>
+        </Route>
+
+        {/* Rotas de corretor */}
+        <Route element={<MemberRoute allowedProfile={[ProfileType.CORRECTOR]} />}>
+          <Route element={<MainTemplate />}>
             <Route path="/essays-corrector" element={<CorrectEssay />} />
             <Route path="/essays-corrector/:id" element={<CorrectEssay />} />
           </Route>
