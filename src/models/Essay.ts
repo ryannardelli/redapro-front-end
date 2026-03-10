@@ -39,6 +39,7 @@ export type EssayAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "DELETE_ESSAY"; payload: number }
   | { type: "UPDATE_ESSAY"; payload: Essay }
+  | { type: "UPDATE_ESSAY_REALTIME"; payload: UpdateEssayRealtimePayload }
   | { type: "UPDATE_ESSAY_CORRECTED"; payload: { id: number; correctedContent: string } }
   | { type: "SET_ERROR"; payload: string | null };
 
@@ -55,4 +56,10 @@ export type FinishReviewPayload = {
   c4: number;
   c5: number;
   generalFeedback: string;
+};
+
+export type UpdateEssayRealtimePayload = {
+  id: number;
+  status?: Essay["status"];
+  note?: number;
 };

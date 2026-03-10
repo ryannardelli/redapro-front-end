@@ -63,7 +63,7 @@ export function ShowResultEssay({ essay }: ShowResultEssayProps) {
               Desempenho por Competência
             </h3>
             <div className="flex flex-col gap-3">
-              {Object.entries(essay.feedback).map(([key, value]) => (
+              {Object.entries(essay.feedback ?? {}).map(([key, value]) => (
                 <div key={key} className="bg-white border border-slate-200 p-3 rounded-xl text-center shadow-sm">
                   <p className="text-slate-400 text-xs font-bold uppercase">{key}</p>
                   <p className="text-lg font-semibold">{value}</p>

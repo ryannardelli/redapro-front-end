@@ -135,8 +135,21 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
       }
     };
 
+    const updateEssayRealtime = (essayUpdate: {
+        id: number
+        status?: string
+        note?: number
+      }) => {
+
+        dispatchEssay({
+          type: "UPDATE_ESSAY_REALTIME",
+          payload: essayUpdate
+        });
+
+      };
+
   return (
-    <ProfileStudentContext.Provider value={{ stateEssay, dispatchEssay, createEssay, updateEssay, deleteEssay, correctEssayAI }}>
+    <ProfileStudentContext.Provider value={{ stateEssay, dispatchEssay, createEssay, updateEssay, deleteEssay, correctEssayAI, updateEssayRealtime }}>
       {children}
     </ProfileStudentContext.Provider>
   );

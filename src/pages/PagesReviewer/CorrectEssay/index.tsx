@@ -14,16 +14,14 @@ export function CorrectEssay() {
   const { stateEssay, startReview, loadEssays } = useProfileCorrectorEssay();
   const [starting, setStarting] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"PENDENTE" | "EM_CORRECAO">("PENDENTE");
-  const [essay, setEssay] = useState<any>(null); // essay selecionado
+  const [essay, setEssay] = useState<any>(null);
 
   const { essays, loading } = stateEssay;
 
-  // Carrega redações ao montar
   useEffect(() => {
     loadEssays();
   }, [loadEssays]);
 
-  // Se veio ID pela URL, pega a redação correspondente
   useEffect(() => {
     if (essayId !== null) {
       const found = stateEssay.essays.find(e => e.id === essayId);
@@ -31,13 +29,11 @@ export function CorrectEssay() {
     }
   }, [essayId, stateEssay.essays]);
 
-  // Função para iniciar correção
   const handleStartCorrection = async (id: number) => {
     try {
       setStarting(id);
       await startReview(id);
 
-      // Navega para a URL da redação
       navigate(`/essays-corrector/${id}`);
     } catch (error: any) {
       console.error(error);
@@ -53,7 +49,7 @@ export function CorrectEssay() {
         essay={essay}
         goBack={() => {
           setEssay(null);
-          navigate("/"); // volta para lista de redações
+          navigate("/");
         }}
       />
     );

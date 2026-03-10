@@ -1,5 +1,6 @@
 import { socket } from "@services/socket";
 import { useEffect, useState } from "react";
+import { useProfileStudentEssay } from "./useProfileStudentEssay";
 
 export interface Notification {
   id: string;
@@ -11,6 +12,7 @@ export interface Notification {
 export function useNotifications(userId?: number) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { updateEssayRealtime } = useProfileStudentEssay();
 
   useEffect(() => {
     const stored = localStorage.getItem("notifications");
@@ -19,7 +21,6 @@ export function useNotifications(userId?: number) {
     }
   }, []);
 
-  // 🔹 Persistir no localStorage
   useEffect(() => {
     localStorage.setItem(
       "notifications",
@@ -34,7 +35,13 @@ export function useNotifications(userId?: number) {
 
     socket.emit("join", userId);
 
-    socket.on("essay:status", (data: { message: string }) => {
+    socket.on("essay:status", (data: { id: number, status: string, note?: number, message: string }) => {
+
+       updateEssayRealtime({
+        id: data.id,
+        status: data.status,
+        note: data.note,
+      });
 
       setNotifications(prev => [
         {
