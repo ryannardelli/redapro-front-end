@@ -19,7 +19,7 @@ export function Home() {
     ];
 
     return(
-        <>
+        <div className="md:p-4 p-0">
             <div>
                 {user?.profile.name === "Estudante" && <Shortcuts items={studentMenu} />}
                 <StatsStudent />
@@ -30,6 +30,6 @@ export function Home() {
                 {user?.profile.name === "Corretor" && <HistoryEssays />}
             </div>
 
-        </>
+        </div>
     );
 }

@@ -3,6 +3,7 @@ import type {
   Essay,
   EssayAction,
   EssayState,
+  FinishReviewPayload,
 } from "../../models/Essay";
 import { initialStateEssay } from "../../reducer/essayReducer";
 
@@ -10,6 +11,7 @@ type ProfileCorrectorContextType = {
   stateEssay: EssayState;
   dispatchEssay: (action: EssayAction) => void;
   startReview: (essayId: number) => Promise<Essay>;
+  finishReview: (essayId: number, payload: FinishReviewPayload) => Promise<Essay>;
   loadEssays: () => Promise<void>;
 };
 
@@ -22,4 +24,6 @@ export const ProfileCorrectorContext = createContext<ProfileCorrectorContextType
   },
 
    loadEssays: async () => { throw new Error("loadEssays not implemented"); },
+
+   finishReview: async () => { throw new Error("finishReview not implemented"); },
 });

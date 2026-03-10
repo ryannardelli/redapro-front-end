@@ -47,3 +47,12 @@ export type CreateEssayPayload = {
     content: string;
     category_id: number;
 }
+
+export type FinishReviewPayload = {
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  c5: number;
+  generalFeedback: string;
+};

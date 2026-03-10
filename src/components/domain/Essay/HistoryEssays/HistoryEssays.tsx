@@ -1,4 +1,4 @@
-import { FileText, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { FileText, Eye } from "lucide-react";
 
 export function HistoryEssays() {
   const data = [
@@ -85,26 +85,6 @@ export function HistoryEssays() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Paginação Estilizada */}
-      <div className="p-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-slate-500">Página</span>
-          <div className="flex gap-1">
-            <button className="w-8 h-8 rounded-md bg-purple-600 text-white text-xs font-bold">1</button>
-            <button className="w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all disabled:opacity-50">
-            <ChevronLeft size={16} /> Anterior
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all">
-            Próximo <ChevronRight size={16} />
-          </button>
-        </div>
       </div>
     </div>
   );

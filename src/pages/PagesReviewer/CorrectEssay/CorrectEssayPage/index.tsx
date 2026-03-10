@@ -3,6 +3,7 @@ import { ChevronLeft, Highlighter, Send, Strikethrough, Underline } from "lucide
 import { useState, useEffect } from "react";
 import { useProfileCorrectorEssay } from "@hooks/useProfileCorrectorEssay";
 import { useNavigate, useParams } from "react-router";
+import { ListLoading } from "@components/ui/Loading/ListLoading";
 
 export function CorrectEssayPage() {
   const { id } = useParams<{ id: string }>();
@@ -11,21 +12,15 @@ export function CorrectEssayPage() {
   const navigate = useNavigate();
   const { stateEssay, loadEssays, startReview } = useProfileCorrectorEssay();
   const [essay, setEssay] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [editor, setEditor] = useState<any>(null);
 
-  // Carrega essay ao montar
   useEffect(() => {
   const fetchEssay = async () => {
     if (!essayId) return;
 
-    setLoading(true);
-
     try {
-      // Se já existe no state, pega direto
       let found = stateEssay.essays.find(e => e.id === essayId);
 
-      // Se não encontrou, carrega todas as redações
       if (!found) {
         await loadEssays();
         found = stateEssay.essays.find(e => e.id === essayId);
@@ -39,7 +34,6 @@ export function CorrectEssayPage() {
 
       setEssay(found);
 
-      // Inicia correção se estiver pendente
       if (found.status === "PENDENTE") {
         await startReview(essayId);
       }
@@ -47,18 +41,16 @@ export function CorrectEssayPage() {
       console.error(err);
       alert("Erro ao carregar redação!");
       navigate("/");
-    } finally {
-      setLoading(false);
     }
   };
 
   fetchEssay();
-}, [essayId, navigate]); // depende só do ID e do navigate
+}, [essayId, navigate]);
 
-  if (loading || !essay) {
+  if (stateEssay.loading || !essay) {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-500 font-semibold">
-        Carregando redação...
+        <ListLoading text="Preparando sua mesa de correção..." />
       </div>
     );
   }
@@ -192,6 +184,7 @@ export function CorrectEssayPage() {
             />
           </div>
         </aside>
+        
       </main>
     </div>
   );

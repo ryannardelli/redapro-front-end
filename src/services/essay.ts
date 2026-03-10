@@ -192,3 +192,41 @@ export async function startReviewEssay(essayId: number): Promise<Essay> {
   }
 }
 
+export async function finishReviewEssay(
+  essayId: number,
+  payload: {
+    c1: number;
+    c2: number;
+    c3: number;
+    c4: number;
+    c5: number;
+    generalFeedback: string;
+  }
+): Promise<Essay> {
+
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}/finish-review`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao finalizar correção da redação.");
+    }
+
+    const essay: Essay = await res.json();
+    return essay;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
