@@ -20,7 +20,6 @@ export function CorrectEssayPage() {
 
   const {
     stateEssay,
-    loadEssays,
     startReview,
     finishReview
   } = useProfileCorrectorEssay();
