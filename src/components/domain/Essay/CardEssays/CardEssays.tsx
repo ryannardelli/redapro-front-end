@@ -5,7 +5,6 @@ import { showMessage } from 'adapters/showMessage';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { DeleteEssay } from '../DeleteEssay';
 import { EditEssay } from '../EditEssay';
-import { useEssay } from '@hooks/useEssay';
 import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
@@ -19,6 +18,8 @@ import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
+
+  console.log(stateEssay.essays);
 
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];

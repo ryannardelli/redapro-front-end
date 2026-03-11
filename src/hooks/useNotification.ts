@@ -1,6 +1,7 @@
 import { socket } from "@services/socket";
 import { useEffect, useState } from "react";
 import { useProfileStudentEssay } from "./useProfileStudentEssay";
+import type { Feedback } from "models/Essay";
 
 export interface Notification {
   id: string;
@@ -35,12 +36,13 @@ export function useNotifications(userId?: number) {
 
     socket.emit("join", userId);
 
-    socket.on("essay:status", (data: { id: number, status: string, note?: number, message: string }) => {
+    socket.on("essay:status", (data: { id: number, status: string, note?: number, message: string, feedback: Feedback  }) => {
 
        updateEssayRealtime({
         id: data.id,
         status: data.status,
         note: data.note,
+        feedback: data.feedback
       });
 
       setNotifications(prev => [

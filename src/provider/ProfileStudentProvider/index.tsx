@@ -2,7 +2,7 @@ import { useReducer, useCallback, useEffect, type ReactNode } from "react";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
 import { getUserEssays, create_essay, update_essay, delete_essay, correctEssayWithAI } from "../../services/essay";
 import { useAuth } from "../../hooks/useAuth";
-import type { CreateEssayPayload } from "../../models/Essay";
+import type { CreateEssayPayload, Feedback } from "../../models/Essay";
 import { ProfileStudentContext } from "./ProfileStudentContext";
 
 type ProfileStudentProviderProps = { children: ReactNode };
@@ -138,7 +138,8 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
     const updateEssayRealtime = (essayUpdate: {
         id: number
         status?: string
-        note?: number
+        note?: number;
+        feedback: Feedback;
       }) => {
 
         dispatchEssay({

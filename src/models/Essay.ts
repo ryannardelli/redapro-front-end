@@ -63,3 +63,12 @@ export type UpdateEssayRealtimePayload = {
   status?: Essay["status"];
   note?: number;
 };
+
+export type Feedback = {
+  c1: number
+  c2: number
+  c3: number
+  c4: number
+  c5: number
+  general: string
+}
