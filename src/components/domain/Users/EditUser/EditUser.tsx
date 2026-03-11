@@ -2,22 +2,45 @@ import { useState, useRef } from "react";
 import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
 import { UserEditForm } from "../UserEditForm/UserEditForm";
 import { Settings } from "lucide-react";
+import { useUsers } from "@hooks/useUsers";
+import { showMessage } from "adapters/showMessage";
 
 export function EditUser({ user }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-//   const { updateProfile } = useAuth();
+  const { updateUser } = useUsers();
 
   const handleSaveTrigger = () => {
     formRef.current?.requestSubmit();
   };
 
-//   const onSubmit = async (data) => {
-//     await updateProfile(data);
-//     setIsOpen(false);
-//   };
+  const onSubmit = async (data) => {
+  console.log("Dados enviados pelo formulário:", data);
+
+  const payload: any = {
+    name: data.name
+  };
+
+  if (data.pictureUrl) {
+    payload.pictureUrl = data.pictureUrl;
+  }
+
+  try {
+    const response = await updateUser(user.id, payload);
+
+    showMessage.success(response.message);
+    setIsOpen(false);
+
+  } catch (err) {
+    const errorMessage =
+      err instanceof Error ? err.message : err?.message;
+
+    console.log(err);
+    showMessage.error(errorMessage);
+  }
+};
 
   return (
     <>
@@ -38,7 +61,7 @@ export function EditUser({ user }) {
         <UserEditForm
           user={user}
           formRef={formRef}
-        //   onSubmit={onSubmit}
+          onSubmit={onSubmit}
           initialData={{
             name: user.name,
             pictureUrl: user.pictureUrl,

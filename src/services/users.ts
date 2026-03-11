@@ -4,9 +4,10 @@ interface CatchInformationsUser {
     getUserById: (id: number) => Promise<User>;
     findAll: () => Promise<User[]>;
     deleteUser: (id: number) => Promise<void>;
+    updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
 }
 
-import type { User } from "../models/User";
+import type { UpdateUserPayload, User } from "../models/User";
 import { userAuthentication } from "./auth";
 
 type ApiError = {
@@ -73,7 +74,27 @@ export const catchInformationsUser: CatchInformationsUser = {
         console.error(error);
         throw error;
     }
-}
+},
+
+    updateUser: async (id: number, data: { name: string }) => {
+        const token = userAuthentication.getTokenFromStorage();
+
+        const res = await fetch(`${API_URL}/${id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!res.ok) {
+            const errorData: ApiError = await res.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return res.json() as Promise<User>;
+    },
 };
 
 export async function getMe(): Promise<User> {
