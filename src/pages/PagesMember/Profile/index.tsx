@@ -3,19 +3,16 @@ import { useAuth } from "../../../hooks/useAuth";
 import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { EditUser } from "@components/domain/Users/EditUser";
 import { StatisticsStatsStudent } from "@components/domain/Profile/StatisticsStatsStudent";
+import { SectionHeaderHistory } from "@components/ui/Header/SectionHeaderHistory";
+import { ActivitiesStudentTable } from "@components/domain/Dashboard/ActivityStudentTable";
+import { ContainerHeaderHistory } from "@components/ui/Header/ContainerHeaderHistory/ContainerHeaderHistory";
 
 export function Profile() {
   const { state } = useAuth();
   const user = state.user;
 
   if (!user) return <SpinnerLoading />;
-
-  const history = [
-    { tema: "Crise Climática", corretor: "Prof. Ana Souza", data: "05 Out", nota: 960, icon: <FileText className="text-blue-500" /> },
-    { tema: "Tecnologia e Ética", corretor: "Prof. João Lima", data: "04 Out", nota: 720, icon: <CheckCircle2 className="text-emerald-500" /> },
-    { tema: "Educação Inclusiva", corretor: "Prof. Ana Souza", data: "03 Out", nota: 0, icon: <XCircle className="text-rose-500" /> },
-  ];
-
+  
   return (
     <section className="px-4 py-8 md:py-12 max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="relative bg-white border border-slate-200 p-6 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center gap-6">
@@ -53,50 +50,19 @@ export function Profile() {
 
       {user?.profile.name === "Estudante" && <StatisticsStatsStudent />}
 
-      <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-slate-50 flex justify-between items-center">
-          <h2 className="font-black text-slate-800 flex items-center gap-2">
-            <Clock size={20} className="text-purple-600" /> Últimas Atividades
-          </h2>
-          <button className="text-[11px] font-black text-purple-600 hover:text-purple-800 uppercase tracking-wider">Ver tudo</button>
-        </div>
-
-        <div className="overflow-x-auto px-4 pb-4">
-          <table className="w-full text-left border-separate border-spacing-y-2">
-            <thead className="text-slate-400">
-              <tr>
-                <th className="px-4 py-2 text-[10px] font-black uppercase tracking-widest">Tema</th>
-                <th className="px-4 py-2 text-[10px] font-black uppercase tracking-widest hidden md:table-cell">Avaliador</th>
-                <th className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-center">Data</th>
-                <th className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-center">Nota</th>
-              </tr>
-            </thead>
-            <tbody>
-              {history.map((row, i) => (
-                <tr key={i} className="group cursor-default">
-                  <td className="px-4 py-4 bg-slate-50/50 group-hover:bg-slate-50 rounded-l-2xl transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-white rounded-lg shadow-sm">{row.icon}</div>
-                      <span className="text-sm font-bold text-slate-700">{row.tema}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 bg-slate-50/50 group-hover:bg-slate-50 text-sm text-slate-500 font-medium hidden md:table-cell transition-colors">
-                    {row.corretor}
-                  </td>
-                  <td className="px-4 py-4 bg-slate-50/50 group-hover:bg-slate-50 text-sm text-slate-400 text-center font-bold transition-colors">
-                    {row.data}
-                  </td>
-                  <td className="px-4 py-4 bg-slate-50/50 group-hover:bg-slate-50 rounded-r-2xl text-center transition-colors">
-                    <span className={`px-4 py-1.5 rounded-xl font-black text-xs shadow-sm ${row.nota >= 900 ? 'bg-emerald-500 text-white' : 'bg-white text-slate-600 border border-slate-100'}`}>
-                      {row.nota === 0 ? "—" : row.nota}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <ContainerHeaderHistory>
+        
+        <SectionHeaderHistory
+          icon={<Clock className="w-5 h-5 text-blue-600" />}
+          title="Histórico de Atividades"
+          description="Visualize suas últimas atividades"
+        />
+    
+      <div className="p-0 sm:p-4">
+        <ActivitiesStudentTable />
       </div>
+    </ContainerHeaderHistory>
+
     </section>
   );
 }
