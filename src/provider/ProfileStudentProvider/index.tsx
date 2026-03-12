@@ -4,12 +4,14 @@ import { getUserEssays, create_essay, update_essay, delete_essay, correctEssayWi
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateEssayPayload, Feedback } from "../../models/Essay";
 import { ProfileStudentContext } from "./ProfileStudentContext";
+import { useDashboard } from "@hooks/useDashboard";
 
 type ProfileStudentProviderProps = { children: ReactNode };
 
 export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps) => {
   const [stateEssay, dispatchEssay] = useReducer(essayReducer, initialStateEssay);
   const { state } = useAuth();
+  const { loadRecentEssays } = useDashboard()
 
   const loadUserEssays = useCallback(async () => {
     if (!state.user) return;
@@ -38,8 +40,8 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
         const updatedEssay = await update_essay(essayId, data);
 
         dispatchEssay({
-        type: "UPDATE_ESSAY",
-        payload: updatedEssay,
+          type: "UPDATE_ESSAY",
+          payload: updatedEssay,
         });
 
         await loadUserEssays();
@@ -67,6 +69,8 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
       dispatchEssay({ type: "SET_LOADING", payload: true });
 
       const response = await create_essay(state.user.id, data);
+
+      loadRecentEssays(); 
 
       await loadUserEssays();
 
@@ -98,6 +102,8 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
         type: "DELETE_ESSAY",
         payload: essayId,
       });
+
+      loadRecentEssays();
 
       return response;
     } catch (error) {

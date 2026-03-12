@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, XCircle, Trophy, Clock, Calendar } from "lucide-react";
+import { Trophy, Clock, Calendar } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { EditUser } from "@components/domain/Users/EditUser";
@@ -12,7 +12,7 @@ export function Profile() {
   const user = state.user;
 
   if (!user) return <SpinnerLoading />;
-  
+
   return (
     <section className="px-4 py-8 md:py-12 max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
       <div className="relative bg-white border border-slate-200 p-6 rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center gap-6">

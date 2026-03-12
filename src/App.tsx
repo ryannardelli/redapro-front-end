@@ -13,21 +13,21 @@ function App() {
   return (
     <AuthProvider>
       <CategoryProvider>
+      <DashboardProvider>
       <ProfileStudentProvider>
       <ProfileCorrectorProvider>
       <ProfileProvider>
       <UserProvider>
       <ReferenceEssayProvider>
-      <DashboardProvider>
       <MessageContainer>
         <MainRouter />
       </MessageContainer>
-      </DashboardProvider>
       </ReferenceEssayProvider>
       </UserProvider>
       </ProfileProvider>
       </ProfileCorrectorProvider>
       </ProfileStudentProvider>
+      </DashboardProvider>
       </CategoryProvider>
     </AuthProvider>
   )

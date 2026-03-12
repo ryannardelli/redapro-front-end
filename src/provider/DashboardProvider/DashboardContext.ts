@@ -7,6 +7,7 @@ type DashboardContextType = {
   dispatchDashboard: (action: DashboardAction) => void;
   loadStudentStats: () => Promise<void>;
   loadCorrectorStats: () => Promise<void>;
+  loadRecentEssays: () => Promise<void>;
 };
 
 export const DashboardContext = createContext<DashboardContextType>({
@@ -15,7 +16,12 @@ export const DashboardContext = createContext<DashboardContextType>({
   loadStudentStats: async () => {
     throw new Error("loadStudentStats not implemented");
   },
+
   loadCorrectorStats: async () => {
     throw new Error("loadCorrectorStats not implemented");
+  },
+
+  loadRecentEssays: async () => {
+    throw new Error("loadRecentEssays not implemented");
   },
 });

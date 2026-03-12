@@ -102,7 +102,8 @@ export const DashboardProvider = ({ children }: Props) => {
         stateDashboard,
         dispatchDashboard,
         loadStudentStats,
-        loadCorrectorStats
+        loadCorrectorStats,
+        loadRecentEssays,
       }}
     >
       {children}
