@@ -94,7 +94,7 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
       type: "UPDATE_USER",
       payload: updatedUser,
     });
-
+    
     return updatedUser;
 
   } catch (error) {
