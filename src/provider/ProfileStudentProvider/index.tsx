@@ -11,7 +11,7 @@ type ProfileStudentProviderProps = { children: ReactNode };
 export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps) => {
   const [stateEssay, dispatchEssay] = useReducer(essayReducer, initialStateEssay);
   const { state } = useAuth();
-  const { loadRecentEssays } = useDashboard()
+  const { loadRecentEssays, loadStudentStats } = useDashboard()
 
   const loadUserEssays = useCallback(async () => {
     if (!state.user) return;
@@ -70,6 +70,7 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
 
       const response = await create_essay(state.user.id, data);
 
+      loadStudentStats();
       loadRecentEssays(); 
 
       await loadUserEssays();
@@ -104,6 +105,7 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
       });
 
       loadRecentEssays();
+      loadStudentStats();
 
       return response;
     } catch (error) {
