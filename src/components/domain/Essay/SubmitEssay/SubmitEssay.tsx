@@ -17,6 +17,7 @@ export function SubmitEssay() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<EssayFormData>({
     resolver: zodResolver(EssaySchema),
@@ -33,6 +34,12 @@ export function SubmitEssay() {
       });
 
       showMessage.success(createdEssay?.message || "Redação criada com sucesso!");
+
+      reset({
+        title: "",
+        content: "",
+        category_id: 0,
+      });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : (err?.message ?? "Erro ao enviar redação");
       showMessage.error(errorMessage);
