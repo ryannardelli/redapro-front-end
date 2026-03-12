@@ -3,7 +3,7 @@ import { Plus, FileText, User, HelpCircle } from "lucide-react";
 
 export function Shortcuts() {
   return (
-    <div className="fixed bottom-4 left-0 right-0 px-4 z-50 md:relative md:bottom-0 md:flex md:justify-end md:p-6">
+    <div className="fixed  bottom-4 left-0 right-0 px-4 z-10 md:relative md:bottom-0 md:flex md:justify-end md:p-6">
       <div className="flex items-center justify-around md:justify-end gap-1 md:gap-3 p-2 bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xl md:shadow-xl rounded-2xl md:rounded-2xl max-w-fit mx-auto md:mx-0">
         
         <RouterLinks

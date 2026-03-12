@@ -19,8 +19,6 @@ import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
 
-  console.log(stateEssay.essays);
-
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
 
