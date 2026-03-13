@@ -42,6 +42,39 @@ const studentFaqs = [
   }
 ];
 
+const correctorFaqs = [
+  {
+    ask: "Como começo a corrigir uma redação?",
+    answer:
+      "Acesse o painel de correções no menu principal. Lá você encontrará as redações disponíveis para correção. Basta selecionar uma redação para iniciar a análise e registrar o feedback para o estudante."
+  },
+  {
+    ask: "Existe um prazo para realizar a correção?",
+    answer:
+      "O tempo de correção pode variar de acordo com sua disponibilidade. Após iniciar a correção de uma redação, recomenda-se finalizá-la o quanto antes para garantir uma boa experiência ao estudante."
+  },
+  {
+    ask: "Posso editar uma correção após enviar?",
+    answer:
+      "Após enviar a correção, ela normalmente é registrada no sistema e disponibilizada ao estudante. Logo, você não conseguirá mais ter acesso."
+  },
+  {
+    ask: "A plataforma utiliza Inteligência Artificial na correção?",
+    answer:
+      "Sim. A plataforma pode utilizar Inteligência Artificial para auxiliar na análise textual, identificando aspectos como estrutura, gramática e coerência. No entanto, a avaliação final e o feedback ao estudante são realizados pela escolha doe estudante."
+  },
+  {
+    ask: "Como garantir uma correção justa e consistente?",
+    answer:
+      "Recomenda-se seguir os critérios de avaliação definidos pela plataforma, observando aspectos como estrutura do texto, argumentação, domínio da norma padrão e proposta de intervenção. Isso ajuda a manter um padrão de qualidade nas correções."
+  },
+  {
+    ask: "Como acompanhar meu histórico de correções?",
+    answer:
+      "No painel do corretor é possível visualizar o histórico de redações corrigidas, permitindo acompanhar suas correções realizadas ao longo do tempo."
+  }
+];
+
 export function HelpAndSupport() {
   const [formData, setFormData] = useState({ nome: "", email: "", tipo: "", mensagem: "" });
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,6 +113,7 @@ export function HelpAndSupport() {
             </div>
 
             {user?.profile.name === "Estudante" && <FaqAccordion faqs={studentFaqs} /> }
+             {user?.profile.name === "Corretor" && <FaqAccordion faqs={correctorFaqs} /> }
           </section>
         </div>
 
