@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Mail, HelpCircle, MessageCircle } from "lucide-react";
 import { FaqAccordion } from "@components/ui/FaqAccordion";
 import { useAuth } from "@hooks/useAuth";
@@ -77,11 +77,11 @@ const correctorFaqs = [
 
 export function HelpAndSupport() {
   const [formData, setFormData] = useState({ nome: "", email: "", tipo: "", mensagem: "" });
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
   const { state } = useAuth();
   const user = state.user;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Sua mensagem foi enviada com sucesso!");
     setFormData({ nome: "", email: "", tipo: "", mensagem: "" });
@@ -113,7 +113,7 @@ export function HelpAndSupport() {
             </div>
 
             {user?.profile.name === "Estudante" && <FaqAccordion faqs={studentFaqs} /> }
-             {user?.profile.name === "Corretor" && <FaqAccordion faqs={correctorFaqs} /> }
+            {user?.profile.name === "Corretor" && <FaqAccordion faqs={correctorFaqs} /> }
           </section>
         </div>
 
@@ -180,7 +180,7 @@ export function HelpAndSupport() {
                       value={formData.mensagem}
                       onChange={handleChange}
                       placeholder="No que podemos ajudar?"
-                      rows="4"
+                      rows={4}
                       className="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 transition-all outline-none resize-none"
                       required
                     ></textarea>
