@@ -10,6 +10,7 @@ import { NotificationButton } from "@components/domain/Header/NotificationButton
 import { NotificationPanel } from "@components/domain/Header/NotificationPanel";
 import { ProfileButton } from "@components/domain/Header/ProfileButton";
 import { useNotifications } from "@hooks/useNotification";
+import { useProfile } from "@hooks/useProfile";
 
 interface HeaderNavProps {
   onToggleSidebar: () => void;
@@ -19,9 +20,12 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const navigate = useNavigate();
   const { logout, state } = useAuth();
+  const { stateProfile } = useProfile();
   const user = state.user;
+  const menus = stateProfile.menusByLoggedUser;
+
+  console.log(menus);
 
   const {
     notifications,
@@ -32,20 +36,18 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
     clearAll
   } = useNotifications(user?.id);
 
-  const searchResults = [
-    {
-      id: "essays",
-      label: "Minhas Redações",
-      onSelect: () => navigate("/essays-corrector")
-    },
-    {
-      id: "new-essay",
-      label: "Nova Redação",
-      onSelect: () => navigate("/essays/new")
-    }
-  ];
+  const filteredMenus = menus
+    .filter(menu =>
+      menu.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map(menu => ({
+      id: menu.id,
+      label: menu.name,
+      icon: menu.icon,
+      route: menu.route
+    }));
 
-  return (
+    return (
     <ContainerHeaderSidebar>
       <ContainerSubHeaderSidebar>
         <MenuBurgerSidebar
@@ -59,7 +61,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
           value={searchTerm}
           onChange={setSearchTerm}
           placeholder="Buscar menus ou funções..."
-          results={searchResults}
+          results={filteredMenus}
           hiddenOnMobile
         />
       </ContainerSubHeaderSidebar>

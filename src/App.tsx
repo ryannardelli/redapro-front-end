@@ -7,7 +7,7 @@ import { UserProvider } from "provider/UserProvider"
 import { ReferenceEssayProvider } from "provider/ReferenceEssayProvider"
 import { DashboardProvider } from "provider/DashboardProvider"
 import { ProfileStudentProvider } from "provider/ProfileStudentProvider"
-import { ProfileCorrectorProvider } from "provider/ProfileCorrectorProvider"
+import { ProfileCorrectorProvider } from "provider/ProfileCorrectorProvider";
 
 function App() {
   return (
@@ -33,4 +33,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
