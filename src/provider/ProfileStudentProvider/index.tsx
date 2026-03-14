@@ -82,7 +82,7 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
       const message =
       error instanceof Error
         ? error.message
-        : error?.message;
+        : "Erro ao criar redação.";
 
     dispatchEssay?.({ type: "SET_ERROR", payload: message });
 
