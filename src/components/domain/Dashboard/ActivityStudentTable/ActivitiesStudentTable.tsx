@@ -73,7 +73,7 @@ export const ActivitiesStudentTable: React.FC = () => {
                 </td>
 
                 <td className="p-4">
-                  <p className="text-sm text-slate-700 font-medium">{formatDate(essay.createdAt)}</p>
+                  <p className="text-sm text-slate-700 font-medium">{formatDate(essay.createdAt ?? "")}</p>
                 </td>
 
                 <td className="p-4">
