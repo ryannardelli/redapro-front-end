@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";
 import { userReducer, initialStateUser } from "../../reducer/userReducer";
 import { catchInformationsUser } from "@services/users";
 import { useAuth } from "@hooks/useAuth";
-import type { UpdateUserPayload } from "models/User";
+import type { UpdateUserPayload, User } from "models/User";
 
 type UserProviderProps = {
   children: ReactNode;
@@ -66,11 +66,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   } catch (error) {
     console.error(error);
 
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Erro ao excluir usuário";
-
     if(error instanceof Error) {
       dispatchUser({
         type: "SET_ERROR_USERS",
@@ -92,7 +87,7 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
 
     dispatchUser({
       type: "UPDATE_USER",
-      payload: updatedUser,
+      payload: updatedUser as User,
     });
     
     return updatedUser;
