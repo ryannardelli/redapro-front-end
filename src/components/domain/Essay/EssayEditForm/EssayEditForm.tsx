@@ -90,8 +90,6 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
           </p>
         )}
       </div>
-
-      <input type="hidden" value="corretor" {...register("mode")} />
     </form>
   );
 };

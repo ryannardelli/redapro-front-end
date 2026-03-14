@@ -38,7 +38,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
       const errorMessage =
       err instanceof Error
         ? err.message
-        : err?.message;
+        : "Erro ao atualizar redação.";
       console.log(err);
       showMessage.error(errorMessage);
     }
@@ -67,7 +67,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
           initialData={{
             title: essay.title,
             content: essay.content,
-            category: essay.category.id,
+            category_id: essay.category?.id ?? 0,
           }}
         />
       </ModalEditBase>

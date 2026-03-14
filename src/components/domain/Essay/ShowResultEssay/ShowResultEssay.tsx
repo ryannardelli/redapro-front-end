@@ -73,7 +73,7 @@ export function ShowResultEssay({ essay }: ShowResultEssayProps) {
                 Texto Original
               </h3>
               <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
-                {essay.category.name}
+                {essay.category?.name}
               </span>
             </div>
             
