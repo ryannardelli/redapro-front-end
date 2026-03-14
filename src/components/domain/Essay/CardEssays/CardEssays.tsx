@@ -15,6 +15,7 @@ import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
 import { EmptyState } from '@components/feedback/EmptyState';
 import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
+import type { DialogProps } from 'types/DialogProps';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
@@ -80,15 +81,14 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       closeButton: false,
       draggable: false,
       onClose: async (props) => {
-        const isConfirmed = props?.data === true || props === true;
+        const isConfirmed = (props as DialogProps)?.data === true || props === true;
 
         if (isConfirmed) {
           try {
             const responseDeleteEssay = await deleteEssay(id);
             showMessage.success(responseDeleteEssay.message);
           } catch (err) {
-            const errorMessage =
-              err instanceof Error ? err.message : err?.message;
+            const errorMessage = err instanceof Error ? err.message : "Erro ao excluir redação";
 
             console.error(err);
             showMessage.error(errorMessage);
@@ -104,9 +104,9 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
     try {
       const AIcorrectResponse = await correctEssayAI(id);
       showMessage.success(AIcorrectResponse.message);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+        err instanceof Error ? err.message : "Erro ao corrigir com AI.";
 
       console.error(err);
       showMessage.error(errorMessage);

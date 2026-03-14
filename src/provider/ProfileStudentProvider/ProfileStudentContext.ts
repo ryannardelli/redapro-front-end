@@ -7,7 +7,7 @@ export type ProfileStudentContextType = {
   dispatchEssay: (action: EssayAction) => void;
   createEssay: (data: CreateEssayPayload) => Promise<Essay>;
   updateEssay: (id: number, data: CreateEssayPayload) => Promise<Essay>;
-  deleteEssay: (id: number) => Promise<void>;
+  deleteEssay: (id: number) => Promise<{ message: string }>;
   correctEssayAI: (essayId: number) => Promise<{ message: string; essay: string }>;
 };
 

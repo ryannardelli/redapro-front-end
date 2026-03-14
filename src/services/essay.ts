@@ -61,7 +61,7 @@ export async function create_essay(
   }
 }
 
-export async function delete_essay(essayId: number): Promise<void> {
+export async function delete_essay(essayId: number): Promise<{ message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
