@@ -34,3 +34,15 @@ export interface LoginResponse {
       role: string;
     };
 }
+
+export type AuthUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+};
+
+export type RegisterResponse = {
+  token: string;
+  user: AuthUser;
+};
