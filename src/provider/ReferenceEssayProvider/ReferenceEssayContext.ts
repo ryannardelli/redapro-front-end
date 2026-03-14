@@ -21,6 +21,7 @@ type ReferenceEssayContextType = {
   ) => Promise<ReferenceEssay>;
 
   deleteReferenceEssay: (id: number) => Promise<void>;
+  loadReferenceEssays: () => Promise<void>;
 };
 
 export const ReferenceEssayContext =
@@ -38,5 +39,9 @@ export const ReferenceEssayContext =
 
     deleteReferenceEssay: async () => {
       throw new Error("deleteReferenceEssay not implemented");
+    },
+
+    loadReferenceEssays: async () => {
+      throw new Error("loadReferenceEssays not implemented");
     },
   });

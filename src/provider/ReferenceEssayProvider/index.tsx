@@ -16,6 +16,7 @@ import {
   update_reference_essay,
 } from "../../services/referenceEssay";
 import { useAuth } from "@hooks/useAuth";
+import type { CreateReferenceEssayPayload } from "models/ReferenceEssay";
 
 type ReferenceEssayProviderProps = {
   children: ReactNode;
@@ -65,7 +66,7 @@ export const ReferenceEssayProvider = ({
     }
   }, [loadReferenceEssays, state.isAuthenticated, state.loading]);
 
-  const createReferenceEssay = async (data: any) => {
+  const createReferenceEssay = async (data: CreateReferenceEssayPayload) => {
     try {
       dispatchReferenceEssay({ type: "SET_LOADING", payload: true });
 
