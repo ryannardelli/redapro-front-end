@@ -5,17 +5,10 @@ import type { EssayFormData } from "../../../../schemas/Essay/EssaySchema";
 import { EssayEditForm } from "../EssayEditForm";
 import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
 import { useProfileStudentEssay } from "@hooks/useProfileStudentEssay";
+import type { Essay } from "models/Essay";
 
 interface EditEssayProps {
-  essay: {
-    id: number;
-    title: string;
-    content: string;
-    category: {
-      id: number;
-      name: string;
-    };
-  };
+  essay: Essay;
 }
 
 export function EditEssay({ essay }: EditEssayProps ) {

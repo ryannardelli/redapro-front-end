@@ -56,7 +56,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
               if (status === 'corrigida' && !hasGrade) return false;
               if (status === 'pendente' && hasGrade) return false;
 
-              if (status === 'em_correcao' && essay.status.toLowerCase() !== 'em_correcao')
+              if (status === 'em_correcao' && essay.status?.toLowerCase() !== 'em_correcao')
                   return false;
           }
 
