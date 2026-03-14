@@ -1,24 +1,16 @@
 import { useState } from "react";
 import { Eye, BookOpen, Award, Calendar, CheckCircle2 } from "lucide-react";
 import { ModalViewBaseResult } from "@components/ui/Modal/ModalViewResultBase";
+import type { Essay } from "models/Essay";
 
 interface ShowResultEssayProps {
-  essay: {
-    id: number;
-    title: string;
-    content: string;
-    note: number;
-    category: { name: string; description: string };
-    feedback: { [key: string]: number };
-    status: string;
-    createdAt: string;
-  };
+  essay: Essay;
 }
 
 export function ShowResultEssay({ essay }: ShowResultEssayProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const dateFormatted = new Date(essay.createdAt).toLocaleDateString('pt-BR');
+  const dateFormatted = new Date(essay.createdAt ?? "").toLocaleDateString('pt-BR');
 
   return (
     <>

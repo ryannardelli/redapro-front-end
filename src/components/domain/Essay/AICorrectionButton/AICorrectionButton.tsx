@@ -1,15 +1,18 @@
 import { Sparkles, Loader2 } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 interface AICorrectionButtonProps {
   onClick: () => void;
   loading?: boolean;
   disabled?: boolean;
+  children?: ReactNode;
 }
 
 export function AICorrectionButton({
   onClick,
   loading = false,
   disabled = false,
+  children,
 }: AICorrectionButtonProps) {
   return (
     <button
@@ -28,13 +31,15 @@ export function AICorrectionButton({
       {loading ? (
         <>
           <Loader2 size={18} className="animate-spin" />
-          Corrigindo...
+          <span>Corrigindo...</span>
         </>
       ) : (
-        <>
-          <Sparkles size={18} className="animate-pulse" />
-          Corrigir com IA
-        </>
+        children || (
+          <>
+            <Sparkles size={18} className="animate-pulse" />
+            <span>Corrigir com IA</span>
+          </>
+        )
       )}
     </button>
   );

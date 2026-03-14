@@ -17,7 +17,7 @@ export const ActivitiesStudentTable: React.FC = () => {
 
   if (!recentEssays || recentEssays.length === 0) {
     return (
-     <EmptyActivitiesStudent />
+     <EmptyActivitiesStudent message="Você ainda não possui redações." />
     );
   }
 

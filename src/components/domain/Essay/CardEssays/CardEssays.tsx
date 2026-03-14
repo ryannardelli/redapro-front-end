@@ -225,7 +225,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
                         <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
                           <div className="flex items-center text-gray-600 text-xs">
                             <Calendar size={14} className="mr-1.5 opacity-70" />
-                            {new Date(essay.createdAt).toLocaleDateString()}
+                            {new Date(essay.createdAt ?? "").toLocaleDateString()}
                           </div>
 
                           <div className="flex items-center text-gray-600 text-xs">
