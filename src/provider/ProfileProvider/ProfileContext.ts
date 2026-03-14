@@ -1,5 +1,6 @@
 import type {
   CreateProfilePayload,
+  CreateProfileResponse,
   Profile,
   ProfileAction,
   ProfileState,
@@ -13,8 +14,8 @@ type ProfileContextType = {
   stateProfile: ProfileState;
   dispatchProfile: (action: ProfileAction) => void;
 
-  createProfile: (data: CreateProfilePayload) => Promise<Profile>;
-  updateProfile: (data: UpdateProfilePayload) => Promise<Profile>;
+  createProfile: (data: CreateProfilePayload) => Promise<CreateProfileResponse | undefined>;
+  updateProfile: (profileId: number, data: UpdateProfilePayload) => Promise<Profile>;
   deleteProfile: (id: number) => Promise<void>;
 
   loadMenusByLoggedUser: (profileId: number) => Promise<void>;

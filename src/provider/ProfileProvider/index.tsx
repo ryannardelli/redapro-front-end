@@ -38,6 +38,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
       type: "SET_ERROR_MENUS_LOGGED_USER",
       payload: "Erro ao carregar menus do usuário",
     });
+     console.log(error);
   } finally {
     dispatchProfile({
       type: "SET_LOADING_MENUS_LOGGED_USER",
@@ -52,7 +53,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     try {
       dispatchProfile({ type: "SET_LOADING_PROFILES", payload: true });
 
-      const profiles = await getUserProfiles(state.user.id);
+      const profiles = await getUserProfiles();
 
       dispatchProfile({
         type: "SET_PROFILE",
@@ -96,13 +97,13 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
       await loadUserProfiles();
 
       return response;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
 
       const message =
-        error instanceof Error
-          ? error.message
-          : error?.message || "Erro ao criar perfil";
+      error instanceof Error
+        ? error.message
+        : "Erro ao criar perfil";
 
       dispatchProfile({ type: "SET_ERROR_PROFILES", payload: message });
       throw error;
@@ -191,6 +192,7 @@ const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
       type: "SET_ERROR_MENUS_EDITING_PROFILE",
       payload: "Erro ao carregar menus do perfil"
     });
+    console.log(error);
   } finally {
     dispatchProfile({
       type: "SET_LOADING_MENUS_EDITING_PROFILE",
@@ -203,6 +205,7 @@ const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
     <ProfileContext.Provider
       value={{
         stateProfile,
+        dispatchProfile,
         createProfile,
         updateProfile,
         deleteProfile,
