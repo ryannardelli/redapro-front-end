@@ -3,7 +3,7 @@ import { CategoryNewSchema, type CategoryCreateData } from "../../../../schemas/
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface CategoryCreateFormProps {
-  initialData: CategoryCreateData;
+  initialData?: CategoryCreateData;
   onSubmit: (data: CategoryCreateData) => void;
   formRef: React.Ref<HTMLFormElement>;
 }

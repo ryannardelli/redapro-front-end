@@ -32,8 +32,7 @@ export function NewCategory() {
       showMessage.success(response.message);
       setIsOpen(false);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+      const errorMessage = err instanceof Error ? err.message : "Erro ao criar categoria";
 
       console.error(err);
       showMessage.error(errorMessage);
