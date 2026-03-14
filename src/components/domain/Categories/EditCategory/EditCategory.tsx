@@ -33,13 +33,13 @@ export function EditCategory({ category }: EditCategoryProps) {
     try {
       const response = await update_category(category.id, {
         name: data.name.trim(),
-        description: data.description?.trim() || null,
+        description: data.description?.trim() || undefined,
       });
 
       showMessage.success(response.message);
       setIsOpen(false);
-    } catch (err: any) {
-      const errorMessage = err instanceof Error ? err.message : err?.message;
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
 
       console.error(err);
       showMessage.error(errorMessage);
