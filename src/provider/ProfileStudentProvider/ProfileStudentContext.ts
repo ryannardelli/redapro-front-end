@@ -1,14 +1,15 @@
 import { createContext } from "react";
-import type { EssayState, EssayAction, CreateEssayPayload, Essay } from "../../models/Essay";
+import type { EssayState, EssayAction, CreateEssayPayload, Essay, UpdateEssayRealtimePayload } from "../../models/Essay";
 import { initialStateEssay } from "../../reducer/essayReducer";
 
 export type ProfileStudentContextType = {
   stateEssay: EssayState;
   dispatchEssay: (action: EssayAction) => void;
-  createEssay: (data: CreateEssayPayload) => Promise<Essay>;
-  updateEssay: (id: number, data: CreateEssayPayload) => Promise<{ message: string }>;
+  createEssay: (data: CreateEssayPayload) => Promise<Essay | undefined>;
+  updateEssay: (id: number, data: CreateEssayPayload) => Promise<Essay>;
   deleteEssay: (id: number) => Promise<{ message: string }>;
   correctEssayAI: (essayId: number) => Promise<{ message: string; essay: string }>;
+  updateEssayRealtime: (essayUpdate: UpdateEssayRealtimePayload) => void;
 };
 
 export const ProfileStudentContext = createContext<ProfileStudentContextType>({
@@ -18,4 +19,5 @@ export const ProfileStudentContext = createContext<ProfileStudentContextType>({
   updateEssay: async () => { throw new Error("updateEssay not implemented"); },
   deleteEssay: async () => { throw new Error("deleteEssay not implemented"); },
   correctEssayAI: async () => { throw new Error("correctEssayAI not implemented"); },
+  updateEssayRealtime: async () => { throw new Error("updateEssayRealtime not implemented")}
 });

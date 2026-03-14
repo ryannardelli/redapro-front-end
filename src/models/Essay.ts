@@ -61,7 +61,8 @@ export type FinishReviewPayload = {
 export type UpdateEssayRealtimePayload = {
   id: number;
   status?: Essay["status"];
-  note?: number;
+  note?: Essay["note"];
+  feedback?: EssayFeedback;
 };
 
 export type Feedback = {
