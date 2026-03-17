@@ -3,11 +3,12 @@ import { Camera, User, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserSchema, type UserEditFormData } from "schemas/User/EditUserSchema";
+import type { UpdateUserPayload } from "models/User";
 
 interface UserEditFormProps {
-  user: any;
+  user: UpdateUserPayload;
   onSubmit: (data: UserEditFormData) => void;
-  formRef: React.RefObject<HTMLFormElement>;
+  formRef: React.RefObject<HTMLFormElement | null>;
 }
 
 export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {

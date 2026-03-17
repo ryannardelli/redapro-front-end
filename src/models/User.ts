@@ -26,4 +26,6 @@ export type UserAction =
 
 export type UpdateUserPayload = {
   name: string;
+  pictureUrl?: string;
+  email?: string;
 };

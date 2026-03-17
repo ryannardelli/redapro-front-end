@@ -4,8 +4,18 @@ import { UserEditForm } from "../UserEditForm/UserEditForm";
 import { Settings } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 import { showMessage } from "adapters/showMessage";
+import type { UpdateUserPayload, User } from "models/User";
 
-export function EditUser({ user }) {
+interface EditUserProps {
+  user: User;
+}
+
+interface UserFormData {
+  name: string;
+  pictureUrl?: string;
+}
+
+export function EditUser({ user }: EditUserProps) {
 
   const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -16,10 +26,8 @@ export function EditUser({ user }) {
     formRef.current?.requestSubmit();
   };
 
-  const onSubmit = async (data) => {
-  console.log("Dados enviados pelo formulário:", data);
-
-  const payload: any = {
+  const onSubmit = async (data: UserFormData) => {
+  const payload: UpdateUserPayload = {
     name: data.name
   };
 
@@ -35,7 +43,7 @@ export function EditUser({ user }) {
 
   } catch (err) {
     const errorMessage =
-      err instanceof Error ? err.message : err?.message;
+      err instanceof Error ? err.message : "Aconteceu um problema ao editar usuário.";
 
     console.log(err);
     showMessage.error(errorMessage);

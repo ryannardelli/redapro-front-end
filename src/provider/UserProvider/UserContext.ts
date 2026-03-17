@@ -7,8 +7,8 @@ type UserContextType = {
   dispatchUser: (action: UserAction) => void;
 
   loadUsers: () => Promise<void>;
-  deleteUser: (id: number) => Promise<void>;
-  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
+  deleteUser: (id: number) => Promise<{ message: string }>;
+  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
 };
 
 export const UserContext = createContext<UserContextType>({

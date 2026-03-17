@@ -41,7 +41,7 @@ export function SubmitEssay() {
         category_id: 0,
       });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : (err?.message ?? "Erro ao enviar redação");
+      const errorMessage = err instanceof Error ? err.message : "Erro ao enviar redação";
       showMessage.error(errorMessage);
     }
   };
