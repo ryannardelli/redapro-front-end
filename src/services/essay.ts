@@ -92,7 +92,7 @@ export async function update_essay(
     content: string;
     category_id: number;
   }
-): Promise<Essay> {
+): Promise<Essay & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
@@ -110,7 +110,7 @@ export async function update_essay(
       throw new Error(errorData?.message ?? "Erro ao atualizar redação.");
     }
 
-    const updatedEssay: Essay = await res.json();
+    const updatedEssay = await res.json();
     return updatedEssay;
   } catch (error) {
     console.error(error);
