@@ -4,6 +4,7 @@ interface NotificationButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon: ReactNode;
   hasNotification?: boolean;
+  label?: string;
 }
 
 export function NotificationButton({

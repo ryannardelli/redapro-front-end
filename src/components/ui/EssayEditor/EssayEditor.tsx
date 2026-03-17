@@ -1,10 +1,15 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import Underline from "@tiptap/extension-underline";
 import { useEffect } from "react";
 
-export function EssayEditor({ content, onEditorReady }) {
+interface EssayEditorProps {
+  content: string;
+  onEditorReady: (editor: Editor) => void;
+}
+
+export function EssayEditor({ content, onEditorReady }: EssayEditorProps) {
 
   const editor = useEditor({
     extensions: [

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Bell, Menu, User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@hooks/useAuth";
-import { SearchInput } from "@components/domain/Header/SearchInput";
-import { useNavigate } from "react-router";
+import { SearchInput } from "@components/domain/Header/SearchInput";;
 import { ContainerHeaderSidebar } from "@components/ui/Header/ContainerHeaderSidebar/ContainerHeaderSidebar";
 import { ContainerSubHeaderSidebar } from "@components/ui/Header/ContainerSubHeaderSidebar";
 import { MenuBurgerSidebar } from "@components/ui/Button/MenuBurgerSidebar";
@@ -14,6 +13,8 @@ import { useProfile } from "@hooks/useProfile";
 
 interface HeaderNavProps {
   onToggleSidebar: () => void;
+  userName?: string;
+  userRole: string;
 }
 
 export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
@@ -96,7 +97,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <div className="relative">
           <ProfileButton
             name={user?.name || "Usuário"}
-            role={user?.profile.name}
+            role={user?.profile.name || ""}
             avatarUrl={
               user?.pictureUrl ||
               `https://ui-avatars.com/api/?name=${user?.name}`

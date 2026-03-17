@@ -6,6 +6,7 @@ interface NotificationPanelProps {
     createdAt: string;
   }[];
   onClear: () => void;
+  onReadAll: () => void;
 }
 
 export function NotificationPanel({
