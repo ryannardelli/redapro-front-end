@@ -5,7 +5,7 @@ import { initialStateEssay } from "../../reducer/essayReducer";
 export type ProfileStudentContextType = {
   stateEssay: EssayState;
   dispatchEssay: (action: EssayAction) => void;
-  createEssay: (data: CreateEssayPayload) => Promise<Essay | undefined>;
+  createEssay: (data: CreateEssayPayload) => Promise<(Essay & { message: string }) | undefined>;
   updateEssay: (id: number, data: CreateEssayPayload) => Promise<Essay & { message: string }>;
   deleteEssay: (id: number) => Promise<{ message: string }>;
   correctEssayAI: (essayId: number) => Promise<{ message: string; essay: string }>;

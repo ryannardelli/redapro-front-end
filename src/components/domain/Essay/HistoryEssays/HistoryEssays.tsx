@@ -7,7 +7,7 @@ export function HistoryEssays() {
     { id: 3, tema: "Mobilidade e Transporte", aluno: "João Lima", corretor: "Prof. Ana Souza", data: "03/10/2025", hora: "16:45", nota: 400, status: "low" },
   ];
 
-  const getScoreStyle = (score) => {
+  const getScoreStyle = (score: number) => {
     if (score >= 900) return "bg-emerald-50 text-emerald-700 border-emerald-100";
     if (score >= 600) return "bg-amber-50 text-amber-700 border-amber-100";
     return "bg-rose-50 text-rose-700 border-rose-100";
@@ -35,7 +35,6 @@ export function HistoryEssays() {
           <tbody className="divide-y divide-slate-100">
             {data.map((item) => (
               <tr key={item.id} className="hover:bg-slate-50 transition-all group">
-                {/* Tema */}
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2.5 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
@@ -47,12 +46,10 @@ export function HistoryEssays() {
                     </div>
                   </div>
                 </td>
-
-                {/* Corretor */}
                 <td className="p-4 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600 border border-slate-200">
-                      {item.corretor.split(' ').pop().charAt(0)}
+                      {(item.corretor.split(' ').pop() || '').charAt(0)}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-700">{item.corretor}</p>

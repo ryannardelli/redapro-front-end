@@ -23,7 +23,11 @@ export interface Essay {
   updatedAt?: string | null;
   category?: EssayCategory | null;
   feedback?: EssayFeedback | null;
-  userId?: number | null;
+  user?: {
+    id: number;
+    name: string;
+    email?: string;
+  };
   reviewerId?: number | null;
 }
 

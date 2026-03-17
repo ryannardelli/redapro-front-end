@@ -35,7 +35,7 @@ export function NewEssaysReference() {
       setIsOpen(false);
     } catch (err) {
       const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+        err instanceof Error ? err.message : "Aconteceu um problema ao atualizar a redação.";
 
       console.error(err);
       showMessage.error(errorMessage);

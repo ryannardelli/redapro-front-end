@@ -13,7 +13,7 @@ type ReferenceEssayContextType = {
 
   createReferenceEssay: (
     data: CreateReferenceEssayPayload
-  ) => Promise<ReferenceEssay>;
+  ) => Promise<ReferenceEssay & { message: string }>;
 
   updateReferenceEssay: (
     id: number,

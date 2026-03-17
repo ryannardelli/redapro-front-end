@@ -35,7 +35,7 @@ export async function create_essay(
     content: string;
     category_id: number;
   }
-): Promise<Essay> {
+): Promise<Essay & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
@@ -53,7 +53,7 @@ export async function create_essay(
       throw new Error(errorData?.message ?? "Erro ao criar redação.");
     }
 
-    const essay: Essay = await res.json();
+    const essay = await res.json();
     return essay;
   } catch (error) {
     console.error(error);
