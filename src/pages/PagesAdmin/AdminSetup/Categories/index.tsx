@@ -9,6 +9,7 @@ import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { showMessage } from 'adapters/showMessage';
 import { EditCategory } from '@components/domain/Categories/EditCategory';
 import { EmptyState } from '@components/feedback/EmptyState';
+import { StatCard } from '@components/ui/StatCard';
 
 export function Categories() {
   const { stateCategory, delete_category } = useCategory();
@@ -24,7 +25,7 @@ export function Categories() {
           closeButton: false,
           draggable: false,
           onClose: async (props) => {
-            const isConfirmed = props?.data === true || props === true;
+            const isConfirmed = props === true;
     
             if (isConfirmed) {
               try {
@@ -32,7 +33,7 @@ export function Categories() {
                 showMessage.success(responseDeleteEssay.message);
               } catch (err) {
                 const errorMessage =
-                  err instanceof Error ? err.message : err?.message;
+                  err instanceof Error ? err.message : "Aconteceu um problema ao apagar a categoria.";
     
                 console.error(err);
                 showMessage.error(errorMessage);
@@ -153,18 +154,6 @@ export function Categories() {
             </table>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function StatCard({ icon, label, value }) {
-  return (
-    <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-indigo-200 transition-colors">
-      <div className="p-3 bg-indigo-50/50 rounded-xl">{icon}</div>
-      <div>
-        <p className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">{label}</p>
-        <p className="text-xl font-bold text-slate-800">{value}</p>
       </div>
     </div>
   );

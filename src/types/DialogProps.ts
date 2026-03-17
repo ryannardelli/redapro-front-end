@@ -1,3 +1,4 @@
 export interface DialogProps {
-    data?: boolean;
+  message: string;
+  confirmed?: boolean;
 }

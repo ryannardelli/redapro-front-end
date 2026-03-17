@@ -42,7 +42,7 @@ const AVAILABLE_ICONS = {
   GraduationCap
 };
 
-type IconName = keyof typeof AVAILABLE_ICONS;
+export type IconName = keyof typeof AVAILABLE_ICONS;
 
 export function MenuBuilder() {
   const { stateProfile, loadMenusByProfileForEdit } = useProfile();
@@ -70,9 +70,9 @@ export function MenuBuilder() {
 
     const formattedMenus: Menu[] = backendMenus.map(menu => ({
       id: String(menu.id),
-      label: menu.name,
+      label: menu.label,
       route: menu.route,
-      iconName: menu.icon as IconName
+      iconName: menu.iconName as IconName
     }));
 
     setActiveMenus(prev => ({ ...prev, [activeTab]: [] }));
@@ -114,9 +114,9 @@ export function MenuBuilder() {
         ? []
         : [{
             id: String(menu.id),
-            label: menu.name,
+            label: menu.label,
             route: menu.route,
-            iconName: menu.icon as IconName
+            iconName: menu.iconName as IconName
           }]
     }));
   };
@@ -172,7 +172,7 @@ export function MenuBuilder() {
       )}
       
      <section className="space-y-4">
-        {stateProfile.loadingMenus ? (
+        {stateProfile.loadingMenusByLoggedUser ? (
           <div className="flex items-center justify-center py-20">
             <ListLoading text="Carregando menus..." />
           </div>
@@ -197,7 +197,7 @@ export function MenuBuilder() {
                   <div className="flex items-center gap-4 flex-1">
                     {React.createElement(
                       AVAILABLE_ICONS[
-                        (activeItem?.iconName || menu.icon) as IconName
+                        (activeItem?.iconName || menu.iconName) as IconName
                       ] || HelpCircle,
                       { size: 22 }
                     )}
@@ -219,7 +219,7 @@ export function MenuBuilder() {
                           />
                         </div>
                       ) : (
-                        <p className="font-bold">{menu.name}</p>
+                        <p className="font-bold">{menu.label}</p>
                       )}
 
                       <p className="text-xs text-slate-400">{menu.route}</p>
