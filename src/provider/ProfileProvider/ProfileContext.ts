@@ -15,7 +15,7 @@ type ProfileContextType = {
   dispatchProfile: (action: ProfileAction) => void;
 
   createProfile: (data: CreateProfilePayload) => Promise<CreateProfileResponse | undefined>;
-  updateProfile: (profileId: number, data: UpdateProfilePayload) => Promise<Profile>;
+  updateProfile: (profileId: number, data: UpdateProfilePayload) => Promise<Profile & { message: string }>;
   deleteProfile: (id: number) => Promise<void>;
 
   loadMenusByLoggedUser: (profileId: number) => Promise<void>;

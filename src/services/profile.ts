@@ -87,7 +87,7 @@ export async function update_profile(
     description: string;
     system?: boolean;
   }
-): Promise<Profile> {
+): Promise<Profile & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
@@ -105,7 +105,7 @@ export async function update_profile(
       throw new Error(errorData?.message ?? "Erro ao atualizar perfil.");
     }
 
-    const updatedProfile: Profile = await res.json();
+    const updatedProfile = await res.json();
     return updatedProfile;
   } catch (error) {
     console.error(error);
