@@ -5,6 +5,11 @@ export const EssaysReferenceSchema = z.object({
     .string()
     .min(1, "O título é obrigatório")
     .transform((val) => val.trim()),
+     author: z
+     
+    .string()
+    .min(1, "O nome do autor é obrigatório")
+    .transform((val) => val.trim()),
   content: z
     .string()
     .min(1, "O conteúdo é obrigatório")
