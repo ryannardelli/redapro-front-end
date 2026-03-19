@@ -1,12 +1,14 @@
+import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
+import { useAuth } from "@hooks/useAuth";
 import { Navigate, Outlet } from "react-router";
 
-type PropsAdminRouter = {
-    isAdmin: boolean;
-}
+export function AdminRoute() {
+  const { state } = useAuth();
 
-export function AdminRoute({ isAdmin }: PropsAdminRouter) {
-  if (!isAdmin) {
-    return <Navigate to="/" />;
+  if (state.loading) return <SpinnerLoading />;
+
+  if (!state.isAuthenticated || state.user?.role !== "admin") {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

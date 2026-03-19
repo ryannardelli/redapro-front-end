@@ -1,28 +1,30 @@
 import { useState } from "react";
 import { Bell, Menu, User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "@hooks/useAuth";
-import { SearchInput } from "@components/domain/Header/SearchInput";
-import { useNavigate } from "react-router";
+import { SearchInput } from "@components/domain/Header/SearchInput";;
 import { ContainerHeaderSidebar } from "@components/ui/Header/ContainerHeaderSidebar/ContainerHeaderSidebar";
 import { ContainerSubHeaderSidebar } from "@components/ui/Header/ContainerSubHeaderSidebar";
 import { MenuBurgerSidebar } from "@components/ui/Button/MenuBurgerSidebar";
 import { NotificationButton } from "@components/domain/Header/NotificationButton";
 import { NotificationPanel } from "@components/domain/Header/NotificationPanel";
 import { ProfileButton } from "@components/domain/Header/ProfileButton";
-import { formatRole } from "utils/formatRole";
 import { useNotifications } from "@hooks/useNotification";
+import { useProfile } from "@hooks/useProfile";
 
 interface HeaderNavProps {
   onToggleSidebar: () => void;
+  userName?: string;
+  userRole: string;
 }
 
 export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
-  const navigate = useNavigate();
   const { logout, state } = useAuth();
+  const { stateProfile } = useProfile();
   const user = state.user;
+  const menus = stateProfile.menusByLoggedUser;
 
   const {
     notifications,
@@ -33,20 +35,18 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
     clearAll
   } = useNotifications(user?.id);
 
-  const searchResults = [
-    {
-      id: "essays",
-      label: "Minhas Redações",
-      onSelect: () => navigate("/essays-corrector")
-    },
-    {
-      id: "new-essay",
-      label: "Nova Redação",
-      onSelect: () => navigate("/essays/new")
-    }
-  ];
+  const filteredMenus = menus
+    .filter(menu =>
+      menu.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .map(menu => ({
+      id: menu.id,
+      label: menu.name,
+      icon: menu.icon,
+      route: menu.route
+    }));
 
-  return (
+    return (
     <ContainerHeaderSidebar>
       <ContainerSubHeaderSidebar>
         <MenuBurgerSidebar
@@ -60,7 +60,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
           value={searchTerm}
           onChange={setSearchTerm}
           placeholder="Buscar menus ou funções..."
-          results={searchResults}
+          results={filteredMenus}
           hiddenOnMobile
         />
       </ContainerSubHeaderSidebar>
@@ -95,7 +95,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <div className="relative">
           <ProfileButton
             name={user?.name || "Usuário"}
-            role={formatRole(user?.role) || "Admin"}
+            role={user?.profile.name || ""}
             avatarUrl={
               user?.pictureUrl ||
               `https://ui-avatars.com/api/?name=${user?.name}`

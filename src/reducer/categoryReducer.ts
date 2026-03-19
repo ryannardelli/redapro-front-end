@@ -10,11 +10,6 @@ export function categoryReducer(state: CategoryState, action: CategoryAction) {
      switch(action.type) {
         case "SET_CATEGORIES":
             return {...state, categories: action.payload, error: null }
-        case "ADD_CATEGORY":
-            return {
-                ...state,
-                categories: [...state.categories, action.payload]
-            }
         case "DELETE_CATEGORY":
             return {
                 ...state,

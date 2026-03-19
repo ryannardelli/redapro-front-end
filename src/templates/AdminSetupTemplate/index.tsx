@@ -8,6 +8,7 @@ import {
   MenuIcon,
   BookOpen,
   Tags,
+  Layers,
   UserCog,
   HelpCircle
 } from "lucide-react";
@@ -25,7 +26,8 @@ const AVAILABLE_ICONS = {
   MenuIcon,
   BookOpen,
   Tags,
-  UserCog
+  UserCog,
+  Layers
 };
 
 type IconName = keyof typeof AVAILABLE_ICONS;
@@ -67,7 +69,7 @@ export default function AdminSetupTemplate() {
         </div>
 
         <nav className="mt-6">
-          {stateProfile.loadingMenus ? (
+          {stateProfile.loadingMenusByLoggedUser ? (
             <MenuSkeletonList items={menus.length} />
           ) : menus.length === 0 ? (
             <p className="px-6 py-3 text-slate-400 text-sm">

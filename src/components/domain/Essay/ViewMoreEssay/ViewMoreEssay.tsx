@@ -41,7 +41,7 @@ export function ViewMoreEssay({
       >
         <ExibitionMoreEssay 
           title={essay.title} 
-          category={essay.category?.name} 
+          category={essay.category?.name ?? "Sem categoria"} 
           content={essay.content} 
         />
       </ModalShowBase>

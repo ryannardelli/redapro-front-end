@@ -6,11 +6,18 @@ export interface SearchResult {
   onSelect: () => void;
 }
 
+export interface SearchResultItem {
+  id: number | string;
+  label: string;
+  route: string;
+  icon?: string;
+}
+
 export interface SearchInputProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  results?: SearchResult[];
+  results?: SearchResultItem[];
   minLength?: number;
   icon?: ReactNode;
   className?: string;

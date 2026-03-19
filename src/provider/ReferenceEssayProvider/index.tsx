@@ -16,6 +16,7 @@ import {
   update_reference_essay,
 } from "../../services/referenceEssay";
 import { useAuth } from "@hooks/useAuth";
+import type { CreateReferenceEssayPayload } from "models/ReferenceEssay";
 
 type ReferenceEssayProviderProps = {
   children: ReactNode;
@@ -65,7 +66,7 @@ export const ReferenceEssayProvider = ({
     }
   }, [loadReferenceEssays, state.isAuthenticated, state.loading]);
 
-  const createReferenceEssay = async (data: any) => {
+  const createReferenceEssay = async (data: CreateReferenceEssayPayload) => {
     try {
       dispatchReferenceEssay({ type: "SET_LOADING", payload: true });
 
@@ -93,12 +94,14 @@ export const ReferenceEssayProvider = ({
     try {
       dispatchReferenceEssay({ type: "SET_LOADING", payload: true });
 
-      await delete_reference_essay(id);
+      const response = await delete_reference_essay(id);
 
       dispatchReferenceEssay({
         type: "DELETE_REFERENCE_ESSAY",
         payload: id,
       });
+      
+      return response;
     } catch (error) {
       console.error(error);
 

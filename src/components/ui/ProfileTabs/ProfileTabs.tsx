@@ -1,16 +1,16 @@
-export type ProfileTab<T extends string> = {
+export type ProfileTab<T extends string | number> = {
   value: T;
   label: string;
   icon: React.ReactNode;
 };
 
-interface ProfileTabsProps<T extends string> {
+interface ProfileTabsProps<T extends string | number> {
   tabs: ProfileTab<T>[];
   activeTab: T;
   onChange: (value: T) => void;
 }
 
-export function ProfileTabs<T extends string>({
+export function ProfileTabs<T extends string | number>({
   tabs,
   activeTab,
   onChange

@@ -26,14 +26,16 @@ export function NewProfile() {
     try {
       const response = await createProfile({
         name: data.name.trim(),
-        description: data.description?.trim() || null,
+        description: data.description?.trim() || "",
       });
+
+      if(!response) return;
 
       showMessage.success(response.message);
       setIsOpen(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+        err instanceof Error ? err.message : "Aconteceu um problema ao criar um perfil.";
 
       console.error(err);
       showMessage.error(errorMessage);

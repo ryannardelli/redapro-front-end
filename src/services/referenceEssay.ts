@@ -1,5 +1,5 @@
 import { userAuthentication } from "./auth";
-import type { ReferenceEssay } from "../models/ReferenceEssay";
+import type { ReferenceEssay, ReferenceEssayUpdatePayload } from "../models/ReferenceEssay";
 
 const API_URL = "/api/reference-essay";
 
@@ -35,8 +35,8 @@ export async function getReferenceEssays(params?: {
 }
 
 export async function create_reference_essay(
-  payload: any
-): Promise<ReferenceEssay> {
+  payload: ReferenceEssay
+): Promise<ReferenceEssay & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   const res = await fetch(API_URL, {
@@ -60,7 +60,7 @@ export async function create_reference_essay(
 
 export async function update_reference_essay(
   id: number,
-  payload: any
+  payload: ReferenceEssayUpdatePayload
 ): Promise<ReferenceEssay> {
   const token = userAuthentication.getTokenFromStorage();
 
@@ -83,7 +83,7 @@ export async function update_reference_essay(
   return res.json();
 }
 
-export async function delete_reference_essay(id: number): Promise<void> {
+export async function delete_reference_essay(id: number): Promise<{ message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   const res = await fetch(`${API_URL}/${id}`, {
@@ -100,4 +100,6 @@ export async function delete_reference_essay(id: number): Promise<void> {
       errorData?.message ?? "Erro ao excluir redação de referência"
     );
   }
+
+  return await res.json();
 }

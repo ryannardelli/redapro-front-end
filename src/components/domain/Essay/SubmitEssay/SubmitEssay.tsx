@@ -1,15 +1,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCategory } from "@hooks/useCategory";
-import { useEssay } from "@hooks/useEssay";
 import { EssaySchema, type EssayFormData } from "schemas/Essay/EssaySchema";
 import { showMessage } from "adapters/showMessage";
 import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { Send } from "lucide-react";
+import { useProfileStudentEssay } from "@hooks/useProfileStudentEssay";
 
 export function SubmitEssay() {
   const { stateCategory } = useCategory();
-  const { createEssay, stateEssay } = useEssay();
+  const { createEssay, stateEssay } = useProfileStudentEssay();
   const categories = stateCategory.categories;
 
   const { loading } = stateEssay;
@@ -17,6 +17,7 @@ export function SubmitEssay() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<EssayFormData>({
     resolver: zodResolver(EssaySchema),
@@ -33,8 +34,14 @@ export function SubmitEssay() {
       });
 
       showMessage.success(createdEssay?.message || "Redação criada com sucesso!");
+
+      reset({
+        title: "",
+        content: "",
+        category_id: 0,
+      });
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : (err?.message ?? "Erro ao enviar redação");
+      const errorMessage = err instanceof Error ? err.message : "Erro ao enviar redação";
       showMessage.error(errorMessage);
     }
   };

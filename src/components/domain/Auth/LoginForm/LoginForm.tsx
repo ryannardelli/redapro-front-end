@@ -30,9 +30,11 @@ export function LoginForm() {
       } else {
         navigate("/");
       }
-    } catch (err: any) {
-      console.log(err);
-      showMessage.error(err.message);
+    } catch (err: unknown) {
+      if(err instanceof Error) {
+        console.log(err);
+        showMessage.error(err.message);
+      }
     }
   });
 

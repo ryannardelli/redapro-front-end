@@ -1,12 +1,47 @@
-import { Pencil, Trash2, Search, LayoutGrid, Tag, AlertCircle } from 'lucide-react';
+import { Search, LayoutGrid, Tag, TagIcon } from 'lucide-react';
 import { useCategory } from '@hooks/useCategory';
 import { NewCategory } from '@components/domain/Categories/NewCategory';
 import { ListLoading } from '@components/ui/Loading/ListLoading';
 import { StatCardSkeleton } from '@components/ui/Loading/StatCardSkeleton';
+import { DeleteCategory } from '@components/domain/Categories/DeleteCategory';
+import { toast } from 'react-toastify';
+import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
+import { showMessage } from 'adapters/showMessage';
+import { EditCategory } from '@components/domain/Categories/EditCategory';
+import { EmptyState } from '@components/feedback/EmptyState';
+import { StatCard } from '@components/ui/StatCard';
 
 export function Categories() {
-  const { stateCategory } = useCategory();
+  const { stateCategory, delete_category } = useCategory();
   const { categories, loading, error } = stateCategory;
+
+   const handleDelete = async (id: number) => {
+        showMessage.dismiss();
+    
+        toast(Dialog, {
+          data: "Tem certeza que deseja excluir esta categoria?",
+          autoClose: false,
+          closeOnClick: false,
+          closeButton: false,
+          draggable: false,
+          onClose: async (props) => {
+            const isConfirmed = props === true;
+    
+            if (isConfirmed) {
+              try {
+                const responseDeleteEssay = await delete_category(id);
+                showMessage.success(responseDeleteEssay.message);
+              } catch (err) {
+                const errorMessage =
+                  err instanceof Error ? err.message : "Aconteceu um problema ao apagar a categoria.";
+    
+                console.error(err);
+                showMessage.error(errorMessage);
+              }
+            }
+          }
+        });
+      };
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8 font-sans text-slate-900">
@@ -74,18 +109,7 @@ export function Categories() {
                   </tr>
                 )}
 
-                {error && (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-12 text-center">
-                      <div className="flex flex-col items-center text-red-500 gap-2">
-                        <AlertCircle size={32} />
-                        <p className="font-medium">Erro ao carregar categorias.</p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-
-                {!loading && !error && categories?.map((cat) => (
+                {!loading && categories?.map((cat) => (
                   <tr key={cat.id} className="hover:bg-slate-50/50 transition-colors group">
                     <td className="px-6 py-5">
                       <div className="flex items-center gap-3">
@@ -100,14 +124,16 @@ export function Categories() {
                         {cat.description || "Sem descrição disponível para esta categoria."}
                       </p>
                     </td>
-                    <td className="px-6 py-5 text-right">
+                    <td className="px-6 py-5">
                       <div className="flex justify-end gap-2">
-                        <button title="Editar" className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all border border-transparent hover:border-indigo-100">
-                          <Pencil size={18} />
-                        </button>
-                        <button title="Excluir" className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all border border-transparent hover:border-red-100">
-                          <Trash2 size={18} />
-                        </button>
+
+                        <EditCategory category={cat} />
+
+                        <DeleteCategory
+                          onDelete={() => handleDelete(cat.id)}
+                          loading={loading}
+                          title="Excluir Categoria"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -116,7 +142,11 @@ export function Categories() {
                 {!loading && categories?.length === 0 && (
                   <tr>
                     <td colSpan={3} className="px-6 py-12 text-center text-slate-400 italic">
-                      Nenhuma categoria cadastrada.
+                     <EmptyState
+                        icon={TagIcon}
+                        title="Nenhuma categoria encontrada"
+                        description="Não encontramos resultados para sua busca ou ainda não há cadastros."
+                      />
                     </td>
                   </tr>
                 )}
@@ -124,19 +154,6 @@ export function Categories() {
             </table>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// Componentes Auxiliares
-function StatCard({ icon, label, value }) {
-  return (
-    <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 hover:border-indigo-200 transition-colors">
-      <div className="p-3 bg-indigo-50/50 rounded-xl">{icon}</div>
-      <div>
-        <p className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">{label}</p>
-        <p className="text-xl font-bold text-slate-800">{value}</p>
       </div>
     </div>
   );

@@ -1,0 +1,1 @@
+export { AssignedToProfile } from './AssignedToProfile';

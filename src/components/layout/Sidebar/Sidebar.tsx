@@ -120,7 +120,7 @@ export function Sidebar() {
         <HeaderNav
           onToggleSidebar={() => setSideBarOpen(true)}
           userName={user?.name}
-          userRole={formatRole(user?.role)}
+          userRole={formatRole(user?.role || "")}
         />
 
         <main className="p-6 md:p-10">

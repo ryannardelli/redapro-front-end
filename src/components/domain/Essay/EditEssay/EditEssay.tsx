@@ -1,26 +1,19 @@
 import { useState, useRef } from "react";
 import { Edit3 } from "lucide-react";
-import { useEssay } from "../../../../hooks/useEssay";
 import { showMessage } from "../../../../adapters/showMessage";
 import type { EssayFormData } from "../../../../schemas/Essay/EssaySchema";
 import { EssayEditForm } from "../EssayEditForm";
 import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
+import { useProfileStudentEssay } from "@hooks/useProfileStudentEssay";
+import type { Essay } from "models/Essay";
 
 interface EditEssayProps {
-  essay: {
-    id: number;
-    title: string;
-    content: string;
-    category: {
-      id: number;
-      name: string;
-    };
-  };
+  essay: Essay;
 }
 
 export function EditEssay({ essay }: EditEssayProps ) {
   const [isOpen, setIsOpen] = useState(false);
-  const { updateEssay, stateEssay} = useEssay();
+  const { updateEssay, stateEssay} = useProfileStudentEssay();
   const loading = stateEssay.loading;
   
   const formRef = useRef<HTMLFormElement>(null);
@@ -45,7 +38,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
       const errorMessage =
       err instanceof Error
         ? err.message
-        : err?.message;
+        : "Erro ao atualizar redação.";
       console.log(err);
       showMessage.error(errorMessage);
     }
@@ -74,7 +67,7 @@ export function EditEssay({ essay }: EditEssayProps ) {
           initialData={{
             title: essay.title,
             content: essay.content,
-            category: essay.category.id,
+            category_id: essay.category?.id ?? 0,
           }}
         />
       </ModalEditBase>

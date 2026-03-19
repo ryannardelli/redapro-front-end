@@ -88,7 +88,7 @@ export function ModelsEssays() {
         <EmptyState
           icon={FileText}
           title="Nenhuma redação encontrada"
-          description="Não encontramos resultados para sua busca."
+          description="Não encontramos resultados para sua busca ou ainda não há cadastros."
         />
       )}
 

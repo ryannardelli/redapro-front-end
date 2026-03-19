@@ -3,7 +3,6 @@ import {
   Search,
   User as UserIcon,
   Mail,
-  Trash2,
   UserX,
   XCircle,
   Eye
@@ -68,7 +67,6 @@ export function UsersBuilder() {
       case "admin":
         return "bg-amber-50 text-amber-700 border-amber-200";
       case "student":
-      case "aluno":
         return "bg-blue-50 text-blue-700 border-blue-200";
       default:
         return "bg-slate-50 text-slate-700 border-slate-200";
@@ -146,7 +144,7 @@ export function UsersBuilder() {
                     <td className="px-6 py-4">
                       <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium ${getRoleStyles(user.role)}`}>
                         <Shield size={12} />
-                        {user.role === "admin" ? "Administrador" : "Estudante"}
+                        {user.profile.name}
                       </div>
                     </td>
 
@@ -170,25 +168,49 @@ export function UsersBuilder() {
                           <Eye size={18} />
                       </button>
 
-                        <button 
-                          title="Desativar" 
-                          className="p-2 text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all cursor-pointer"
-                        >
-                          <UserX size={18} />
-                        </button>
-
-                        <button 
+                      <button 
                           title="Bloquear" 
                           className="p-2 text-slate-400 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-all cursor-pointer"
                         >
                           <XCircle size={18} />
-                        </button>
+                      </button>
 
-                        <DeleteUser
-                          onDelete={() => handleDelete(user.id)}
-                          loading={loading}
-                          title="Excluir usuário"
-                        />
+                       <button 
+                              title="Desativar" 
+                              className="p-2 text-slate-400 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-all"
+                            >
+                              <UserX size={18} />
+                       </button>
+
+                        {user.profile.name == "Administrador" ? (
+                          <div className="group/lock relative">
+                            <div 
+                              className="p-2 text-slate-300 cursor-help flex items-center justify-center bg-slate-100/50 rounded-lg"
+                            >
+                              <Shield size={18} className="opacity-70" />
+                            </div>
+                            
+                            <div className="absolute right-0 bottom-full -mb-10 hidden group-hover/lock:block w-56 z-50">
+                              <div className="bg-slate-800 text-white text-[11px] p-2 rounded-md shadow-lg border border-slate-700">
+                                <p className="font-semibold mb-1 flex items-center gap-1">
+                                  <Shield size={10} className="text-amber-400" /> Conta de Administrador
+                                </p>
+                                Esta conta possui privilégios administrativos e não pode ser removida para garantir a segurança do sistema.
+                                <div className="absolute -bottom-1 right-3 w-2 h-2 bg-slate-800 rotate-45" />
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <>
+                            <DeleteUser
+                              onDelete={() => handleDelete(user.id)}
+                              loading={loading}
+                              title="Excluir usuário"
+                            />
+
+                           
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { UserAction, UserState } from "models/User";
+import type { UpdateUserPayload, User, UserAction, UserState } from "models/User";
 import { initialStateUser } from "reducer/userReducer";
 
 type UserContextType = {
@@ -7,7 +7,9 @@ type UserContextType = {
   dispatchUser: (action: UserAction) => void;
 
   loadUsers: () => Promise<void>;
-  deleteUser: (id: number) => Promise<void>;
+  deleteUser: (id: number) => Promise<{ message: string }>;
+  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
+  associateProfile: (userId: number, profileId: number) => Promise<User & { message: string }>;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -20,5 +22,13 @@ export const UserContext = createContext<UserContextType>({
 
   deleteUser: async () => {
     throw new Error("deleteUser not implemented");
+  },
+
+   updateUser: async () => {
+    throw new Error("updateUser not implemented");
+  },
+
+  associateProfile: async () => {
+    throw new Error("associateProfile not implemented");
   }
 });

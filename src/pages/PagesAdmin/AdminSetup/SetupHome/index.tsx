@@ -1,5 +1,5 @@
 import { SetupCard } from '@components/ui/Card/SetupCard/SetupCard';
-import { Layout, Users, FileCheck, Tags } from 'lucide-react';
+import { Layout, Users, FileCheck, Tags, UserCheck } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 export function SetupHome() {
@@ -16,7 +16,7 @@ export function SetupHome() {
     {
       title: "Perfis",
       description: "Controle quem pode acessar o quê definindo permissões e grupos de usuários.",
-      icon: Users,
+      icon: UserCheck,
       color: "purple",
       action: () => navigate("/admin/setup/profiles")
     },
@@ -43,7 +43,7 @@ export function SetupHome() {
       color: "amber",
       action: () => navigate("/admin/setup/reference-essay")
     }
-  ];
+  ] as const;
 
   return (
     <div className="p-8 max-w-7xl mx-auto">

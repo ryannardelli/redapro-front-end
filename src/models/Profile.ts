@@ -1,8 +1,10 @@
 import type { Menu } from "./Menu";
 
+export type ProfileName = "Estudante" | "Administrador" | "Corretor";
+
 export interface Profile {
     id: number;
-    name: string;
+    name: ProfileName;
     description: string;
     active: boolean;
     system: boolean;
@@ -53,3 +55,11 @@ export type UpdateProfilePayload = {
 export type CreateProfileResponse = {
   message: string;
 };
+
+export const ProfileType = {
+  ADMIN: "Administrador",
+  STUDENT: "Estudante",
+  CORRECTOR: "Corretor"
+} as const;
+
+export type ProfileType = typeof ProfileType[keyof typeof ProfileType];

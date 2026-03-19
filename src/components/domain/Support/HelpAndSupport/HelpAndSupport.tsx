@@ -1,29 +1,87 @@
-import { useState } from "react";
-import { ChevronDown, ChevronUp, Mail, BookOpen, HelpCircle, MessageCircle, PlayCircle } from "lucide-react";
+import React, { useState } from "react";
+import { Mail, HelpCircle, MessageCircle } from "lucide-react";
+import { FaqAccordion } from "@components/ui/FaqAccordion";
+import { useAuth } from "@hooks/useAuth";
 
-const faqs = [
+const studentFaqs = [
   {
-    pergunta: "Como enviar minha redação?",
-    resposta: "Vá até a aba 'Redações', clique em 'Enviar Redação' e siga as instruções para anexar seu arquivo."
+    ask: "Como enviar uma redação?",
+    answer:
+      "Acesse a área 'Enviar Redação' no menu principal. Você também pode ir até 'Minhas Redações' e clicar no botão 'Nova Redação'. Após selecionar o tema e enviar seu texto, sua redação será registrada no sistema e ficará disponível para correção."
   },
   {
-    pergunta: "Posso editar minha redação depois de enviar?",
-    resposta: "Não. Após o envio, a redação é encaminhada para correção e não pode mais ser editada para garantir a integridade do processo."
+    ask: "Quanto tempo demora a correção?",
+    answer:
+      "O tempo de correção pode variar de acordo com a disponibilidade dos corretores. Assim que sua redação é enviada, ela entra na fila de correção e pode ser analisada a qualquer momento por um corretor. Quando a correção for concluída, você será notificado e poderá visualizar o feedback completo na plataforma."
   },
   {
-    pergunta: "Como remarcar um agendamento?",
-    resposta: "Acesse a aba 'Agendamentos', clique no ícone de edição ao lado do agendamento e selecione a nova data e horário disponível."
+    ask: "Posso editar minha redação até qual momento?",
+    answer:
+      "Você pode editar sua redação enquanto ela ainda não tiver sido iniciada por um corretor. Após o início da correção, o texto é bloqueado para garantir a integridade da análise realizada."
+  },
+  {
+    ask: "A correção com IA é precisa?",
+    answer:
+      "A plataforma utiliza Inteligência Artificial para auxiliar no processo de análise textual, identificando aspectos como coerência, gramática e estrutura. No entanto, todas as redações passam também pela revisão de um corretor humano, garantindo uma avaliação mais precisa, justa e alinhada aos critérios de correção."
+  },
+
+  {
+    ask: "Modelos de redação nota 1000 estão disponíveis na plataforma?",
+    answer:
+      "Sim. A plataforma possui modelos de redações nota 1000 cadastrados no sistema para ajudar você a entender como estruturar uma redação de alta qualidade. Esses exemplos servem como referência de organização, argumentação e desenvolvimento de ideias."
+  },
+  {
+    ask: "Posso usar os modelos nota 1000 como base para minha redação?",
+    answer:
+      "Os modelos podem ser utilizados como referência de estrutura, repertório e organização textual. No entanto, é importante desenvolver suas próprias ideias e argumentos para evitar cópias e garantir a originalidade da sua redação."
+  },
+  {
+    ask: "Como acessar os modelos de redação nota 1000?",
+    answer:
+      "Você pode acessar os modelos diretamente na área de 'Modelos Nota 1000' dentro da plataforma. Lá você encontrará exemplos de redações bem avaliadas que podem ajudar no seu aprendizado e na melhoria da sua escrita."
+  }
+];
+
+const correctorFaqs = [
+  {
+    ask: "Como começo a corrigir uma redação?",
+    answer:
+      "Acesse o painel de correções no menu principal. Lá você encontrará as redações disponíveis para correção. Basta selecionar uma redação para iniciar a análise e registrar o feedback para o estudante."
+  },
+  {
+    ask: "Existe um prazo para realizar a correção?",
+    answer:
+      "O tempo de correção pode variar de acordo com sua disponibilidade. Após iniciar a correção de uma redação, recomenda-se finalizá-la o quanto antes para garantir uma boa experiência ao estudante."
+  },
+  {
+    ask: "Posso editar uma correção após enviar?",
+    answer:
+      "Após enviar a correção, ela normalmente é registrada no sistema e disponibilizada ao estudante. Logo, você não conseguirá mais ter acesso."
+  },
+  {
+    ask: "A plataforma utiliza Inteligência Artificial na correção?",
+    answer:
+      "Sim. A plataforma pode utilizar Inteligência Artificial para auxiliar na análise textual, identificando aspectos como estrutura, gramática e coerência. No entanto, a avaliação final e o feedback ao estudante são realizados pela escolha doe estudante."
+  },
+  {
+    ask: "Como garantir uma correção justa e consistente?",
+    answer:
+      "Recomenda-se seguir os critérios de avaliação definidos pela plataforma, observando aspectos como estrutura do texto, argumentação, domínio da norma padrão e proposta de intervenção. Isso ajuda a manter um padrão de qualidade nas correções."
+  },
+  {
+    ask: "Como acompanhar meu histórico de correções?",
+    answer:
+      "No painel do corretor é possível visualizar o histórico de redações corrigidas, permitindo acompanhar suas correções realizadas ao longo do tempo."
   }
 ];
 
 export function HelpAndSupport() {
-  const [faqAberto, setFaqAberto] = useState(null);
   const [formData, setFormData] = useState({ nome: "", email: "", tipo: "", mensagem: "" });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const { state } = useAuth();
+  const user = state.user;
 
-  const toggleFaq = (index) => setFaqAberto(faqAberto === index ? null : index);
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     alert("Sua mensagem foi enviada com sucesso!");
     setFormData({ nome: "", email: "", tipo: "", mensagem: "" });
@@ -32,7 +90,6 @@ export function HelpAndSupport() {
   return (
     <div className="p-4 md:p-8 space-y-12 max-w-5xl mx-auto bg-slate-50 min-h-screen">
       
-      {/* --- HEADER --- */}
       <div className="text-center space-y-4">
         <div className="inline-flex p-3 bg-purple-100 text-purple-600 rounded-2xl mb-2">
           <HelpCircle size={32} />
@@ -45,10 +102,8 @@ export function HelpAndSupport() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         
-        {/* --- COLUNA ESQUERDA: FAQ E TUTORIAIS --- */}
         <div className="lg:col-span-7 space-y-10">
           
-          {/* FAQ SECTION */}
           <section>
             <div className="flex items-center gap-2 mb-6">
               <span className="p-2 bg-amber-100 text-amber-600 rounded-lg">
@@ -56,61 +111,15 @@ export function HelpAndSupport() {
               </span>
               <h2 className="text-xl font-bold text-slate-800">Dúvidas Frequentes</h2>
             </div>
-            
-            <div className="space-y-3">
-              {faqs.map((faq, index) => (
-                <div key={index} className={`transition-all duration-200 border rounded-2xl overflow-hidden ${faqAberto === index ? 'border-purple-200 shadow-md bg-white' : 'border-slate-200 bg-white hover:border-purple-200'}`}>
-                  <button
-                    onClick={() => toggleFaq(index)}
-                    className="w-full flex justify-between items-center p-5 text-left transition-colors"
-                  >
-                    <span className={`font-bold text-sm md:text-base ${faqAberto === index ? 'text-purple-600' : 'text-slate-700'}`}>
-                      {faq.pergunta}
-                    </span>
-                    {faqAberto === index ? (
-                      <ChevronUp className="text-purple-600 shrink-0" size={20} />
-                    ) : (
-                      <ChevronDown className="text-slate-400 shrink-0" size={20} />
-                    )}
-                  </button>
-                  {faqAberto === index && (
-                    <div className="px-5 pb-5 text-slate-600 text-sm leading-relaxed border-t border-slate-50 pt-4 animate-in slide-in-from-top-2">
-                      {faq.resposta}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </section>
 
-          {/* TUTORIALS SECTION */}
-          <section>
-            <div className="flex items-center gap-2 mb-6">
-              <span className="p-2 bg-emerald-100 text-emerald-600 rounded-lg">
-                <BookOpen size={20} />
-              </span>
-              <h2 className="text-xl font-bold text-slate-800">Guias Rápidos</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[1, 2].map((item) => (
-                <div key={item} className="group bg-white p-4 rounded-2xl border border-slate-200 hover:border-purple-300 hover:shadow-lg transition-all cursor-pointer">
-                  <div className="relative bg-slate-100 h-32 rounded-xl mb-4 overflow-hidden flex items-center justify-center group-hover:bg-purple-50 transition-colors">
-                    <PlayCircle size={40} className="text-slate-300 group-hover:text-purple-400 transition-all group-hover:scale-110" />
-                  </div>
-                  <h3 className="font-bold text-slate-800 text-sm group-hover:text-purple-600">Dominando o Painel v1.0</h3>
-                  <p className="text-[11px] text-slate-500 mt-1 uppercase font-bold tracking-wider">3 minutos de leitura</p>
-                </div>
-              ))}
-            </div>
+            {user?.profile.name === "Estudante" && <FaqAccordion faqs={studentFaqs} /> }
+            {user?.profile.name === "Corretor" && <FaqAccordion faqs={correctorFaqs} /> }
           </section>
         </div>
 
-        {/* --- COLUNA DIREITA: FORMULÁRIO --- */}
         <div className="lg:col-span-5">
           <section className="sticky top-8">
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
-              {/* Detalhe decorativo */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
               
               <div className="relative">
@@ -171,7 +180,7 @@ export function HelpAndSupport() {
                       value={formData.mensagem}
                       onChange={handleChange}
                       placeholder="No que podemos ajudar?"
-                      rows="4"
+                      rows={4}
                       className="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-purple-500 transition-all outline-none resize-none"
                       required
                     ></textarea>

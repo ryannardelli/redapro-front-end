@@ -40,6 +40,21 @@ export function EssaysReferenceCreateForm({
     >
       <div className="flex flex-col">
         <label className="text-sm font-semibold text-gray-700 ml-1">
+          Nome do Autor
+        </label>
+        <input
+          {...register("author")}
+          className={inputStyle(!!errors.author)}
+          placeholder="Ex: João da Silva"
+        />
+        {errors.author && (
+          <span className="text-xs font-medium text-red-500 mt-1.5 ml-1">
+            {errors.author.message}
+          </span>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <label className="text-sm font-semibold text-gray-700 ml-1">
           Título da Redação
         </label>
         <input

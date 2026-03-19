@@ -1,24 +1,16 @@
 import { useState } from "react";
 import { Eye, BookOpen, Award, Calendar, CheckCircle2 } from "lucide-react";
 import { ModalViewBaseResult } from "@components/ui/Modal/ModalViewResultBase";
+import type { Essay } from "models/Essay";
 
 interface ShowResultEssayProps {
-  essay: {
-    id: number;
-    title: string;
-    content: string;
-    note: number;
-    category: { name: string; description: string };
-    feedback: { [key: string]: number };
-    status: string;
-    createdAt: string;
-  };
+  essay: Essay;
 }
 
 export function ShowResultEssay({ essay }: ShowResultEssayProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const dateFormatted = new Date(essay.createdAt).toLocaleDateString('pt-BR');
+  const dateFormatted = new Date(essay.createdAt ?? "").toLocaleDateString('pt-BR');
 
   return (
     <>
@@ -63,7 +55,7 @@ export function ShowResultEssay({ essay }: ShowResultEssayProps) {
               Desempenho por Competência
             </h3>
             <div className="flex flex-col gap-3">
-              {Object.entries(essay.feedback).map(([key, value]) => (
+              {Object.entries(essay.feedback ?? {}).map(([key, value]) => (
                 <div key={key} className="bg-white border border-slate-200 p-3 rounded-xl text-center shadow-sm">
                   <p className="text-slate-400 text-xs font-bold uppercase">{key}</p>
                   <p className="text-lg font-semibold">{value}</p>
@@ -81,7 +73,7 @@ export function ShowResultEssay({ essay }: ShowResultEssayProps) {
                 Texto Original
               </h3>
               <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-md">
-                {essay.category.name}
+                {essay.category?.name}
               </span>
             </div>
             

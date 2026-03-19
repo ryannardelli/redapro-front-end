@@ -13,14 +13,15 @@ type ReferenceEssayContextType = {
 
   createReferenceEssay: (
     data: CreateReferenceEssayPayload
-  ) => Promise<ReferenceEssay>;
+  ) => Promise<ReferenceEssay & { message: string }>;
 
   updateReferenceEssay: (
     id: number,
     data: CreateReferenceEssayPayload
   ) => Promise<ReferenceEssay>;
 
-  deleteReferenceEssay: (id: number) => Promise<void>;
+  deleteReferenceEssay: (id: number) => Promise<{ message: string }>;
+  loadReferenceEssays: () => Promise<void>;
 };
 
 export const ReferenceEssayContext =
@@ -38,5 +39,9 @@ export const ReferenceEssayContext =
 
     deleteReferenceEssay: async () => {
       throw new Error("deleteReferenceEssay not implemented");
+    },
+
+    loadReferenceEssays: async () => {
+      throw new Error("loadReferenceEssays not implemented");
     },
   });

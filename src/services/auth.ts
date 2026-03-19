@@ -39,7 +39,7 @@ login: async ({ email, password }: CredentialsUser): Promise<LoginResponse> => {
     name: string;
     email: string;
     password: string;
-  }): Promise<void> => {
+  }): Promise<LoginResponse> => {
     const res = await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

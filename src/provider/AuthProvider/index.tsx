@@ -2,8 +2,9 @@ import { useEffect, useReducer } from "react";
 import { authReducer, initialState } from "../../reducer/authReducer";
 import { AuthContext } from "./AuthContext";
 import { userAuthentication } from "../../services/auth";
-import type { LoginResponse } from "../../models/Auth";
 import { getMe } from "../../services/users";
+import type { User } from "models/User";
+import type { AuthUser } from "models/Auth";
 
 type AuthProviderProps = {
   children: React.ReactNode;
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     restoreSession();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<AuthUser> => {
   try {
     dispatch({ type: "SET_LOADING", payload: true });
 
@@ -58,11 +59,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       console.warn(e);
     }
 
-    dispatch({ type: "LOGIN", payload: { token, user: finalUser } });
+    dispatch({ type: "LOGIN", payload: { token, user: finalUser as User } });
 
     return finalUser;
-  } catch (err: any) {
-    const message = err.response?.data?.message || err.message || "Erro ao fazer login";
+  } catch (err: unknown) {
+    const message =
+    err instanceof Error ? err.message : "Erro ao fazer login";
     dispatch({ type: "SET_ERROR", payload: message });
     throw err;
   } finally {
@@ -70,33 +72,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 };
 
-  const registerUser = async (name: string, email: string, password: string) => {
+const registerUser = async (name: string, email: string, password: string) => {
   dispatch({ type: "SET_LOADING", payload: true });
 
   try {
     const response = await userAuthentication.register({ name, email, password });
+    const { token, user: initialUser } = response;
 
-    const { message, token, user } = response;
+    localStorage.setItem("token", token);
+
+    let finalUser = initialUser;
+    try {
+      const fullUser = await getMe();
+      if (fullUser) finalUser = fullUser;
+    } catch (e) {
+      console.warn("Erro ao buscar dados completos do usuário:", e);
+    }
 
     dispatch({
       type: "REGISTER",
       payload: {
         token,
-        user,
+        user: finalUser as User,
       },
     });
 
-    localStorage.setItem("token", token);
-
-    return { message, token, user };
+    return { token, user: finalUser };
 
   } catch (err: unknown) {
      const message =
-    err instanceof Error ? err.message : "Erro inesperado";
-    
+    err instanceof Error ? err.message : "Erro ao registrar usuário";
     dispatch({ type: "SET_ERROR", payload: message });
-
-    throw new Error(message);
+    throw err;
+  } finally {
+    dispatch({ type: "SET_LOADING", payload: false });
   }
 };
 

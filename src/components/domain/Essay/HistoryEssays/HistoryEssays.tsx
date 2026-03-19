@@ -1,4 +1,4 @@
-import { FileText, ChevronLeft, ChevronRight, Eye } from "lucide-react";
+import { FileText, Eye } from "lucide-react";
 
 export function HistoryEssays() {
   const data = [
@@ -7,7 +7,7 @@ export function HistoryEssays() {
     { id: 3, tema: "Mobilidade e Transporte", aluno: "João Lima", corretor: "Prof. Ana Souza", data: "03/10/2025", hora: "16:45", nota: 400, status: "low" },
   ];
 
-  const getScoreStyle = (score) => {
+  const getScoreStyle = (score: number) => {
     if (score >= 900) return "bg-emerald-50 text-emerald-700 border-emerald-100";
     if (score >= 600) return "bg-amber-50 text-amber-700 border-amber-100";
     return "bg-rose-50 text-rose-700 border-rose-100";
@@ -15,7 +15,6 @@ export function HistoryEssays() {
 
   return (
     <div className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      {/* Título da Seção (Opcional, mas ajuda no contexto) */}
       <div className="p-6 border-b border-slate-100">
         <h2 className="text-lg font-bold text-slate-800">Histórico de Produção</h2>
         <p className="text-sm text-slate-500">Acompanhe seu desempenho em cada tema praticado.</p>
@@ -36,7 +35,6 @@ export function HistoryEssays() {
           <tbody className="divide-y divide-slate-100">
             {data.map((item) => (
               <tr key={item.id} className="hover:bg-slate-50 transition-all group">
-                {/* Tema */}
                 <td className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2.5 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
@@ -48,12 +46,10 @@ export function HistoryEssays() {
                     </div>
                   </div>
                 </td>
-
-                {/* Corretor */}
                 <td className="p-4 hidden md:table-cell">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600 border border-slate-200">
-                      {item.corretor.split(' ').pop().charAt(0)}
+                      {(item.corretor.split(' ').pop() || '').charAt(0)}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-700">{item.corretor}</p>
@@ -86,26 +82,6 @@ export function HistoryEssays() {
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Paginação Estilizada */}
-      <div className="p-4 bg-slate-50/50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-slate-500">Página</span>
-          <div className="flex gap-1">
-            <button className="w-8 h-8 rounded-md bg-purple-600 text-white text-xs font-bold">1</button>
-            <button className="w-8 h-8 rounded-md bg-white border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors">2</button>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all disabled:opacity-50">
-            <ChevronLeft size={16} /> Anterior
-          </button>
-          <button className="flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-50 transition-all">
-            Próximo <ChevronRight size={16} />
-          </button>
-        </div>
       </div>
     </div>
   );

@@ -11,7 +11,7 @@ import type { CategoryCreateData } from "schemas/Category/CategoryNewSchema";
 export function NewCategory() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { createCategory, stateCategory } = useCategory();
+  const { create_category, stateCategory } = useCategory();
   const loading = stateCategory.loading;
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -24,7 +24,7 @@ export function NewCategory() {
 
   const onFormSubmit = async (data: CategoryCreateData) => {
     try {
-      const response = await createCategory({
+      const response = await create_category({
         name: data.name,
         description: data.description,
       });
@@ -32,11 +32,11 @@ export function NewCategory() {
       showMessage.success(response.message);
       setIsOpen(false);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+      const errorMessage = err instanceof Error ? err.message : "Erro ao criar categoria";
 
       console.error(err);
       showMessage.error(errorMessage);
+      setIsOpen(false);
     }
   };
 

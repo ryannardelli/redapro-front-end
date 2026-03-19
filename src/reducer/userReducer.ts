@@ -24,6 +24,14 @@ export function userReducer(
         loadingUsers: action.payload,
       };
 
+    case "UPDATE_USER":
+      return {
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.payload.id ? action.payload : user
+        )
+      };
+
     case "SET_ERROR_USERS":
       return {
         ...state,

@@ -15,3 +15,17 @@
 .custom-progress {
   height: 4px;
 }
+
+mark {
+  background: #fde68a;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+u {
+  text-decoration-color: red;
+}
+
+s {
+  text-decoration-color: red;
+}

@@ -17,13 +17,17 @@ export interface Essay {
   id: number;
   title: string;
   content: string;
-  note?: string | null;
-  status?: "PENDENTE" | "APROVADA" | "EM_CORRECAO" | "ERRO" | null;
+  note?: number | null;
+  status?: "PENDENTE" | "CORRIGIDA" | "EM_CORRECAO" | "ERRO" | null;
   createdAt?: string | null;
   updatedAt?: string | null;
   category?: EssayCategory | null;
   feedback?: EssayFeedback | null;
-  userId?: number | null;
+  user?: {
+    id: number;
+    name: string;
+    email?: string;
+  };
   reviewerId?: number | null;
 }
 
@@ -39,6 +43,7 @@ export type EssayAction =
   | { type: "SET_LOADING"; payload: boolean }
   | { type: "DELETE_ESSAY"; payload: number }
   | { type: "UPDATE_ESSAY"; payload: Essay }
+  | { type: "UPDATE_ESSAY_REALTIME"; payload: UpdateEssayRealtimePayload }
   | { type: "UPDATE_ESSAY_CORRECTED"; payload: { id: number; correctedContent: string } }
   | { type: "SET_ERROR"; payload: string | null };
 
@@ -46,4 +51,29 @@ export type CreateEssayPayload = {
     title: string;
     content: string;
     category_id: number;
+}
+
+export type FinishReviewPayload = {
+  c1: string;
+  c2: string;
+  c3: string;
+  c4: string;
+  c5: string;
+  generalFeedback: string;
+};
+
+export type UpdateEssayRealtimePayload = {
+  id: number;
+  status?: Essay["status"];
+  note?: Essay["note"];
+  feedback?: EssayFeedback;
+};
+
+export type Feedback = {
+  c1: number
+  c2: number
+  c3: number
+  c4: number
+  c5: number
+  general: string
 }

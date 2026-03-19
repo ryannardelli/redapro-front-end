@@ -33,3 +33,10 @@ export type CreateReferenceEssayPayload = {
   categoryId: number;
   year: number;
 };
+
+export interface ReferenceEssayUpdatePayload {
+  title: string;
+  content: string;
+  year?: number;
+  categoryId: number;
+}

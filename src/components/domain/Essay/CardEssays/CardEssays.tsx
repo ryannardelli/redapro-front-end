@@ -1,11 +1,10 @@
 import defaultEssay from '../../../../assets/img/defaultEssay.jpg';
-import { Edit3, Award, Calendar, Sparkles, Lock } from 'lucide-react';
+import { Edit3, Award, Calendar, Sparkles, Lock, FileText } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { showMessage } from 'adapters/showMessage';
 import { Dialog } from '@components/feedback/DialogConfirm/Dialog';
 import { DeleteEssay } from '../DeleteEssay';
 import { EditEssay } from '../EditEssay';
-import { useEssay } from '@hooks/useEssay';
 import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
@@ -13,12 +12,17 @@ import { AICorrectionButton } from '../AICorrectionButton';
 import { useMemo } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
+import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
+import { EmptyState } from '@components/feedback/EmptyState';
+import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
+import type { DialogProps } from 'types/DialogProps';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
-  const { stateEssay, deleteEssay, correctEssayAI } = useEssay();
+  const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
 
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
+
 
   const filteredEssays = useMemo(() => {
     return essays.filter((essay) => {
@@ -45,18 +49,27 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       }
 
       if (filters.status) {
-        const status = filters.status.toLowerCase();
+          const status = filters.status.toLowerCase();
 
-        const hasGrade =
-          essay.note !== null && essay.note !== undefined;
+          const hasGrade = essay.note !== null && essay.note !== undefined;
 
-        if (status === 'corrigida' && !hasGrade) return false;
-        if (status === 'pendente' && hasGrade) return false;
-      }
+              if (status === 'corrigida' && !hasGrade) return false;
+              if (status === 'pendente' && hasGrade) return false;
+
+              if (status === 'em_correcao' && essay.status?.toLowerCase() !== 'em_correcao')
+                  return false;
+          }
 
       return true;
     });
   }, [essays, filters]);
+
+  const isFiltering = Boolean(
+      filters.search ||
+      filters.categoryId ||
+      filters.scoreRange ||
+      filters.status
+    );
 
   const handleDelete = async (id: number) => {
     showMessage.dismiss();
@@ -68,15 +81,14 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       closeButton: false,
       draggable: false,
       onClose: async (props) => {
-        const isConfirmed = props?.data === true || props === true;
+        const isConfirmed = (props as DialogProps)?.data === true || props === true;
 
         if (isConfirmed) {
           try {
             const responseDeleteEssay = await deleteEssay(id);
             showMessage.success(responseDeleteEssay.message);
           } catch (err) {
-            const errorMessage =
-              err instanceof Error ? err.message : err?.message;
+            const errorMessage = err instanceof Error ? err.message : "Erro ao excluir redação";
 
             console.error(err);
             showMessage.error(errorMessage);
@@ -92,9 +104,9 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
     try {
       const AIcorrectResponse = await correctEssayAI(id);
       showMessage.success(AIcorrectResponse.message);
-    } catch (err: any) {
+    } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : err?.message;
+        err instanceof Error ? err.message : "Erro ao corrigir com AI.";
 
       console.error(err);
       showMessage.error(errorMessage);
@@ -130,12 +142,16 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
             <EssayCardSkeleton key={i} />
           ))}
         </div>
-      ) : filteredEssays.length === 0 ? (
+      ) : essays.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
-          <p className="mb-6 text-xl text-gray-500 font-medium">
-            Nenhuma redação encontrada com os filtros aplicados.
-          </p>
+          <EmptyActivitiesStudent message="Você ainda não possui redações." />
         </div>
+      ) : filteredEssays.length === 0 && isFiltering ? (
+          <EmptyState
+            icon={FileText}
+            title="Nenhuma redação encontrada"
+            description="Não encontramos resultados para sua busca."
+          />
       ) : (
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredEssays.map((essay) => {
@@ -161,12 +177,18 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
                         <div className="absolute top-4 left-4">
                           <span
                             className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full shadow-sm ${
-                              hasGrade
+                              essay.status === 'CORRIGIDA'
                                 ? 'bg-green-100 text-green-700'
+                                : essay.status === 'EM_CORRECAO'
+                                ? 'bg-blue-100 text-blue-700'
                                 : 'bg-amber-100 text-amber-700'
                             }`}
                           >
-                            {hasGrade ? 'Corrigida' : 'Pendente'}
+                            {essay.status === 'CORRIGIDA'
+                              ? 'Corrigida'
+                              : essay.status === 'EM_CORRECAO'
+                              ? 'Em correção'
+                              : 'Pendente'}
                           </span>
                         </div>
 
@@ -203,7 +225,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
                         <div className="grid grid-cols-2 gap-y-3 mb-6 border-t border-gray-50 pt-4">
                           <div className="flex items-center text-gray-600 text-xs">
                             <Calendar size={14} className="mr-1.5 opacity-70" />
-                            {new Date(essay.createdAt).toLocaleDateString()}
+                            {new Date(essay.createdAt ?? "").toLocaleDateString()}
                           </div>
 
                           <div className="flex items-center text-gray-600 text-xs">
