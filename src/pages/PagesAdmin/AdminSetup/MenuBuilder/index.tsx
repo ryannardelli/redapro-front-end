@@ -70,9 +70,9 @@ export function MenuBuilder() {
 
     const formattedMenus: Menu[] = backendMenus.map(menu => ({
       id: String(menu.id),
-      label: menu.label,
+      name: menu.name,
       route: menu.route,
-      iconName: menu.iconName as IconName
+      icon: menu.icon as IconName
     }));
 
     setActiveMenus(prev => ({ ...prev, [activeTab]: [] }));
@@ -114,9 +114,9 @@ export function MenuBuilder() {
         ? []
         : [{
             id: String(menu.id),
-            label: menu.label,
+            name: menu.name,
             route: menu.route,
-            iconName: menu.iconName as IconName
+            icon: menu.icon as IconName
           }]
     }));
   };
@@ -197,7 +197,7 @@ export function MenuBuilder() {
                   <div className="flex items-center gap-4 flex-1">
                     {React.createElement(
                       AVAILABLE_ICONS[
-                        (activeItem?.iconName || menu.iconName) as IconName
+                        (activeItem?.icon || menu.icon) as IconName
                       ] || HelpCircle,
                       { size: 22 }
                     )}
@@ -207,7 +207,7 @@ export function MenuBuilder() {
                         <div className="relative flex items-center group/name">
                           <input
                             type="text"
-                            value={activeItem?.label}
+                            value={activeItem?.name}
                             onChange={(e) =>
                               updateLabel(menu.route, e.target.value)
                             }
@@ -219,7 +219,7 @@ export function MenuBuilder() {
                           />
                         </div>
                       ) : (
-                        <p className="font-bold">{menu.label}</p>
+                        <p className="font-bold">{menu.name}</p>
                       )}
 
                       <p className="text-xs text-slate-400">{menu.route}</p>
@@ -246,7 +246,7 @@ export function MenuBuilder() {
                         key={icon}
                         onClick={() => updateIcon(menu.route, icon)}
                         className={`p-2 rounded-lg border ${
-                          activeItem?.iconName === icon
+                          activeItem?.icon === icon
                             ? "bg-blue-50 border-blue-300 text-blue-600"
                             : "border-slate-200 hover:bg-slate-50"
                         }`}

@@ -26,8 +26,6 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const user = state.user;
   const menus = stateProfile.menusByLoggedUser;
 
-  console.log(menus);
-
   const {
     notifications,
     hasUnread,

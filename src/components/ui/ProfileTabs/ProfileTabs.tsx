@@ -10,7 +10,7 @@ interface ProfileTabsProps<T extends string> {
   onChange: (value: T) => void;
 }
 
-export function ProfileTabs<T extends string>({
+export function ProfileTabs<T extends string | number>({
   tabs,
   activeTab,
   onChange
