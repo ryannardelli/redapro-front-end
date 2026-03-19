@@ -83,7 +83,7 @@ export async function update_reference_essay(
   return res.json();
 }
 
-export async function delete_reference_essay(id: number): Promise<void> {
+export async function delete_reference_essay(id: number): Promise<{ message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   const res = await fetch(`${API_URL}/${id}`, {
@@ -100,4 +100,6 @@ export async function delete_reference_essay(id: number): Promise<void> {
       errorData?.message ?? "Erro ao excluir redação de referência"
     );
   }
+
+  return await res.json();
 }

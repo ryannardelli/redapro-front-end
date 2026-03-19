@@ -9,9 +9,13 @@ import { EssaysReferenceSkeleton } from "@components/ui/Loading/EssaysReferenceS
 import { useReferenceEssay } from "@hooks/useReferenceEssay";
 import { FileText } from "lucide-react";
 import { Pagination } from "@components/domain/EssaysReference/Pagination/Pagination";
+import { showMessage } from "adapters/showMessage";
+import { toast } from "react-toastify";
+import { Dialog } from "@components/feedback/DialogConfirm/Dialog";
+import type { DialogProps } from "types/DialogProps";
 
 export default function AdminModelsEssay() {
-  const { stateReferenceEssay } = useReferenceEssay();
+  const { stateReferenceEssay, deleteReferenceEssay } = useReferenceEssay();
   const loading = stateReferenceEssay.loading;
   const essays = stateReferenceEssay.essays ?? [];
   const [page, setPage] = useState(1);
@@ -45,6 +49,33 @@ export default function AdminModelsEssay() {
       return true;
     });
   }, [essays, filters]);
+
+  const handleDelete = async (id: number) => {
+      showMessage.dismiss();
+  
+      toast(Dialog, {
+        data: "Tem certeza que deseja excluir esta redação?",
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: false,
+        draggable: false,
+        onClose: async (props) => {
+          const isConfirmed = (props as DialogProps)?.data === true || props === true;
+  
+          if (isConfirmed) {
+            try {
+              const responseDeleteEssay = await deleteReferenceEssay(id);
+              showMessage.success(responseDeleteEssay.message);
+            } catch (err) {
+              const errorMessage = err instanceof Error ? err.message : "Erro ao excluir redação";
+  
+              console.error(err);
+              showMessage.error(errorMessage);
+            }
+          }
+        }
+      });
+    };
 
   return (
     <section className="px-6 py-10 max-w-7xl mx-auto bg-[#FAFAFA] min-h-screen">
@@ -86,7 +117,7 @@ export default function AdminModelsEssay() {
               key={essay.id}
               essay={essay}
               onEdit={(id) => console.log("Editando...", id)}
-              onDelete={(id) => confirm("Deseja realmente excluir?")}
+              onDelete={() => handleDelete(essay.id)}
             />
           ))}
         </div>

@@ -94,12 +94,14 @@ export const ReferenceEssayProvider = ({
     try {
       dispatchReferenceEssay({ type: "SET_LOADING", payload: true });
 
-      await delete_reference_essay(id);
+      const response = await delete_reference_essay(id);
 
       dispatchReferenceEssay({
         type: "DELETE_REFERENCE_ESSAY",
         payload: id,
       });
+      
+      return response;
     } catch (error) {
       console.error(error);
 

@@ -3,6 +3,7 @@ import {
   Star, Edit3, Trash2, Download, Calendar, Bookmark, FileText 
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
+import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
 
 interface EssaysReferenceProps {
   essay: ReferenceEssay;
@@ -63,13 +64,11 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
           >
             <Edit3 size={18} />
           </button>
-          <button 
-            onClick={() => onDelete?.(essay.id)}
-            className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-            title="Excluir"
-          >
-            <Trash2 size={18} />
-          </button>
+          
+          <DeleteReferenceEssay
+            onDelete={() => onDelete?.(essay.id)}
+            title="Excluir Redação de Referência"
+          />
         </div>
         )}
 

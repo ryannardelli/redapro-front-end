@@ -20,7 +20,7 @@ type ReferenceEssayContextType = {
     data: CreateReferenceEssayPayload
   ) => Promise<ReferenceEssay>;
 
-  deleteReferenceEssay: (id: number) => Promise<void>;
+  deleteReferenceEssay: (id: number) => Promise<{ message: string }>;
   loadReferenceEssays: () => Promise<void>;
 };
 
