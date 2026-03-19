@@ -113,7 +113,7 @@ export async function update_profile(
   }
 }
 
-export async function delete_profile(profileId: number): Promise<void> {
+export async function delete_profile(profileId: number): Promise<{ message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {

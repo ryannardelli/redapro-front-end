@@ -16,7 +16,7 @@ type ProfileContextType = {
 
   createProfile: (data: CreateProfilePayload) => Promise<CreateProfileResponse | undefined>;
   updateProfile: (profileId: number, data: UpdateProfilePayload) => Promise<Profile & { message: string }>;
-  deleteProfile: (id: number) => Promise<void>;
+  deleteProfile: (id: number) => Promise<{ message: string }>;
 
   loadMenusByLoggedUser: (profileId: number) => Promise<void>;
   loadMenusByProfileForEdit: (profileId: number) => Promise<void>;

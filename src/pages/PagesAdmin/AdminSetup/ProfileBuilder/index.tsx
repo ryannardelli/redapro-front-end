@@ -51,7 +51,7 @@ export function ProfileBuilder() {
               showMessage.success(responseDeleteEssay.message);
             } catch (err) {
               const errorMessage =
-                err instanceof Error ? err.message : err?.message;
+                err instanceof Error ? err.message : "Aconteceu um problema ao apagar perfil.";
   
               console.error(err);
               showMessage.error(errorMessage);

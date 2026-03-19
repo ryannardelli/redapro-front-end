@@ -43,7 +43,7 @@ export function SetupHome() {
       color: "amber",
       action: () => navigate("/admin/setup/reference-essay")
     }
-  ];
+  ] as const;
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
