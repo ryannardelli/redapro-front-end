@@ -5,6 +5,7 @@ interface CatchInformationsUser {
     findAll: () => Promise<User[]>;
     deleteUser: (id: number) => Promise<void>;
     updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
+    associateProfile: (userId: number, profileId: number) => Promise<User>;
 }
 
 import type { UpdateUserPayload, User } from "../models/User";
@@ -95,6 +96,26 @@ export const catchInformationsUser: CatchInformationsUser = {
 
         return res.json() as Promise<User>;
     },
+
+    associateProfile: async (userId: number, profileId: number) => {
+        const token = userAuthentication.getTokenFromStorage();
+
+        const res = await fetch(`${API_URL}/associateProfile/${userId}`, {
+            method: "PATCH",
+            headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ profileId }),
+        });
+
+        if (!res.ok) {
+            const errorData: ApiError = await res.json().catch(() => ({}));
+            throw new Error(errorData.message || "Erro ao associar perfil");
+        }
+
+  return res.json() as Promise<User>;
+},
 };
 
 export async function getMe(): Promise<User> {

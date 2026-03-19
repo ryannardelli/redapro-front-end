@@ -7,6 +7,7 @@ import { ModalEditBase } from "@components/ui/Modal/ModalEditBase";
 import type { Profile } from "models/Profile";
 import { useProfile } from "@hooks/useProfile";
 import { AssignUserForm } from "../AssignUserForm";
+import { useUsers } from "@hooks/useUsers";
 
 interface AssignedToProfileProps {
   profile: Profile;
@@ -14,6 +15,7 @@ interface AssignedToProfileProps {
 
 export function AssignedToProfile({ profile }: AssignedToProfileProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const { associateProfile } = useUsers();
 
   const { stateProfile } = useProfile(); 
   const loading = stateProfile.loadingProfiles;
@@ -28,19 +30,22 @@ export function AssignedToProfile({ profile }: AssignedToProfileProps) {
 
   const onFormSubmit = async (data: { userId: number }) => {
     try {
-      // Exemplo de chamada: 
-      // await assignUserToProfile(profile.id, data.userId);
-      
-      showMessage.success(`Usuário atribuído ao perfil ${profile.name} com sucesso!`);
-      setIsOpen(false);
+        console.log(data);
+
+        const response = await associateProfile(data.userId, profile.id);
+
+        showMessage.success(response.message);
+
+        setIsOpen(false);
+
     } catch (err: unknown) {
-      const errorMessage =
+        const errorMessage =
         err instanceof Error ? err.message : "Erro ao atribuir usuário.";
 
-      console.error(err);
-      showMessage.error(errorMessage);
+        console.error(err);
+        showMessage.error(errorMessage);
     }
-  };
+    };
 
   return (
     <>

@@ -112,6 +112,45 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
   }
 }, []);
 
+const associateProfile = useCallback(
+  async (userId: number, profileId: number) => {
+    try {
+      dispatchUser({ type: "SET_LOADING_USERS", payload: true });
+
+      const updatedUser = await catchInformationsUser.associateProfile(
+        userId,
+        profileId
+      );
+
+      dispatchUser({
+        type: "UPDATE_USER",
+        payload: updatedUser,
+      });
+
+      return updatedUser;
+
+    } catch (error) {
+      console.error(error);
+
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Erro ao associar perfil";
+
+      dispatchUser({
+        type: "SET_ERROR_USERS",
+        payload: message,
+      });
+
+      throw error;
+
+    } finally {
+      dispatchUser({ type: "SET_LOADING_USERS", payload: false });
+    }
+  },
+  []
+);
+
   return (
     <UserContext.Provider
       value={{
@@ -119,7 +158,8 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
         dispatchUser,
         updateUser,
         loadUsers,
-        deleteUser
+        deleteUser,
+        associateProfile
       }}
     >
       {children}

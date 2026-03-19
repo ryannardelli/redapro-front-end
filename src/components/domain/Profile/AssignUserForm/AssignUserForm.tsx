@@ -3,7 +3,7 @@ import { Search, User as UserIcon, Check } from "lucide-react";
 import { useUsers } from "@hooks/useUsers";
 
 interface AssignUserFormProps {
-  formRef: RefObject<HTMLFormElement>;
+  formRef: RefObject<HTMLFormElement | null>;
   onSubmit: (data: { userId: number }) => void;
 }
 
@@ -13,7 +13,6 @@ export function AssignUserForm({ formRef, onSubmit }: AssignUserFormProps) {
 
   const state = useUsers();
   const users = state.stateUser.users;
-  console.log(users);
 
   const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
