@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 
 import {
-  UserPlus,
   ShieldCheck,
   Search
 } from "lucide-react";
@@ -14,6 +13,7 @@ import { Dialog } from "@components/feedback/DialogConfirm/Dialog";
 import { toast } from "react-toastify";
 import { showMessage } from "adapters/showMessage";
 import { EditProfile } from "@components/domain/Profile/EditProfile";
+import { AssignedToProfile } from "@components/domain/Profile/AtributeToProfile";
 
 const profileColorMap: Record<string, string> = {
   Administrador: "bg-purple-100 text-purple-600",
@@ -170,13 +170,7 @@ export function ProfileBuilder() {
 
                     <td className="px-6 py-4">
                       <div className="flex justify-end gap-2">
-                        <button
-                          title="Atribuir Usuário"
-                          className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg"
-                        >
-                          <UserPlus size={18} />
-                        </button>
-
+                      <AssignedToProfile profile={profile} />
                        {profile.system ? (
                         <div className="group/tooltip relative flex items-center justify-end pr-2">
                           <div 
@@ -193,13 +187,6 @@ export function ProfileBuilder() {
                         </div>
                       ) : (
                         <div className="flex justify-end gap-2">
-                          <button
-                            title="Atribuir Usuário"
-                            className="p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                          >
-                            <UserPlus size={18} />
-                          </button>
-                          
                           <EditProfile profile={profile} />
                           
                           <DeleteProfile
