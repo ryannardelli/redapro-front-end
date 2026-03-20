@@ -1,12 +1,12 @@
 import { useAuth } from "@hooks/useAuth";
 import { 
-  Star, Edit3, Download, Calendar, Bookmark, FileText, 
+  Star, Download, Calendar, Bookmark, FileText, 
   User,
-  Eye
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
 import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
 import { ViewMoreEssayTopScore } from "../ViewMoreEssayTopScore";
+import { EditReferenceEssay } from "../EditReferenceEssay";
 
 interface EssaysReferenceProps {
   essay: ReferenceEssay;
@@ -14,7 +14,7 @@ interface EssaysReferenceProps {
   onDelete?: (id: number) => void;
 }
 
-export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReferenceProps) {
+export function EssaysReferenceCard({ essay, onDelete }: EssaysReferenceProps) {
   const { state } = useAuth();
   const profile = state.user?.profile.name;
 
@@ -67,27 +67,21 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
         <div className="flex items-center gap-1">
           {profile === "Administrador" && (
             <>
-              {/* <button 
-                onClick={() => console.log("Visualizar...", essay.id)}
-                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-                title="Ver mais"
-              >
-                <Eye size={18} />
-              </button> */}
-
               <ViewMoreEssayTopScore
                 essay={essay}
                 loading={state.loading}
                 title="Ver redação completa"
               />
 
-              <button 
+              {/* <button 
                 onClick={() => onEdit?.(essay.id)}
                 className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
                 title="Editar"
               >
                 <Edit3 size={18} />
-              </button>
+              </button> */}
+
+              <EditReferenceEssay essay={essay} />
 
               <DeleteReferenceEssay
                 onDelete={() => onDelete?.(essay.id)}
@@ -97,13 +91,6 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
           )}
 
           {profile !== "Administrador" && (
-            // <button 
-            //   onClick={() => console.log("Visualizar...", essay.id)}
-            //   className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-            //   title="Ver mais"
-            // >
-            //   <Eye size={18} />
-            // </button>
             <ViewMoreEssayTopScore
               essay={essay}
               loading={state.loading}
