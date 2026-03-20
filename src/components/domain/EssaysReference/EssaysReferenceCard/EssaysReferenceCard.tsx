@@ -1,7 +1,8 @@
 import { useAuth } from "@hooks/useAuth";
 import { 
   Star, Edit3, Download, Calendar, Bookmark, FileText, 
-  User
+  User,
+  Eye
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
 import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
@@ -61,22 +62,44 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
       </div>
 
       <div className="px-6 py-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-50">
-        {profile === "Administrador" && (
-          <div className="flex items-center gap-1">
-          <button 
-            onClick={() => onEdit?.(essay.id)}
-            className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-            title="Editar"
-          >
-            <Edit3 size={18} />
-          </button>
-          
-          <DeleteReferenceEssay
-            onDelete={() => onDelete?.(essay.id)}
-            title="Excluir Redação de Referência"
-          />
+  
+        <div className="flex items-center gap-1">
+          {profile === "Administrador" && (
+            <>
+              <button 
+                onClick={() => console.log("Visualizar...", essay.id)}
+                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
+                title="Ver mais"
+              >
+                <Eye size={18} />
+              </button>
+
+              <button 
+                onClick={() => onEdit?.(essay.id)}
+                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
+                title="Editar"
+              >
+                <Edit3 size={18} />
+              </button>
+
+              <DeleteReferenceEssay
+                onDelete={() => onDelete?.(essay.id)}
+                title="Excluir Redação de Referência"
+              />
+            </>
+          )}
+
+          {profile !== "Administrador" && (
+            <button 
+              onClick={() => console.log("Visualizar...", essay.id)}
+              className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
+              title="Ver mais"
+            >
+              <Eye size={18} />
+            </button>
+          )}
+
         </div>
-        )}
 
         <button 
           disabled={!essay.pdf_url}
@@ -90,6 +113,7 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
           <Download size={14} />
           {essay.pdf_url ? "BAIXAR PDF" : "SEM PDF"}
         </button>
+
       </div>
     </div>
   );
