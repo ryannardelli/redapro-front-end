@@ -1,4 +1,5 @@
 export interface ReferenceEssay {
+  authorName: string;
   id: number;
   title: string;
   content: string;
@@ -28,6 +29,7 @@ export type ReferenceEssayAction =
   | { type: "SET_ERROR"; payload: string | null };
 
 export type CreateReferenceEssayPayload = {
+  authorName: string;
   title: string;
   content: string;
   categoryId: number;

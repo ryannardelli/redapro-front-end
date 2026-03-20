@@ -1,6 +1,7 @@
 import { useAuth } from "@hooks/useAuth";
 import { 
-  Star, Edit3, Trash2, Download, Calendar, Bookmark, FileText 
+  Star, Edit3, Download, Calendar, Bookmark, FileText, 
+  User
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
 import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
@@ -38,6 +39,11 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
         <h2 className="text-lg font-bold text-slate-800 mb-3 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
           {essay.title}
         </h2>
+
+        <div className="flex items-center gap-1.5 mb-3 text-indigo-500/80 font-medium text-[13px]">
+          <User size={14} />
+          <span>{essay.authorName || "Autor desconhecido"}</span>
+        </div>
         <p className="text-slate-500 text-sm leading-relaxed line-clamp-4 mb-6 italic">
           "{essay.content}"
         </p>
