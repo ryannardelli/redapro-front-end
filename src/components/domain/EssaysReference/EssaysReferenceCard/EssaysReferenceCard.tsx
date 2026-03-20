@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
 import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
+import { ViewMoreEssayTopScore } from "../ViewMoreEssayTopScore";
 
 interface EssaysReferenceProps {
   essay: ReferenceEssay;
@@ -66,13 +67,19 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
         <div className="flex items-center gap-1">
           {profile === "Administrador" && (
             <>
-              <button 
+              {/* <button 
                 onClick={() => console.log("Visualizar...", essay.id)}
                 className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
                 title="Ver mais"
               >
                 <Eye size={18} />
-              </button>
+              </button> */}
+
+              <ViewMoreEssayTopScore
+                essay={essay}
+                loading={state.loading}
+                title="Ver redação completa"
+              />
 
               <button 
                 onClick={() => onEdit?.(essay.id)}
@@ -90,13 +97,18 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
           )}
 
           {profile !== "Administrador" && (
-            <button 
-              onClick={() => console.log("Visualizar...", essay.id)}
-              className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-              title="Ver mais"
-            >
-              <Eye size={18} />
-            </button>
+            // <button 
+            //   onClick={() => console.log("Visualizar...", essay.id)}
+            //   className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
+            //   title="Ver mais"
+            // >
+            //   <Eye size={18} />
+            // </button>
+            <ViewMoreEssayTopScore
+              essay={essay}
+              loading={state.loading}
+              title="Ver redação completa"
+            />
           )}
 
         </div>
