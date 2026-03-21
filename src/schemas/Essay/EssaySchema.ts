@@ -4,7 +4,7 @@ export const EssaySchema = z.object({
   title: z
     .string()
     .nonempty("O título não pode ficar vazio.")
-    .max(50, "O título pode ter no máximo 50 caracteres."),
+    .max(100, "O título pode ter no máximo 100 caracteres."),
 
      category_id: z
     .number({

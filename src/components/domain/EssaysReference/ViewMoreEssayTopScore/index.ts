@@ -1,0 +1,1 @@
+export { ViewMoreEssayTopScore } from './ViewMoreEssayTopScore';

@@ -40,7 +40,6 @@ export default function AdminSetupTemplate() {
    const user = state.user;
    const { stateProfile, loadMenusByLoggedUser } = useProfile();
    const menus = stateProfile.menusByLoggedUser;
-  //  const menus: MenuType[] = stateProfile.loadingMenusByLoggedUser || [];
 
  useEffect(() => {
   if (!user?.profile.id) return;

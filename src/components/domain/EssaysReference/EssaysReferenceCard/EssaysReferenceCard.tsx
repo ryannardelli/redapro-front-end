@@ -1,9 +1,12 @@
 import { useAuth } from "@hooks/useAuth";
 import { 
-  Star, Edit3, Trash2, Download, Calendar, Bookmark, FileText 
+  Star, Download, Calendar, Bookmark, FileText, 
+  User,
 } from "lucide-react";
 import type { ReferenceEssay } from "models/ReferenceEssay";
 import { DeleteReferenceEssay } from "../DeleteReferenceEssay/DeleteReferenceEssay";
+import { ViewMoreEssayTopScore } from "../ViewMoreEssayTopScore";
+import { EditReferenceEssay } from "../EditReferenceEssay";
 
 interface EssaysReferenceProps {
   essay: ReferenceEssay;
@@ -11,7 +14,7 @@ interface EssaysReferenceProps {
   onDelete?: (id: number) => void;
 }
 
-export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReferenceProps) {
+export function EssaysReferenceCard({ essay, onDelete }: EssaysReferenceProps) {
   const { state } = useAuth();
   const profile = state.user?.profile.name;
 
@@ -38,6 +41,11 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
         <h2 className="text-lg font-bold text-slate-800 mb-3 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">
           {essay.title}
         </h2>
+
+        <div className="flex items-center gap-1.5 mb-3 text-indigo-500/80 font-medium text-[13px]">
+          <User size={14} />
+          <span>{essay.authorName || "Autor desconhecido"}</span>
+        </div>
         <p className="text-slate-500 text-sm leading-relaxed line-clamp-4 mb-6 italic">
           "{essay.content}"
         </p>
@@ -55,22 +63,42 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
       </div>
 
       <div className="px-6 py-4 bg-slate-50/50 flex items-center justify-between border-t border-slate-50">
-        {profile === "Administrador" && (
-          <div className="flex items-center gap-1">
-          <button 
-            onClick={() => onEdit?.(essay.id)}
-            className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-            title="Editar"
-          >
-            <Edit3 size={18} />
-          </button>
-          
-          <DeleteReferenceEssay
-            onDelete={() => onDelete?.(essay.id)}
-            title="Excluir Redação de Referência"
-          />
+  
+        <div className="flex items-center gap-1">
+          {profile === "Administrador" && (
+            <>
+              <ViewMoreEssayTopScore
+                essay={essay}
+                loading={state.loading}
+                title="Ver redação completa"
+              />
+
+              {/* <button 
+                onClick={() => onEdit?.(essay.id)}
+                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
+                title="Editar"
+              >
+                <Edit3 size={18} />
+              </button> */}
+
+              <EditReferenceEssay essay={essay} />
+
+              <DeleteReferenceEssay
+                onDelete={() => onDelete?.(essay.id)}
+                title="Excluir Redação de Referência"
+              />
+            </>
+          )}
+
+          {profile !== "Administrador" && (
+            <ViewMoreEssayTopScore
+              essay={essay}
+              loading={state.loading}
+              title="Ver redação completa"
+            />
+          )}
+
         </div>
-        )}
 
         <button 
           disabled={!essay.pdf_url}
@@ -84,6 +112,7 @@ export function EssaysReferenceCard({ essay, onEdit, onDelete }: EssaysReference
           <Download size={14} />
           {essay.pdf_url ? "BAIXAR PDF" : "SEM PDF"}
         </button>
+
       </div>
     </div>
   );

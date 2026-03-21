@@ -9,19 +9,21 @@ import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
 import { AICorrectionButton } from '../AICorrectionButton';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
 import { EmptyState } from '@components/feedback/EmptyState';
 import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
 import type { DialogProps } from 'types/DialogProps';
+import { EssayProcessingModal } from '@components/ui/Modal/EssayProcessingModal';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
 
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
+  const [correctingEssayId, setCorrectingEssayId] = useState<number | null>(null);
 
 
   const filteredEssays = useMemo(() => {
@@ -99,21 +101,28 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
   };
 
   const handleAICorrection = async (id: number) => {
-    showMessage.dismiss();
+  showMessage.dismiss();
 
-    try {
-      const AIcorrectResponse = await correctEssayAI(id);
-      showMessage.success(AIcorrectResponse.message);
-    } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Erro ao corrigir com AI.";
+  try {
+    setCorrectingEssayId(id);
 
-      console.error(err);
-      showMessage.error(errorMessage);
-    }
-  };
+    const AIcorrectResponse = await correctEssayAI(id);
+
+    showMessage.success(AIcorrectResponse.message);
+
+  } catch (err: unknown) {
+    const errorMessage =
+      err instanceof Error ? err.message : "Erro ao corrigir com AI.";
+
+    console.error(err);
+    showMessage.error(errorMessage);
+
+    setCorrectingEssayId(null);
+  }
+};
 
   return (
+    <>
     <section className="px-4 py-12 mx-auto max-w-7xl">
       <header className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
         <div>
@@ -278,5 +287,11 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
         </div>
       )}
     </section>
+    
+    <EssayProcessingModal
+      isOpen={correctingEssayId !== null}
+      onClose={() => setCorrectingEssayId(null)}
+    />
+    </>
   );
 }

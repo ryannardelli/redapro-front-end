@@ -23,8 +23,11 @@ export function NewEssaysReference() {
   };
 
   const onFormSubmit = async (data: EssaysReferenceData) => {
+     console.log("📦 Dados enviados:", data);
+
     try {
       const response = await createReferenceEssay({
+        authorName: data.author.trim(),
         title: data.title.trim(),
         content: data.content.trim(),
         year: data.year,

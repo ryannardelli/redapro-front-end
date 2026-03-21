@@ -1,6 +1,7 @@
+import { createPortal } from "react-dom";
 import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresenceMotion";
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
-import React, { type ReactNode } from "react";
+import React, { type ReactNode, useEffect, useState } from "react";
 
 interface ModalEditBaseProps {
   isOpen: boolean;
@@ -19,7 +20,23 @@ export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
   isLoading = false,
   children,
 }) => {
-  return (
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    let root = document.getElementById("modal-root");
+
+    if (!root) {
+      root = document.createElement("div");
+      root.id = "modal-root";
+      document.body.appendChild(root);
+    }
+
+    setPortalRoot(root);
+  }, []);
+
+  if (!portalRoot) return null;
+
+  return createPortal(
     <AnimationPresenceMotion>
       {isOpen && (
         <MotionContainer
@@ -71,6 +88,7 @@ export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
           </MotionContainer>
         </MotionContainer>
       )}
-    </AnimationPresenceMotion>
+    </AnimationPresenceMotion>,
+    portalRoot
   );
 };
