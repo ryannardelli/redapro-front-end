@@ -4,41 +4,50 @@ interface ExibitionProps {
   content: string;
 }
 
-export function ExibitionMoreEssay({ title, category, content }: ExibitionProps) {
+export function ExibitionMoreEssay({ title, content }: ExibitionProps) {
   return (
-    <div className="max-w-3xl mx-auto py-4">
-      <div className="flex justify-center mb-4">
-        <span className="px-3 py-1 bg-indigo-50 text-indigo-600 text-xs font-bold uppercase tracking-widest rounded-full">
-          {category}
-        </span>
-      </div>
-
-      <h1 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 text-center mb-8 leading-tight">
-        {title}
-      </h1>
-
-      <div className="relative">
-        <div className="absolute left-0 top-0 bottom-0 w-px bg-red-100 ml-[-20px] hidden md:block" />
+    <div className="w-4xl mx-auto py-16 px-5 bg-gray-50 min-h-screen">
+      
+      <div className="bg-white shadow-2xl rounded-sm border border-gray-200 px-8 py-12 md:px-16 md:py-16 relative overflow-hidden min-h-[1000px]">
         
-        <article className="font-serif text-lg text-gray-800 leading-loose text-justify space-y-6">
-          {content ? (
-            content.split('\n').map((paragraph, index) => (
-              paragraph.trim() && (
-                <p key={index} className="indent-8 first-line:uppercase first-line:tracking-tight">
-                  {paragraph}
-                </p>
-              )
-            ))
-          ) : (
-            <p className="text-gray-400 italic text-center">Nenhum conteúdo disponível.</p>
-          )}
-        </article>
-      </div>
+        <div className="absolute left-6 md:left-12 top-0 bottom-0 w-[1px] bg-red-200" />
 
-      <div className="mt-12 pt-6 border-t border-gray-100 flex justify-center">
-        <p className="text-xs text-gray-400 uppercase tracking-widest font-medium">
-          Fim da Redação
-        </p>
+        <header className="relative z-10 mb-14 border-b-2 border-gray-800 pb-6">
+          <h1 className="text-xl md:text-2xl font-serif font-bold text-gray-900 text-center uppercase tracking-wide leading-relaxed">
+            {title}
+          </h1>
+        </header>
+
+        <article className="relative z-10">
+          <div 
+            className="relative font-serif text-[1.05rem] text-gray-700 leading-[2.6rem] text-justify"
+            style={{
+              backgroundImage: 'linear-gradient(transparent 97%, #e5e7eb 97%)',
+              backgroundSize: '100% 2.6rem',
+              minHeight: '78rem',
+            }}
+          >
+            <div className="absolute -left-10 md:-left-14 top-0 flex flex-col text-[0.8rem] text-gray-400 select-none">
+              {Array.from({ length: 30 }).map((_, i) => (
+                <span key={i} className="h-[2.6rem] flex items-center justify-end pr-4">
+                  {i + 1}
+                </span>
+              ))}
+            </div>
+
+            {content ? (
+              content.split('\n').map((paragraph, index) => (
+                paragraph.trim() && (
+                  <p key={index} className="indent-10">
+                    {paragraph}
+                  </p>
+                )
+              ))
+            ) : (
+              <p className="text-gray-400 italic text-center pt-24">Nenhum conteúdo disponível.</p>
+            )}
+          </div>
+        </article>
       </div>
     </div>
   );
