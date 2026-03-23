@@ -6,7 +6,7 @@ export const ReferenceEssayEditSchema = z.object({
     .nonempty("O título não pode ficar vazio.")
     .max(50, "O título pode ter no máximo 50 caracteres."),
 
-  categoryId: z.coerce.number().int().positive("A categoria é obrigatória."),
+  category_id: z.coerce.number().int().positive("A categoria é obrigatória."),
 
   content: z
     .string()

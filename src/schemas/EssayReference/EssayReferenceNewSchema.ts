@@ -19,7 +19,7 @@ export const EssaysReferenceSchema = z.object({
     .min(1900, "O ano deve ser maior ou igual a 1900")
     .max(new Date().getFullYear(), "O ano não pode ser maior que o atual"),
     
-  categoryId: z.coerce.number().int().positive("A categoria é obrigatória.")
+  category_id: z.coerce.number().int().positive("A categoria é obrigatória.")
 });
 
 export type EssaysReferenceData = z.infer<typeof EssaysReferenceSchema>;
