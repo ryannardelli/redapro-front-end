@@ -59,7 +59,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <SearchInput
           value={searchTerm}
           onChange={setSearchTerm}
-          placeholder="Buscar menus ou funções..."
+          placeholder="Buscar menus..."
           results={filteredMenus}
           hiddenOnMobile
         />
