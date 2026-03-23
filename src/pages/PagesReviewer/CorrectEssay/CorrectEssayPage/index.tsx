@@ -84,11 +84,11 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
 
     try {
       const response = await finishReview(essayId, {
-        c1: scores.c1.toString(),
-        c2: scores.c2.toString(),
-        c3: scores.c3.toString(),
-        c4: scores.c4.toString(),
-        c5: scores.c5.toString(),
+        c1: scores.c1,
+        c2: scores.c2,
+        c3: scores.c3,
+        c4: scores.c4,
+        c5: scores.c5,
         generalFeedback
       });
 

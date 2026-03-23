@@ -135,7 +135,10 @@ export function CorrectEssay() {
                         <div className="flex flex-col items-center">
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-100 text-slate-600 text-xs font-semibold">
                             <Calendar size={12} />
-                            {new Date(e.createdAt).toLocaleDateString("pt-BR")}
+                           {e.createdAt
+                            ? new Date(e.createdAt).toLocaleDateString("pt-BR")
+                            : "-"
+                          }
                           </span>
                         </div>
                       </td>
