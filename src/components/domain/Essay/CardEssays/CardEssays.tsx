@@ -83,7 +83,7 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
       closeButton: false,
       draggable: false,
       onClose: async (props) => {
-        const isConfirmed = (props as DialogProps)?.data === true || props === true;
+      const isConfirmed = (props as unknown as DialogProps)?.data === true || props === true;
 
         if (isConfirmed) {
           try {
