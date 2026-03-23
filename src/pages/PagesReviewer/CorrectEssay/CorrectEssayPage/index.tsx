@@ -12,7 +12,12 @@ import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { showMessage } from "adapters/showMessage";
 import type { Essay } from "models/Essay";
 
-export function CorrectEssayPage() {
+interface CorrectEssayPageProps {
+  essay: Essay;
+  goBack?: () => void;
+}
+
+export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps) {
 
   const { id } = useParams<{ id: string }>();
   const essayId = id ? Number(id) : null;
@@ -25,7 +30,7 @@ export function CorrectEssayPage() {
     finishReview
   } = useProfileCorrectorEssay();
 
-  const [essay, setEssay] = useState<Essay | null>(null);
+  const [essay, setEssay] = useState<Essay | null>(initialEssay);
   const [editor, setEditor] = useState<any>(null);
 
   const [scores, setScores] = useState({
@@ -92,28 +97,26 @@ export function CorrectEssayPage() {
 
     } catch (error) {
       const errorMessage =
-      error instanceof Error ? error.message : "Erro ao finalizar correção";
+        error instanceof Error ? error.message : "Erro ao finalizar correção";
 
-    console.error(error);
-    showMessage.error(errorMessage);
+      console.error(error);
+      showMessage.error(errorMessage);
     }
 
   };
 
   if (stateEssay.loading || !essay) {
-
     return (
       <div className="min-h-screen flex items-center justify-center">
         <ListLoading text="Preparando sua mesa de correção..." />
       </div>
     );
-
   }
 
   return (
-
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {stateEssay.loading && <SpinnerLoading />}
+
       <CorrectionHeader
         essay={essay}
         onFinish={handleFinishReview}
@@ -139,6 +142,5 @@ export function CorrectEssayPage() {
       </main>
 
     </div>
-
   );
 }
