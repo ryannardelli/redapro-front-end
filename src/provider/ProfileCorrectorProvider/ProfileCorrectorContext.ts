@@ -11,7 +11,7 @@ type ProfileCorrectorContextType = {
   stateEssay: EssayState;
   dispatchEssay: (action: EssayAction) => void;
   startReview: (essayId: number) => Promise<Essay>;
-  finishReview: (essayId: number, payload: FinishReviewPayload) => Promise<Essay>;
+  finishReview: (essayId: number, payload: FinishReviewPayload) => Promise<Essay & { message: string }>;
   loadEssays: () => Promise<void>;
 };
 

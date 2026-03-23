@@ -22,6 +22,11 @@ export interface Essay {
   createdAt?: string | null;
   updatedAt?: string | null;
   category?: EssayCategory | null;
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  c5: number;
   feedback?: EssayFeedback | null;
   user?: {
     id: number;
