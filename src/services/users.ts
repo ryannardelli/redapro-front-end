@@ -3,7 +3,7 @@ const API_URL = "/api/users";
 interface CatchInformationsUser {
     getUserById: (id: number) => Promise<User>;
     findAll: () => Promise<User[]>;
-    deleteUser: (id: number) => Promise<void>;
+    deleteUser: (id: number) => Promise<{ message: string }>;
     updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
     associateProfile: (userId: number, profileId: number) => Promise<User>;
 }

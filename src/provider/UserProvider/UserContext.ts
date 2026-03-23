@@ -8,8 +8,8 @@ type UserContextType = {
 
   loadUsers: () => Promise<void>;
   deleteUser: (id: number) => Promise<{ message: string }>;
-  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
-  associateProfile: (userId: number, profileId: number) => Promise<User & { message: string }>;
+  updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
+  associateProfile: (userId: number, profileId: number) => Promise<User>;
 };
 
 export const UserContext = createContext<UserContextType>({
