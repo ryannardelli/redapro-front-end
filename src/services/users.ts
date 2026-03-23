@@ -4,7 +4,7 @@ interface CatchInformationsUser {
     getUserById: (id: number) => Promise<User>;
     findAll: () => Promise<User[]>;
     deleteUser: (id: number) => Promise<{ message: string }>;
-    updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload>;
+    updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
     associateProfile: (userId: number, profileId: number) => Promise<User>;
 }
 
@@ -94,7 +94,7 @@ export const catchInformationsUser: CatchInformationsUser = {
             throw new Error(errorData.message);
         }
 
-        return res.json() as Promise<User>;
+        return await res.json();
     },
 
     associateProfile: async (userId: number, profileId: number) => {

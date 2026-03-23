@@ -9,6 +9,8 @@ type UserProviderProps = {
   children: ReactNode;
 };
 
+export type AssociateProfileResponse = User & { message: string };
+
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [stateUser, dispatchUser] = useReducer(
     userReducer,

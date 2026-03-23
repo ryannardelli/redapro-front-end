@@ -28,7 +28,7 @@ export function EditUser({ user }: EditUserProps) {
 
   const onSubmit = async (data: UserFormData) => {
   const payload: UpdateUserPayload = {
-    name: data.name
+    name: data.name,
   };
 
   if (data.pictureUrl) {
