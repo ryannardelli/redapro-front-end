@@ -6,13 +6,7 @@ export const EssayEditSchema = z.object({
     .nonempty("O título não pode ficar vazio.")
     .max(50, "O título pode ter no máximo 50 caracteres."),
 
-  category_id: z
-    .number({
-      required_error: "Selecione uma categoria.",
-      invalid_type_error: "Categoria inválida.",
-    })
-    .int()
-    .gt(0, "A categoria é obrigatória."),
+  categoryId: z.coerce.number().int().positive("A categoria é obrigatória."),
 
   content: z
     .string()

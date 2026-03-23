@@ -14,7 +14,7 @@ import { useProfile } from "@hooks/useProfile";
 interface HeaderNavProps {
   onToggleSidebar: () => void;
   userName?: string;
-  userRole: string;
+  userRole?: string;
 }
 
 export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
