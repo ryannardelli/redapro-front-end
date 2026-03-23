@@ -1,4 +1,4 @@
-import LoadingButtonCreateForm from "@components/ui/Button/LoadingButtonForm/LoadingButtonCreateForm";
+import LoadingButtonCreateForm from "@components/ui/Button/LoadingCreateButtonForm/LoadingButtonCreateForm";
 import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresenceMotion";
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
 import React, { type ReactNode } from "react";
