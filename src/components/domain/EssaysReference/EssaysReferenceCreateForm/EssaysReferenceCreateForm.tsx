@@ -15,7 +15,7 @@ export function EssaysReferenceCreateForm({
   formRef,
 }: EssaysReferenceCreateFormProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<EssaysReferenceData>({
-    resolver: zodResolver(EssaysReferenceSchema),
+    resolver: zodResolver(EssaysReferenceSchema) as any,
     defaultValues: initialData,
   });
 

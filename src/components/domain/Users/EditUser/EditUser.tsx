@@ -70,10 +70,6 @@ export function EditUser({ user }: EditUserProps) {
           user={user}
           formRef={formRef}
           onSubmit={onSubmit}
-          initialData={{
-            name: user.name,
-            pictureUrl: user.pictureUrl,
-          }}
         />
       </ModalEditBase>
     </>

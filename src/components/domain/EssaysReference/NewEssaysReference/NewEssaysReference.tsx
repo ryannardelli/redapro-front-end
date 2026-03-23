@@ -67,6 +67,7 @@ export function NewEssaysReference() {
           initialData={{
             title: "",
             content: "",
+            author: "",
             year: new Date().getFullYear(),
             categoryId: 0,
           }}
