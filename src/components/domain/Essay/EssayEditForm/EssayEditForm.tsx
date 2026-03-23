@@ -21,7 +21,7 @@ export const EssayEditForm: React.FC<EssayEditFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<EssayFormData>({
-    resolver: zodResolver(EssayEditSchema),
+    resolver: zodResolver(EssayEditSchema) as any,
     defaultValues: initialData,
   });
 

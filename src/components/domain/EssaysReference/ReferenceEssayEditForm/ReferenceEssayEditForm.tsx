@@ -20,7 +20,7 @@ export const ReferenceEssayEditForm: React.FC<ReferenceEssayEditFormProps> = ({
     handleSubmit,
     formState: { errors },
   } = useForm<ReferenceEssayFormData>({
-    resolver: zodResolver(ReferenceEssayEditSchema),
+    resolver: zodResolver(ReferenceEssayEditSchema) as any,
     defaultValues: initialData,
   });
 
