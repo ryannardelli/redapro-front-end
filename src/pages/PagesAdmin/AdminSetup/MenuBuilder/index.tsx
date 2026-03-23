@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Plus,
   GraduationCap,
@@ -47,28 +47,42 @@ export type IconName = keyof typeof AVAILABLE_ICONS;
 export function MenuBuilder() {
   const { stateProfile, loadMenusByProfileForEdit } = useProfile();
 
-  const profiles: Profile[] = stateProfile.profiles;
-  const backendMenus = stateProfile.menusByEditingProfile;
+  const profiles: Profile[] = stateProfile.profiles ?? [];
+  const backendMenus = stateProfile.menusByEditingProfile ?? [];
 
   const systemProfiles = useMemo(() => {
-      return profiles.filter(profile => profile.system);
+    return profiles.filter(profile => profile.system);
   }, [profiles]);
-  
+
   const [activeTab, setActiveTab] = useState<number | null>(null);
   const [activeMenus, setActiveMenus] = useState<Record<number, Menu[]>>({});
   const [lastSavedMenus, setLastSavedMenus] = useState<Record<number, Menu[]>>({});
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-  if (activeTab) {
-    loadMenusByProfileForEdit(activeTab);
-  }
+    if (!systemProfiles.length) return;
+
+    if (activeTab === null) {
+      setActiveTab(systemProfiles[0].id);
+    }
+  }, [systemProfiles, activeTab]);
+
+const loadingRef = useRef<number | null>(null);
+
+useEffect(() => {
+  if (!activeTab) return;
+
+  if (loadingRef.current === activeTab) return;
+
+  loadingRef.current = activeTab;
+
+  loadMenusByProfileForEdit(activeTab);
 }, [activeTab]);
 
   useEffect(() => {
     if (!activeTab) return;
 
-    const formattedMenus: Menu[] = backendMenus.map(menu => ({
+    const formattedMenus: Menu[] = (backendMenus || []).map(menu => ({
       id: String(menu.id),
       name: menu.name,
       route: menu.route,
@@ -79,7 +93,7 @@ export function MenuBuilder() {
     setLastSavedMenus(prev => ({ ...prev, [activeTab]: formattedMenus }));
   }, [backendMenus, activeTab]);
 
-   const profileTabs = useMemo(() => {
+  const profileTabs = useMemo(() => {
     return systemProfiles.map(profile => ({
       value: profile.id,
       label: profile.name,
@@ -89,12 +103,6 @@ export function MenuBuilder() {
         <GraduationCap size={18} />
     }));
   }, [systemProfiles]);
-
-  useEffect(() => {
-  if (systemProfiles.length && activeTab === null) {
-    setActiveTab(systemProfiles[0].id);
-  }
-}, [systemProfiles, activeTab]);
 
   const currentMenus = activeTab ? activeMenus[activeTab] || [] : [];
   const hasActiveMenu = currentMenus.length === 1;
@@ -112,12 +120,14 @@ export function MenuBuilder() {
       ...prev,
       [activeTab]: isAlreadyActive
         ? []
-        : [{
-            id: String(menu.id),
-            name: menu.name,
-            route: menu.route,
-            icon: menu.icon as IconName
-          }]
+        : [
+            {
+              id: String(menu.id),
+              name: menu.name,
+              route: menu.route,
+              icon: menu.icon as IconName
+            }
+          ]
     }));
   };
 
@@ -127,7 +137,7 @@ export function MenuBuilder() {
     setActiveMenus(prev => ({
       ...prev,
       [activeTab]: (prev[activeTab] || []).map(menu =>
-        menu.route === route ? { ...menu, iconName: newIcon } : menu
+        menu.route === route ? { ...menu, icon: newIcon } : menu
       )
     }));
   };
@@ -138,7 +148,7 @@ export function MenuBuilder() {
     setActiveMenus(prev => ({
       ...prev,
       [activeTab]: (prev[activeTab] || []).map(menu =>
-        menu.route === route ? { ...menu, label: newLabel } : menu
+        menu.route === route ? { ...menu, name: newLabel } : menu
       )
     }));
   };
@@ -154,10 +164,17 @@ export function MenuBuilder() {
     }
   };
 
+  const isLoading =
+    stateProfile.loadingMenusByEditingProfile ||
+    !systemProfiles.length ||
+    activeTab === null;
+
   return (
     <div className="max-w-6xl mx-auto p-8 bg-slate-50 min-h-screen">
       <header className="mb-10">
-        <h1 className="text-4xl font-black text-slate-900">Customização de Menu</h1>
+        <h1 className="text-4xl font-black text-slate-900">
+          Customização de Menu
+        </h1>
         <p className="text-slate-500 text-lg">
           Apenas uma funcionalidade pode ficar ativa por perfil.
         </p>
@@ -170,14 +187,18 @@ export function MenuBuilder() {
           onChange={setActiveTab}
         />
       )}
-      
-     <section className="space-y-4">
-        {stateProfile.loadingMenusByLoggedUser ? (
+
+      <section className="space-y-4">
+        {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <ListLoading text="Carregando menus..." />
           </div>
+        ) : backendMenus.length === 0 ? (
+          <p className="text-center text-slate-400">
+            Nenhum menu encontrado
+          </p>
         ) : (
-          backendMenus.map((menu) => {
+          backendMenus.map(menu => {
             const activeItem = currentMenus.find(m => m.route === menu.route);
             const isActive = !!activeItem;
             const isDisabled = hasActiveMenu && !isActive;
@@ -204,20 +225,14 @@ export function MenuBuilder() {
 
                     <div className="flex-1">
                       {isActive ? (
-                        <div className="relative flex items-center group/name">
-                          <input
-                            type="text"
-                            value={activeItem?.name}
-                            onChange={(e) =>
-                              updateLabel(menu.route, e.target.value)
-                            }
-                            className="font-bold bg-transparent border-b border-blue-200 focus:border-blue-500 outline-none pr-6 w-full max-w-[250px]"
-                          />
-                          <PenLine
-                            size={14}
-                            className="absolute right-0 text-slate-300 opacity-0 group-hover/name:opacity-100"
-                          />
-                        </div>
+                        <input
+                          type="text"
+                          value={activeItem?.name}
+                          onChange={(e) =>
+                            updateLabel(menu.route, e.target.value)
+                          }
+                          className="font-bold bg-transparent border-b border-blue-200 focus:border-blue-500 outline-none w-full max-w-[250px]"
+                        />
                       ) : (
                         <p className="font-bold">{menu.name}</p>
                       )}
@@ -251,7 +266,9 @@ export function MenuBuilder() {
                             : "border-slate-200 hover:bg-slate-50"
                         }`}
                       >
-                        {React.createElement(AVAILABLE_ICONS[icon], { size: 18 })}
+                        {React.createElement(AVAILABLE_ICONS[icon], {
+                          size: 18
+                        })}
                       </button>
                     ))}
                   </div>
