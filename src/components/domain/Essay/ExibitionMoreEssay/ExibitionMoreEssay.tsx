@@ -27,13 +27,6 @@ export function ExibitionMoreEssay({ title, content }: ExibitionProps) {
               minHeight: '78rem',
             }}
           >
-            <div className="absolute -left-10 md:-left-14 top-0 flex flex-col text-[0.8rem] text-gray-400 select-none">
-              {Array.from({ length: 30 }).map((_, i) => (
-                <span key={i} className="h-[2.6rem] flex items-center justify-end pr-4">
-                  {i + 1}
-                </span>
-              ))}
-            </div>
 
             {content ? (
               content.split('\n').map((paragraph, index) => (
