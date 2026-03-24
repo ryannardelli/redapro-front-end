@@ -127,8 +127,6 @@ useEffect(() => {
 
   const essay = essays.find(e => e.id === correctingEssayId);
 
-  console.log("STATUS:", essay?.status);
-
   if (essay?.status?.toLowerCase() === "corrigida") {
     setCorrectingEssayId(null);
   }
