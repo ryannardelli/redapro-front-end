@@ -89,7 +89,7 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
 
     dispatchUser({
       type: "UPDATE_USER",
-      payload: updatedUser as User,
+      payload: updatedUser as unknown as User,
     });
     
     return updatedUser;
@@ -115,29 +115,25 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
 }, []);
 
 const associateProfile = useCallback(
-  async (userId: number, profileId: number) => {
+  async (userId: number, profileId: number): Promise<AssociateProfileResponse> => {
     try {
       dispatchUser({ type: "SET_LOADING_USERS", payload: true });
 
-      const updatedUser = await catchInformationsUser.associateProfile(
+      const response = await catchInformationsUser.associateProfile(
         userId,
         profileId
-      );
+      ) as AssociateProfileResponse;
 
       dispatchUser({
         type: "UPDATE_USER",
-        payload: updatedUser,
+        payload: response,
       });
 
-      return updatedUser;
+      return response;
 
     } catch (error) {
       console.error(error);
-
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Erro ao associar perfil";
+      const message = error instanceof Error ? error.message : "Erro ao associar perfil";
 
       dispatchUser({
         type: "SET_ERROR_USERS",
@@ -145,7 +141,6 @@ const associateProfile = useCallback(
       });
 
       throw error;
-
     } finally {
       dispatchUser({ type: "SET_LOADING_USERS", payload: false });
     }
