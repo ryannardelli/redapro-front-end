@@ -9,7 +9,7 @@ import { RouterLinks } from '@components/ui/Links/RouterLinks';
 import { ViewMoreEssay } from '../ViewMoreEssay';
 import { ShowResultEssay } from '../ShowResultEssay';
 import { AICorrectionButton } from '../AICorrectionButton';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { EssayFilters } from 'types/EssayFilters';
 import { EssayCardSkeleton } from '@components/ui/Loading/EssayCardSkeleton';
 import { EmptyActivitiesStudent } from '@components/ui/feedback/EmptyActivitiesStudent';
@@ -107,8 +107,9 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
     setCorrectingEssayId(id);
 
     const AIcorrectResponse = await correctEssayAI(id);
-
     showMessage.success(AIcorrectResponse.message);
+
+    setCorrectingEssayId(null);
 
   } catch (err: unknown) {
     const errorMessage =
@@ -120,6 +121,18 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
     setCorrectingEssayId(null);
   }
 };
+
+useEffect(() => {
+  if (!correctingEssayId) return;
+
+  const essay = essays.find(e => e.id === correctingEssayId);
+
+  console.log("STATUS:", essay?.status);
+
+  if (essay?.status?.toLowerCase() === "corrigida") {
+    setCorrectingEssayId(null);
+  }
+}, [essays, correctingEssayId]);
 
   return (
     <>
@@ -290,7 +303,6 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
     
     <EssayProcessingModal
       isOpen={correctingEssayId !== null}
-      onClose={() => setCorrectingEssayId(null)}
     />
     </>
   );

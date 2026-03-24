@@ -32,6 +32,7 @@ export function essayReducer(state: EssayState, action: EssayAction) {
         case "UPDATE_ESSAY_REALTIME":
             return {
                 ...state,
+                loading: false,
                 essays: state.essays.map(e =>
                 e.id === action.payload.id
                     ? { ...e, ...action.payload }
