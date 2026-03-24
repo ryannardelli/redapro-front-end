@@ -33,20 +33,24 @@ const AVAILABLE_ICONS = {
 type IconName = keyof typeof AVAILABLE_ICONS;
 
 export default function AdminSetupTemplate() {
-   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-   const { state } = useAuth();
-  
-   const user = state.user;
-   const { stateProfile, loadMenusByLoggedUser } = useProfile();
-   const menus = stateProfile.menusByLoggedUser;
+  const { state } = useAuth();
+  const user = state.user;
 
- useEffect(() => {
-  if (!user?.profile.id) return;
-  loadMenusByLoggedUser(user.profile.id);
-}, []);
+  const { stateProfile, loadMenusByLoggedUser } = useProfile();
+  const menus = stateProfile.menusByLoggedUser;
+
+  useEffect(() => {
+    if (!user?.profile?.id) return;
+    loadMenusByLoggedUser(user.profile.id);
+  }, [user?.profile?.id, loadMenusByLoggedUser]);
 
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
+
+  const isLoading =
+    state.loading ||
+    stateProfile.loadingMenusByLoggedUser;
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
@@ -68,8 +72,8 @@ export default function AdminSetupTemplate() {
         </div>
 
         <nav className="mt-6">
-          {stateProfile.loadingMenusByLoggedUser ? (
-            <MenuSkeletonList items={menus.length} />
+          {isLoading ? (
+            <MenuSkeletonList items={5} />
           ) : menus.length === 0 ? (
             <p className="px-6 py-3 text-slate-400 text-sm">
               Nenhum menu encontrado.

@@ -92,11 +92,13 @@ export function ModelsEssays() {
         />
       )}
 
-      <Pagination
-        currentPage={page}
-        totalPages={3}
-        onPageChange={setPage}
-      />
+      {essays.length > 0 && (
+        <Pagination
+          currentPage={page}
+          totalPages={3}
+          onPageChange={setPage}
+        />
+      )}
     </section>
   );
 }

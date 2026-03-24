@@ -42,30 +42,6 @@ export const DashboardProvider = ({ children }: Props) => {
     }
   };
 
-  const loadCorrectorStats = async () => {
-    try {
-      dispatchDashboard({ type: "SET_LOADING", payload: true });
-
-      const stats = await getCorrectorStats();
-
-      dispatchDashboard({
-        type: "SET_CORRECTOR_STATS",
-        payload: stats
-      });
-
-    } catch (error) {
-      dispatchDashboard({
-        type: "SET_ERROR",
-        payload:
-          error instanceof Error
-            ? error.message
-            : "Erro ao carregar estatísticas"
-      });
-    } finally {
-      dispatchDashboard({ type: "SET_LOADING", payload: false });
-    }
-  };
-
   const loadRecentEssays = async () => {
   try {
     dispatchDashboard({ type: "SET_LOADING", payload: true });
@@ -90,10 +66,6 @@ export const DashboardProvider = ({ children }: Props) => {
       loadStudentStats();
       loadRecentEssays();
     }
-
-    if (profile === "Corretor") {
-      loadCorrectorStats();
-    }
   }, [isAuthenticated, profile]);
 
   return (
@@ -102,7 +74,6 @@ export const DashboardProvider = ({ children }: Props) => {
         stateDashboard,
         dispatchDashboard,
         loadStudentStats,
-        loadCorrectorStats,
         loadRecentEssays,
       }}
     >

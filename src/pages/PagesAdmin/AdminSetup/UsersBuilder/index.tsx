@@ -33,7 +33,13 @@ export function UsersBuilder() {
         closeButton: false,
         draggable: false,
         onClose: async (props) => {
-          const isConfirmed = props?.data === true || props === true;
+           let isConfirmed = false;
+
+          if (typeof props === "object" && props !== null && "data" in props) {
+            isConfirmed = (props as { data: boolean }).data === true;
+          } else if (props === true) {
+            isConfirmed = true;
+          }
   
           if (isConfirmed) {
             try {
@@ -41,7 +47,7 @@ export function UsersBuilder() {
               showMessage.success(responseDeleteUser.message);
             } catch (err) {
               const errorMessage =
-                err instanceof Error ? err.message : err?.message;
+                err instanceof Error ? err.message : "Aconteceu um problema ao apagar usuário.";
   
               console.error(err);
               showMessage.error(errorMessage);

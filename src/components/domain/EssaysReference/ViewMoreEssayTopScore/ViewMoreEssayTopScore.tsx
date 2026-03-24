@@ -1,11 +1,11 @@
 import { Eye } from "lucide-react";
 import { useState } from "react";
 import { ModalShowBase } from "@components/ui/Modal/ModalShowBase";
-import type { Essay } from "models/Essay";
 import { ExibitionMoreEssay } from "@components/domain/Essay/ExibitionMoreEssay";
+import type { ReferenceEssay } from "models/ReferenceEssay";
 
 interface ViewEssayNotaMilProps {
-  essay: Essay;
+  essay: ReferenceEssay;
   loading?: boolean;
   title?: string;
   className?: string;

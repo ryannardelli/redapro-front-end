@@ -45,7 +45,11 @@ export function Sidebar() {
   const { stateProfile } = useProfile();
 
   const user = state.user;
-  const menus = stateProfile.menusByLoggedUser || [];
+  const menus = stateProfile.menusByLoggedUser ?? [];
+
+  const isLoading =
+    state.loading ||
+    stateProfile.loadingMenusByLoggedUser;
 
   return (
     <div className="bg-gray-50">
@@ -57,7 +61,6 @@ export function Sidebar() {
         ${sideBarOpen ? "translate-x-0" : "-translate-x-full"}
         md:translate-x-0`}
       >
-
         <div className="p-6 flex items-center justify-between">
           <RouterLinks href="/" className="flex items-center gap-3 group">
             <img
@@ -80,10 +83,10 @@ export function Sidebar() {
 
         <nav className="flex-1 px-4 mt-6">
           <div className="space-y-1">
-            {stateProfile.loadingMenusByLoggedUser ? (
-              <MenuSkeletonList items={menus.length} />
+            {isLoading ? (
+              <MenuSkeletonList items={5} />
             ) : menus.length === 0 ? (
-              <p className="px-4 text-sm text-gray-400 px-4">
+              <p className="px-4 text-sm text-gray-400">
                 Nenhum menu disponível
               </p>
             ) : (

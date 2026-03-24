@@ -71,7 +71,7 @@ export function EditReferenceEssay({ essay }: EditReferenceEssayProps) {
             title: essay.title,
             content: essay.content,
             category_id: essay.category?.id ?? 0,
-            year: essay.year,
+            year: essay.year ?? 0,
             authorName: essay.authorName,
           }}
         />

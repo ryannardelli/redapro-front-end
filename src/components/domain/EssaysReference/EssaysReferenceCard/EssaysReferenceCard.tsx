@@ -73,14 +73,6 @@ export function EssaysReferenceCard({ essay, onDelete }: EssaysReferenceProps) {
                 title="Ver redação completa"
               />
 
-              {/* <button 
-                onClick={() => onEdit?.(essay.id)}
-                className="p-2.5 text-slate-400 hover:text-indigo-600 hover:bg-white hover:shadow-sm rounded-xl transition-all cursor-pointer"
-                title="Editar"
-              >
-                <Edit3 size={18} />
-              </button> */}
-
               <EditReferenceEssay essay={essay} />
 
               <DeleteReferenceEssay

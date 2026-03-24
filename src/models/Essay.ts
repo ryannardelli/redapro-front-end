@@ -22,6 +22,11 @@ export interface Essay {
   createdAt?: string | null;
   updatedAt?: string | null;
   category?: EssayCategory | null;
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  c5: number;
   feedback?: EssayFeedback | null;
   user?: {
     id: number;
@@ -54,11 +59,11 @@ export type CreateEssayPayload = {
 }
 
 export type FinishReviewPayload = {
-  c1: string;
-  c2: string;
-  c3: string;
-  c4: string;
-  c5: string;
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  c5: number;
   generalFeedback: string;
 };
 

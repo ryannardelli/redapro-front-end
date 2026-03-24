@@ -202,7 +202,7 @@ export async function finishReviewEssay(
     c5: number;
     generalFeedback: string;
   }
-): Promise<Essay> {
+): Promise<Essay & { message: string }> {
 
   const token = userAuthentication.getTokenFromStorage();
 
@@ -221,7 +221,7 @@ export async function finishReviewEssay(
       throw new Error(errorData?.message ?? "Erro ao finalizar correção da redação.");
     }
 
-    const essay: Essay = await res.json();
+    const essay = await res.json();
     return essay;
 
   } catch (error) {

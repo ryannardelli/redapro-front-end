@@ -13,7 +13,7 @@ export function MemberRoute({ allowedProfile }: MemberRouteProps) {
 
   if (!state.isAuthenticated) return <Navigate to="/login" replace />;
 
-  if (!allowedProfile.includes(state.user?.profile.name)) return <Navigate to="/" replace />;
+  if (!allowedProfile.includes(state.user?.profile.name ?? "")) return <Navigate to="/" replace />;
 
   return <Outlet />;
 }

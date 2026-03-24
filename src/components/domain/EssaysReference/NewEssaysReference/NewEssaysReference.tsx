@@ -31,7 +31,7 @@ export function NewEssaysReference() {
         title: data.title.trim(),
         content: data.content.trim(),
         year: data.year,
-        categoryId: data.categoryId,
+        categoryId: data.category_id,
       });
 
       showMessage.success(response.message);
@@ -67,8 +67,9 @@ export function NewEssaysReference() {
           initialData={{
             title: "",
             content: "",
+            author: "",
             year: new Date().getFullYear(),
-            categoryId: 0,
+            category_id: 0,
           }}
           formRef={formRef}
           onSubmit={onFormSubmit}

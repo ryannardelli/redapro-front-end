@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { showMessage } from "adapters/showMessage";
 import { EditProfile } from "@components/domain/Profile/EditProfile";
 import { AssignedToProfile } from "@components/domain/Profile/AtributeToProfile";
+import type { DialogProps } from "types/DialogProps";
 
 const profileColorMap: Record<string, string> = {
   Administrador: "bg-purple-100 text-purple-600",
@@ -43,7 +44,7 @@ export function ProfileBuilder() {
         closeButton: false,
         draggable: false,
         onClose: async (props) => {
-          const isConfirmed = props?.data === true || props === true;
+          const isConfirmed = (props as unknown as DialogProps)?.data === true || props === true;
   
           if (isConfirmed) {
             try {

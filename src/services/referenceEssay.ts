@@ -1,5 +1,5 @@
 import { userAuthentication } from "./auth";
-import type { ReferenceEssay, ReferenceEssayUpdatePayload } from "../models/ReferenceEssay";
+import type { CreateReferenceEssayPayload, ReferenceEssay, ReferenceEssayUpdatePayload } from "../models/ReferenceEssay";
 
 const API_URL = "/api/reference-essay";
 
@@ -35,7 +35,7 @@ export async function getReferenceEssays(params?: {
 }
 
 export async function create_reference_essay(
-  payload: ReferenceEssay
+  payload: CreateReferenceEssayPayload
 ): Promise<ReferenceEssay & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
@@ -61,7 +61,7 @@ export async function create_reference_essay(
 export async function update_reference_essay(
   id: number,
   payload: ReferenceEssayUpdatePayload
-): Promise<ReferenceEssay> {
+): Promise<ReferenceEssay & { message: string }> {
   const token = userAuthentication.getTokenFromStorage();
 
   const res = await fetch(`${API_URL}/${id}`, {

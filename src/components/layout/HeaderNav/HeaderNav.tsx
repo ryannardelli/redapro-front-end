@@ -14,7 +14,7 @@ import { useProfile } from "@hooks/useProfile";
 interface HeaderNavProps {
   onToggleSidebar: () => void;
   userName?: string;
-  userRole: string;
+  userRole?: string;
 }
 
 export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
@@ -59,7 +59,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <SearchInput
           value={searchTerm}
           onChange={setSearchTerm}
-          placeholder="Buscar menus ou funções..."
+          placeholder="Buscar menus..."
           results={filteredMenus}
           hiddenOnMobile
         />

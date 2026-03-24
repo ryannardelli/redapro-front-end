@@ -29,3 +29,8 @@ export type UpdateUserPayload = {
   pictureUrl?: string;
   email?: string;
 };
+
+export interface UpdateUserResponse {
+  message: string;
+  user: User;
+}

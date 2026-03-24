@@ -1,3 +1,4 @@
+import LoadingButtonCreateForm from "@components/ui/Button/LoadingCreateButtonForm/LoadingButtonCreateForm";
 import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresenceMotion";
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
 import React, { type ReactNode } from "react";
@@ -61,13 +62,9 @@ export const ModalCreateBase: React.FC<ModalCreateBaseProps> = ({
                 Cancelar
               </button>
 
-              <button
-                onClick={onCreate}
-                disabled={isLoading}
-                className="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
-              >
+              <LoadingButtonCreateForm isLoading={isLoading} onClick={onCreate}>
                 Criar
-              </button>
+              </LoadingButtonCreateForm>
             </footer>
           </MotionContainer>
         </MotionContainer>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { useProfileCorrectorEssay } from "@hooks/useProfileCorrectorEssay";
@@ -10,8 +10,14 @@ import { EvaluationPanel } from "@components/domain/EssayReviewer/EvaluationPane
 import { CorrectionHeader } from "@components/domain/EssayReviewer/CorrectionHeader";
 import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { showMessage } from "adapters/showMessage";
+import type { Essay } from "models/Essay";
 
-export function CorrectEssayPage() {
+interface CorrectEssayPageProps {
+  essay: Essay;
+  goBack?: () => void;
+}
+
+export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps) {
 
   const { id } = useParams<{ id: string }>();
   const essayId = id ? Number(id) : null;
@@ -24,7 +30,7 @@ export function CorrectEssayPage() {
     finishReview
   } = useProfileCorrectorEssay();
 
-  const [essay, setEssay] = useState<any>(null);
+  const [essay, setEssay] = useState<Essay | null>(initialEssay);
   const [editor, setEditor] = useState<any>(null);
 
   const [scores, setScores] = useState({
@@ -36,69 +42,7 @@ export function CorrectEssayPage() {
   });
 
   const [generalFeedback, setGeneralFeedback] = useState("");
-  
-  // const reviewStarted = useRef(false);
 
-  // useEffect(() => {
-
-  //   if (!essayId) return;
-
-  //   const found = stateEssay.essays.find(e => e.id === essayId);
-
-  //   if (!found) {
-
-  //     if (!stateEssay.loading && stateEssay.essays.length > 0) {
-  //       navigate("/");
-  //     }
-
-  //     return;
-  //   }
-
-  //   setEssay(found);
-
-  //   setScores({
-  //     c1: found.c1 ?? 0,
-  //     c2: found.c2 ?? 0,
-  //     c3: found.c3 ?? 0,
-  //     c4: found.c4 ?? 0,
-  //     c5: found.c5 ?? 0
-  //   });
-
-  //   setGeneralFeedback(found.feedback?.general ?? "");
-
-  //   const handleStartReview = async () => {
-
-  //     if (reviewStarted.current) return;
-  //     reviewStarted.current = true;
-
-  //     if (found.status === "PENDENTE") {
-
-  //       try {
-
-  //         const response = await startReview(essayId);
-
-  //         showMessage.success(response.message);
-
-  //       } catch (error: any) {
-
-  //         const message =
-  //           error?.response?.data?.message ||
-  //           error.message ||
-  //           "Erro ao iniciar correção";
-
-  //         showMessage.error(message);
-
-  //       }
-
-  //     }
-
-  //   };
-
-  //   handleStartReview();
-
-  // }, [essayId, stateEssay.essays]);
-
-  
   useEffect(() => {
 
     if (!essayId) return;
@@ -139,9 +83,12 @@ export function CorrectEssayPage() {
     if (!essayId) return;
 
     try {
-
       const response = await finishReview(essayId, {
-        ...scores,
+        c1: scores.c1,
+        c2: scores.c2,
+        c3: scores.c3,
+        c4: scores.c4,
+        c5: scores.c5,
         generalFeedback
       });
 
@@ -149,27 +96,27 @@ export function CorrectEssayPage() {
       navigate("/");
 
     } catch (error) {
-      console.error(error);
-      showMessage.error(error.message);
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro ao finalizar correção";
 
+      console.error(error);
+      showMessage.error(errorMessage);
     }
 
   };
 
   if (stateEssay.loading || !essay) {
-
     return (
       <div className="min-h-screen flex items-center justify-center">
         <ListLoading text="Preparando sua mesa de correção..." />
       </div>
     );
-
   }
 
   return (
-
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {stateEssay.loading && <SpinnerLoading />}
+
       <CorrectionHeader
         essay={essay}
         onFinish={handleFinishReview}
@@ -195,6 +142,5 @@ export function CorrectEssayPage() {
       </main>
 
     </div>
-
   );
 }

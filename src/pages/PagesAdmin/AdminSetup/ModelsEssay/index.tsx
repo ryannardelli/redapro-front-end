@@ -62,7 +62,13 @@ export default function AdminModelsEssay() {
         closeButton: false,
         draggable: false,
         onClose: async (props) => {
-          const isConfirmed = (props as DialogProps)?.data === true || props === true;
+          let isConfirmed = false;
+
+          if (typeof props === "object" && props !== null && "data" in props) {
+            isConfirmed = (props as DialogProps).data === true;
+          } else if (props === true) {
+            isConfirmed = true;
+          }
   
           if (isConfirmed) {
             try {

@@ -15,7 +15,7 @@ export function EssaysReferenceCreateForm({
   formRef,
 }: EssaysReferenceCreateFormProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<EssaysReferenceData>({
-    resolver: zodResolver(EssaysReferenceSchema),
+    resolver: zodResolver(EssaysReferenceSchema) as any,
     defaultValues: initialData,
   });
 
@@ -110,8 +110,8 @@ export function EssaysReferenceCreateForm({
           </label>
           <div className="relative">
             <select
-              {...register("categoryId", { valueAsNumber: true })}
-              className={`${inputStyle(!!errors.categoryId)} appearance-none cursor-pointer`}
+              {...register("category_id", { valueAsNumber: true })}
+              className={`${inputStyle(!!errors.category_id)} appearance-none cursor-pointer`}
             >
               <option value={0}>Selecione uma categoria</option>
               {categories.map((category) => (
@@ -126,9 +126,9 @@ export function EssaysReferenceCreateForm({
               </svg>
             </div>
           </div>
-          {errors.categoryId && (
+          {errors.category_id && (
             <span className="text-xs font-medium text-red-500 mt-1.5 ml-1">
-              {errors.categoryId.message}
+              {errors.category_id.message}
             </span>
           )}
         </div>
