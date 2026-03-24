@@ -41,14 +41,16 @@ export function useNotifications(userId?: number) {
         id: data.id,
         status: data.status as "PENDENTE" | "CORRIGIDA" | "EM_CORRECAO" | "ERRO",
         note: data.note,
-        feedback: {
-          c1: String(data.feedback.c1),
-          c2: String(data.feedback.c2),
-          c3: String(data.feedback.c3),
-          c4: String(data.feedback.c4),
-          c5: String(data.feedback.c5),
-          general: data.feedback.general
-        }
+        feedback: data.feedback
+          ? {
+              c1: String(data.feedback.c1),
+              c2: String(data.feedback.c2),
+              c3: String(data.feedback.c3),
+              c4: String(data.feedback.c4),
+              c5: String(data.feedback.c5),
+              general: data.feedback.general
+            }
+          : undefined
       });
 
       setNotifications(prev => [
