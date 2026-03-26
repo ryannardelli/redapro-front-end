@@ -144,12 +144,10 @@ export const ProfileStudentProvider = ({ children }: ProfileStudentProviderProps
     };
 
     const updateEssayRealtime = (essayUpdate: UpdateEssayRealtimePayload) => {
-
-    dispatchEssay({
-      type: "UPDATE_ESSAY_REALTIME",
-      payload: essayUpdate
-    });
-
+        dispatchEssay({
+          type: "UPDATE_ESSAY_REALTIME",
+          payload: essayUpdate
+        });
       };
 
   return (

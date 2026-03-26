@@ -1,7 +1,7 @@
 import { socket } from "@services/socket";
 import { useEffect, useState } from "react";
 import { useProfileStudentEssay } from "./useProfileStudentEssay";
-import type { Feedback } from "models/Essay";
+import type { SocketEssayPayload } from "models/Essay";
 
 export interface Notification {
   id: string;
@@ -36,22 +36,15 @@ export function useNotifications(userId?: number) {
 
     socket.emit("join", userId);
 
-    socket.on("essay:status", (data: { id: number, status: string, note?: number, message: string, feedback: Feedback  }) => {
+    socket.on("essay:status", (data: SocketEssayPayload) => {
+
       updateEssayRealtime({
-        id: data.id,
-        status: data.status as "PENDENTE" | "CORRIGIDA" | "EM_CORRECAO" | "ERRO",
-        note: data.note,
-        feedback: data.feedback
-          ? {
-              c1: String(data.feedback.c1),
-              c2: String(data.feedback.c2),
-              c3: String(data.feedback.c3),
-              c4: String(data.feedback.c4),
-              c5: String(data.feedback.c5),
-              general: data.feedback.general
-            }
-          : undefined
-      });
+          id: data.id,
+          status: data.status as "PENDENTE" | "CORRIGIDA" | "EM_CORRECAO" | "ERRO" | null,
+          note: data.note,
+          feedback: data.feedback,
+          generalFeedback: data.generalFeedback
+        });
 
       setNotifications(prev => [
         {
