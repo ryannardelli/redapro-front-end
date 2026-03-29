@@ -108,9 +108,10 @@ useEffect(() => {
   const currentMenus = activeTab ? activeMenus[activeTab] || [] : [];
   const hasActiveMenu = currentMenus.length === 1;
 
-  const hasChanges =
-    activeTab !== null &&
-    JSON.stringify(currentMenus) !== JSON.stringify(lastSavedMenus[activeTab]);
+    const canSave =
+  activeTab !== null &&
+  currentMenus.length > 0 &&
+  JSON.stringify(currentMenus) !== JSON.stringify(lastSavedMenus[activeTab]);
 
   const toggleMenu = (menu: Menu) => {
     if (!activeTab) return;
@@ -203,7 +204,7 @@ useEffect(() => {
           Customização de Menu
         </h1>
         <p className="text-slate-500 text-lg">
-          Apenas uma funcionalidade pode ficar ativa por perfil.
+          Customize os menus do sistema aqui.
         </p>
       </header>
 
@@ -271,7 +272,7 @@ useEffect(() => {
                   <button
                     disabled={isDisabled}
                     onClick={() => toggleMenu(menu)}
-                    className="transition-transform active:scale-90"
+                    className="transition-transform active:scale-90 cursor-pointer"
                   >
                     {isActive ? (
                       <CheckCircle2 className="text-blue-500" />
@@ -308,8 +309,8 @@ useEffect(() => {
 
       <button
         onClick={saveMenus}
-        disabled={!hasChanges || isSaving}
-        className="mt-8 w-full bg-blue-600 py-4 rounded-2xl font-bold text-white
+        disabled={!canSave || isSaving}
+        className="mt-8 w-full cursor-pointer bg-blue-600 py-4 rounded-2xl font-bold text-white
                    hover:bg-blue-500 disabled:opacity-50"
       >
         {isSaving ? "Salvando..." : "Salvar alterações"}

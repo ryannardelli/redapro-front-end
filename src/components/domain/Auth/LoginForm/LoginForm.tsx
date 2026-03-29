@@ -33,7 +33,7 @@ export function LoginForm() {
     } catch (err: unknown) {
       if(err instanceof Error) {
         console.log(err);
-        showMessage.error(err.message);
+        showMessage.error(err.message || "Algo deu errado. Tente novamente mais tarde.");
       }
     }
   });

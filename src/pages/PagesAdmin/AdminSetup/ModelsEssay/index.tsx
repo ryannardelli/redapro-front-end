@@ -91,7 +91,7 @@ export default function AdminModelsEssay() {
             Modelos <span className="text-indigo-600">Nota 1000</span>
           </h1>
           <p className="text-slate-500 mt-2 text-lg">
-            Gerenciamento de referências e produções acadêmicas.
+            Gerenciamento de acervo de redações nota 1000 de estudantes.
           </p>
         </div>
         <NewEssaysReference />
