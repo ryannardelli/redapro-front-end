@@ -20,8 +20,6 @@ export default function AdminModelsEssay() {
   const essays = stateReferenceEssay.essays ?? [];
   const [page, setPage] = useState(1);
 
-  console.log(essays);
-
   const [filters, setFilters] = useState({
     search: "",
     year: "",
@@ -137,11 +135,14 @@ export default function AdminModelsEssay() {
         />
       )}
 
-       <Pagination
+
+      {essays.length > 0 && (
+        <Pagination
           currentPage={page}
           totalPages={3}
           onPageChange={setPage}
         />
+      )}
     </section>
   );
 }

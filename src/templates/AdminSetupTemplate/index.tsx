@@ -55,7 +55,7 @@ export default function AdminSetupTemplate() {
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden">
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 text-white rounded-md"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 text-white rounded-md"
         onClick={toggleSidebar}
       >
         {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
@@ -71,7 +71,7 @@ export default function AdminSetupTemplate() {
           Painel<span className="text-blue-400">Admin</span>
         </div>
 
-        <nav className="mt-6">
+        <nav className="mt-6 pb-4">
           {isLoading ? (
             <MenuSkeletonList items={5} />
           ) : menus.length === 0 ? (

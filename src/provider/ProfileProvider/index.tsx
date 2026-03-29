@@ -10,6 +10,8 @@ import {
 } from "../../services/profile";
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateProfilePayload } from "../../models/Profile";
+import { update_menu } from "@services/menu";
+import type { MenuUpdateDto } from "models/Menu";
 
 type ProfileProviderProps = {
   children: ReactNode;
@@ -201,6 +203,51 @@ const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
   }
 }, []);
 
+const updateMenu = async (
+  menuId: number,
+  data: MenuUpdateDto
+) => {
+  try {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_EDITING_PROFILE",
+      payload: true,
+    });
+
+    const updatedMenu = await update_menu(menuId, data);
+
+    dispatchProfile({
+      type: "UPDATE_MENU_EDITING_PROFILE",
+      payload: updatedMenu,
+    });
+
+    dispatchProfile({
+      type: "UPDATE_MENU_LOGGED_USER",
+      payload: updatedMenu,
+    });
+
+    return updatedMenu;
+  } catch (error) {
+    console.error(error);
+
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao atualizar menu";
+
+    dispatchProfile({
+      type: "SET_ERROR_MENUS_EDITING_PROFILE",
+      payload: message,
+    });
+
+    throw error;
+  } finally {
+    dispatchProfile({
+      type: "SET_LOADING_MENUS_EDITING_PROFILE",
+      payload: false,
+    });
+  }
+};
+
    return (
     <ProfileContext.Provider
       value={{
@@ -210,7 +257,8 @@ const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
         updateProfile,
         deleteProfile,
         loadMenusByLoggedUser,
-        loadMenusByProfileForEdit
+        loadMenusByProfileForEdit,
+        updateMenu
       }}
     >
       {children}

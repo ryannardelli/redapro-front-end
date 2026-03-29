@@ -1,3 +1,4 @@
+import type { Menu, MenuUpdateDto } from "models/Menu";
 import type {
   CreateProfilePayload,
   CreateProfileResponse,
@@ -20,6 +21,8 @@ type ProfileContextType = {
 
   loadMenusByLoggedUser: (profileId: number) => Promise<void>;
   loadMenusByProfileForEdit: (profileId: number) => Promise<void>;
+
+   updateMenu: (menuId: number, data: MenuUpdateDto) => Promise<Menu>;
 };
 
 export const ProfileContext = createContext<ProfileContextType>({
@@ -44,5 +47,9 @@ export const ProfileContext = createContext<ProfileContextType>({
 
   loadMenusByProfileForEdit: async () => {
     throw new Error("loadMenusByProfileForEdit not implemented");
-  }
+  },
+
+  updateMenu: async () => {
+  throw new Error("updateMenu not implemented");
+}
 });

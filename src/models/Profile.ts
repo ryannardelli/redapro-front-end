@@ -40,7 +40,10 @@ export type ProfileAction =
   | { type: "SET_ERROR_MENUS_EDITING_PROFILE"; payload: string }
 
   | { type: "SET_LOADING_PROFILES"; payload: boolean }
-  | { type: "SET_ERROR_PROFILES"; payload: string };
+  | { type: "SET_ERROR_PROFILES"; payload: string }
+
+  | { type: "UPDATE_MENU_LOGGED_USER"; payload: Menu }
+  | { type: "UPDATE_MENU_EDITING_PROFILE"; payload: Menu };
 
 export type CreateProfilePayload = {
     name: string;
