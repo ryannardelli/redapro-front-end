@@ -13,7 +13,7 @@ export async function update_menu(
   const token = userAuthentication.getTokenFromStorage();
 
   try {
-    const res = await fetch(`${API_URL}/menu/${menuId}`, {
+    const res = await fetch(`${API_URL}/${menuId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

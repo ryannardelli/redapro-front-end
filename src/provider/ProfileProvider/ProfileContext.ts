@@ -1,4 +1,4 @@
-import type { Menu, MenuUpdateDto } from "models/Menu";
+import type { MenuUpdateDto } from "models/Menu";
 import type {
   CreateProfilePayload,
   CreateProfileResponse,
@@ -22,7 +22,7 @@ type ProfileContextType = {
   loadMenusByLoggedUser: (profileId: number) => Promise<void>;
   loadMenusByProfileForEdit: (profileId: number) => Promise<void>;
 
-   updateMenu: (menuId: number, data: MenuUpdateDto) => Promise<Menu>;
+  updateMenu: (menuId: number, data: MenuUpdateDto) => Promise<{ message: string }>;
 };
 
 export const ProfileContext = createContext<ProfileContextType>({

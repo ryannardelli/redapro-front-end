@@ -24,6 +24,7 @@ import { useProfile } from "@hooks/useProfile";
 import type { Menu } from "models/Menu";
 import type { Profile } from "models/Profile";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
+import { showMessage } from "adapters/showMessage";
 
 const AVAILABLE_ICONS = {
   Home,
@@ -45,7 +46,7 @@ const AVAILABLE_ICONS = {
 export type IconName = keyof typeof AVAILABLE_ICONS;
 
 export function MenuBuilder() {
-  const { stateProfile, loadMenusByProfileForEdit } = useProfile();
+  const { stateProfile, loadMenusByProfileForEdit, updateMenu } = useProfile();
 
   const profiles: Profile[] = stateProfile.profiles ?? [];
   const backendMenus = stateProfile.menusByEditingProfile ?? [];
@@ -154,15 +155,41 @@ useEffect(() => {
   };
 
   const saveMenus = async () => {
-    if (!activeTab) return;
+  if (!activeTab) return;
 
-    try {
-      setIsSaving(true);
-      setLastSavedMenus(prev => ({ ...prev, [activeTab]: currentMenus }));
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  try {
+    setIsSaving(true);
+
+    const menusToUpdate = backendMenus;
+
+    const promises = menusToUpdate.map((menu) => {
+      const activeItem = currentMenus.find(
+        (m) => m.route === menu.route
+      );
+
+      return updateMenu(Number(menu.id), {
+        name: activeItem?.name || menu.name,
+        icon: activeItem?.icon || menu.icon,
+      });
+    });
+
+    const response = await Promise.all(promises);
+    setLastSavedMenus((prev) => ({
+      ...prev,
+      [activeTab]: currentMenus
+    }));
+
+    showMessage.success(response[0]?.message);
+
+  } catch (err) {
+    const errorMessage =
+        err instanceof Error ? err.message : "Aconteceu um problema ao atualizar o menu";
+    showMessage.error(errorMessage);
+    console.error(errorMessage);
+  } finally {
+    setIsSaving(false);
+  }
+};
 
   const isLoading =
     stateProfile.loadingMenusByEditingProfile ||

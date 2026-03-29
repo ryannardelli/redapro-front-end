@@ -11,7 +11,7 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import type { CreateProfilePayload } from "../../models/Profile";
 import { update_menu } from "@services/menu";
-import type { MenuUpdateDto } from "models/Menu";
+import type { Menu, MenuUpdateDto } from "models/Menu";
 
 type ProfileProviderProps = {
   children: ReactNode;
@@ -206,7 +206,7 @@ const loadMenusByProfileForEdit = useCallback(async (profileId: number) => {
 const updateMenu = async (
   menuId: number,
   data: MenuUpdateDto
-) => {
+): Promise<Menu & { message: string }> => {
   try {
     dispatchProfile({
       type: "SET_LOADING_MENUS_EDITING_PROFILE",
@@ -224,8 +224,11 @@ const updateMenu = async (
       type: "UPDATE_MENU_LOGGED_USER",
       payload: updatedMenu,
     });
-
-    return updatedMenu;
+    
+    return {
+      ...updatedMenu,
+      message: updatedMenu.message!,
+    };
   } catch (error) {
     console.error(error);
 
@@ -247,7 +250,6 @@ const updateMenu = async (
     });
   }
 };
-
    return (
     <ProfileContext.Provider
       value={{
