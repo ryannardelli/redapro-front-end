@@ -11,6 +11,10 @@ export const ProfileCorrectorProvider = ({ children }: CorretorProviderProps) =>
   const loadEssays = useCallback(async () => {
     try {
       dispatchEssay({ type: "SET_LOADING", payload: true });
+      const token = localStorage.getItem("token");
+      
+      if (!token) return;
+
       const pending = await getEssaysByStatus("PENDENTE");
       const inReview = await getEssaysByStatus("EM_CORRECAO");
       dispatchEssay({ type: "SET_ESSAY", payload: [...pending, ...inReview] });
@@ -88,7 +92,7 @@ export const ProfileCorrectorProvider = ({ children }: CorretorProviderProps) =>
 };
 
   return (
-    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay,     startReview, loadEssays, finishReview }}>
+    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay, startReview, loadEssays, finishReview }}>
       {children}
     </ProfileCorrectorContext.Provider>
   );

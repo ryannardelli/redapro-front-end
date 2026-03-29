@@ -4,15 +4,6 @@ export interface EssayCategory {
   description?: string | null;
 }
 
-export interface EssayFeedback {
-  c1?: string | null;
-  c2?: string | null;
-  c3?: string | null;
-  c4?: string | null;
-  c5?: string | null;
-  general?: string | null;
-}
-
 export interface Essay {
   id: number;
   title: string;
@@ -34,6 +25,7 @@ export interface Essay {
     email?: string;
   };
   reviewerId?: number | null;
+  generalFeedback?: string | null;
 }
 
 export type EssayState = {
@@ -70,15 +62,25 @@ export type FinishReviewPayload = {
 export type UpdateEssayRealtimePayload = {
   id: number;
   status?: Essay["status"];
-  note?: Essay["note"];
+  note?: number;
   feedback?: EssayFeedback;
+  generalFeedback?: string;
 };
 
-export type Feedback = {
-  c1: number
-  c2: number
-  c3: number
-  c4: number
-  c5: number
-  general: string
+export interface EssayFeedback {
+  c1: number;
+  c2: number;
+  c3: number;
+  c4: number;
+  c5: number;
+  general: string;
 }
+
+export type SocketEssayPayload = {
+  id: number;
+  status: string;
+  note?: number;
+  feedback?: EssayFeedback;
+  generalFeedback?: string;
+  message: string;
+};

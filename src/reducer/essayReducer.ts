@@ -29,13 +29,20 @@ export function essayReducer(state: EssayState, action: EssayAction) {
                 ),
         };
 
-        case "UPDATE_ESSAY_REALTIME":
+       case "UPDATE_ESSAY_REALTIME":
             return {
                 ...state,
                 loading: false,
                 essays: state.essays.map(e =>
                 e.id === action.payload.id
-                    ? { ...e, ...action.payload }
+                    ? {
+                        ...e,
+                        status: action.payload.status ?? e.status,
+                        note: action.payload.note ?? e.note,
+                        feedback: action.payload.feedback ?? e.feedback,
+                        generalFeedback:
+                        action.payload.generalFeedback ?? e.generalFeedback
+                    }
                     : e
                 )
             };
