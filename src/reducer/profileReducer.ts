@@ -52,6 +52,22 @@ export function profileReducer(state: ProfileState, action: ProfileAction) {
         errorMenusByEditingProfile: action.payload,
         loadingMenusByEditingProfile: false
       };
+    
+      case "UPDATE_MENU_LOGGED_USER":
+        return {
+          ...state,
+          menusByLoggedUser: state.menusByLoggedUser.map((menu) =>
+            menu.id === action.payload.id ? action.payload : menu
+          ),
+        };
+
+      case "UPDATE_MENU_EDITING_PROFILE":
+        return {
+          ...state,
+          menusByEditingProfile: state.menusByEditingProfile.map((menu) =>
+            menu.id === action.payload.id ? action.payload : menu
+          ),
+        };
 
     default:
       return state;

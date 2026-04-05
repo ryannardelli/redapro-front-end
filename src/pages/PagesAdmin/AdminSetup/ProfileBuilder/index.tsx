@@ -76,7 +76,7 @@ export function ProfileBuilder() {
             Gerenciador de Perfis
           </h1>
           <p className="text-gray-500">
-            Controle níveis de acesso para Administradores, Corretores e Alunos.
+            Controle níveis de acesso para Administradores, Estudantes e Alunos e mais.
           </p>
         </div>
 

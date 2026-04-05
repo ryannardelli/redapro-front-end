@@ -20,8 +20,6 @@ export default function AdminModelsEssay() {
   const essays = stateReferenceEssay.essays ?? [];
   const [page, setPage] = useState(1);
 
-  console.log(essays);
-
   const [filters, setFilters] = useState({
     search: "",
     year: "",
@@ -93,7 +91,7 @@ export default function AdminModelsEssay() {
             Modelos <span className="text-indigo-600">Nota 1000</span>
           </h1>
           <p className="text-slate-500 mt-2 text-lg">
-            Gerenciamento de referências e produções acadêmicas.
+            Gerenciamento de acervo de redações nota 1000 de estudantes.
           </p>
         </div>
         <NewEssaysReference />
@@ -137,11 +135,14 @@ export default function AdminModelsEssay() {
         />
       )}
 
-       <Pagination
+
+      {essays.length > 0 && (
+        <Pagination
           currentPage={page}
           totalPages={3}
           onPageChange={setPage}
         />
+      )}
     </section>
   );
 }

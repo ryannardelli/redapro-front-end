@@ -6,3 +6,8 @@ export interface Menu {
   icon: IconName;
   route: string;
 }
+
+export interface MenuUpdateDto {
+  name: string;
+  icon: string;
+}

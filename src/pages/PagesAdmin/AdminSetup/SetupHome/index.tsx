@@ -52,7 +52,7 @@ export function SetupHome() {
           Painel de Configurações
         </h1>
         <p className="mt-2 text-lg text-slate-600">
-          Gerencie a estrutura do sistema, acessos e visualize métricas de desempenho.
+          Gerencie a estrutura do sistema, acessos e muito mais.
         </p>
       </header>
 
