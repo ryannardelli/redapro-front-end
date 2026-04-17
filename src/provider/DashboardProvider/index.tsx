@@ -1,7 +1,7 @@
 import { useReducer, useEffect, type ReactNode } from "react";
 import { dashboardReducer, initialStateDashboard } from "../../reducer/dashboardReducer";
 import { DashboardContext } from "./DashboardContext";
-import { getRecentEssays, getStudentStats } from "../../services/dashboard";
+import { getRecentEssays, getRecentReviewedEssays, getReviewerStats, getStudentStats } from "../../services/dashboard";
 import { useAuth } from "../../hooks/useAuth";
 
 type Props = {
@@ -59,6 +59,52 @@ export const DashboardProvider = ({ children }: Props) => {
   }
 };
 
+ const loadReviewerStats = async () => {
+    try {
+      dispatchDashboard({ type: "SET_LOADING", payload: true });
+
+      const stats = await getReviewerStats();
+
+      dispatchDashboard({
+        type: "SET_REVIEWER_STATS",
+        payload: stats
+      });
+    } catch (error) {
+      dispatchDashboard({
+        type: "SET_ERROR",
+        payload:
+          error instanceof Error
+            ? error.message
+            : "Erro ao carregar estatísticas do corretor"
+      });
+    } finally {
+      dispatchDashboard({ type: "SET_LOADING", payload: false });
+    }
+  };
+
+  const loadRecentReviewedEssays = async () => {
+    try {
+      dispatchDashboard({ type: "SET_LOADING", payload: true });
+
+      const essays = await getRecentReviewedEssays();
+
+      dispatchDashboard({
+        type: "SET_RECENT_REVIEWED_ESSAYS",
+        payload: essays
+      });
+    } catch (error) {
+      dispatchDashboard({
+        type: "SET_ERROR",
+        payload:
+          error instanceof Error
+            ? error.message
+            : "Erro ao carregar redações corrigidas"
+      });
+    } finally {
+      dispatchDashboard({ type: "SET_LOADING", payload: false });
+    }
+  };
+
   useEffect(() => {
     if (!isAuthenticated) return;
 
@@ -75,6 +121,8 @@ export const DashboardProvider = ({ children }: Props) => {
         dispatchDashboard,
         loadStudentStats,
         loadRecentEssays,
+        loadReviewerStats,
+        loadRecentReviewedEssays,
       }}
     >
       {children}

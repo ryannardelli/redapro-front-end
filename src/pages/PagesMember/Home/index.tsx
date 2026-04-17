@@ -4,12 +4,14 @@ import { ActivityTable } from "@components/domain/Essay/ActivityTable";
 import { StatsStudent } from "@components/domain/Dashboard/StatsStudent";
 import { useAuth } from "@hooks/useAuth";
 import { FileText, HelpCircle, Plus, User } from "lucide-react";
+import { StatsReviewer } from "@components/domain/Dashboard/StatsReviewer";
 
 export function Home() {
 
     const { state } = useAuth();
     
     const user = state.user;
+    const role = user?.profile.name;
 
     const studentMenu = [
         { href: "/essay-upload", label: "Nova Redação", icon: Plus, primary: true },
@@ -21,13 +23,14 @@ export function Home() {
     return(
         <div className="md:p-4 p-0">
             <div>
-                {user?.profile.name === "Estudante" && <Shortcuts items={studentMenu} />}
-                <StatsStudent />
+                {role === "Estudante" && <Shortcuts items={studentMenu} />}
+                {role === "Estudante" && <StatsStudent />}
+                {role === "Corretor" && <StatsReviewer />}
             </div>
             
             <div className="flex flex-col gap-6 p-4">
-                {user?.profile.name === "Estudante" && <ActivityTable />}
-                {user?.profile.name === "Corretor" && <HistoryEssays />}
+                {role === "Estudante" && <ActivityTable />}
+                {role === "Corretor" && <HistoryEssays />}
             </div>
 
         </div>
