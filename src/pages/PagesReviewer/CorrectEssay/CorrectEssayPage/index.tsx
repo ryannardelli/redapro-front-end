@@ -26,7 +26,6 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
 
   const {
     stateEssay,
-    startReview,
     finishReview
   } = useProfileCorrectorEssay();
 
@@ -67,14 +66,6 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
     });
 
     setGeneralFeedback(found.feedback?.general ?? "");
-
-    const handleStartReview = async () => {
-      if (found.status === "PENDENTE") {
-        await startReview(essayId);
-      }
-    };
-
-    handleStartReview();
 
   }, [essayId, stateEssay.essays]);
 
