@@ -22,6 +22,7 @@ import { Logout } from "@components/domain/Auth/Logout";
 
 import redaProLogo from "../../../assets/img/redapro.png";
 import { MenuSkeletonList } from "@components/ui/Loading/MenuSkeleton/MenuSkeletonList";
+import { useLocation } from "react-router";
 
 const AVAILABLE_ICONS = {
   Home,
@@ -40,6 +41,7 @@ type IconName = keyof typeof AVAILABLE_ICONS;
 
 export function Sidebar() {
   const [sideBarOpen, setSideBarOpen] = useState(false);
+  const location = useLocation();
 
   const { state } = useAuth();
   const { stateProfile } = useProfile();
@@ -93,20 +95,25 @@ export function Sidebar() {
               menus.map(menu => {
                 const Icon =
                   AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
+                
+                const isActive = location.pathname === menu.route;
 
                 return (
                   <RouterLinks
                     key={menu.id}
                     href={menu.route}
-                    className="flex items-center gap-3 px-4 py-3
-                              text-sm font-semibold text-gray-600
-                              rounded-xl transition-all
-                              hover:bg-indigo-50 hover:text-indigo-600
-                              group"
+                    className={`flex items-center gap-3 px-4 py-3
+                              text-sm font-semibold rounded-xl transition-all
+                              group
+                              ${isActive 
+                                ? "bg-indigo-100 text-indigo-700 shadow-sm" // Estilo Ativo
+                                : "text-gray-600 hover:bg-indigo-50 hover:text-indigo-600" // Estilo Padrão
+                              }`}
                   >
                     <Icon
                       size={20}
-                      className="group-hover:scale-110 transition-transform"
+                      className={`transition-transform 
+                        ${isActive ? "scale-110 text-indigo-700" : "group-hover:scale-110"}`}
                     />
                     {menu.name}
                   </RouterLinks>
