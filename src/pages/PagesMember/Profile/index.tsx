@@ -7,10 +7,12 @@ import { SectionHeaderHistory } from "@components/ui/Header/SectionHeaderHistory
 import { ActivitiesStudentTable } from "@components/domain/Dashboard/ActivityStudentTable";
 import { ContainerHeaderHistory } from "@components/ui/Header/ContainerHeaderHistory/ContainerHeaderHistory";
 import { StatisticsStatsReviewer } from "@components/domain/Profile/StatisticsStatsReviewer";
+import { HistoryReviewer } from "@components/domain/Essay/HistoryReviewer";
 
 export function Profile() {
   const { state } = useAuth();
   const user = state.user;
+  const role = user?.profile.name;
 
   if (!user) return <SpinnerLoading />;
 
@@ -33,7 +35,7 @@ export function Profile() {
           <div className="flex flex-col md:flex-row md:items-center gap-2 mb-1">
             <h1 className="text-2xl md:text-3xl font-black text-slate-900">{user?.name}</h1>
             <span className="inline-block px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wider self-center">
-              {user.profile.name}
+              {role}
             </span>
           </div>
           <p className="text-slate-500 text-sm mb-4 font-medium">{user?.email}</p>
@@ -49,8 +51,8 @@ export function Profile() {
         </div>
       </div>
 
-      {user?.profile.name === "Estudante" && <StatisticsStatsStudent />}
-      {user?.profile.name === "Corretor" && <StatisticsStatsReviewer />}
+      {role === "Estudante" && <StatisticsStatsStudent />}
+      {role === "Corretor" && <StatisticsStatsReviewer />}
 
       <ContainerHeaderHistory>
         
@@ -61,7 +63,8 @@ export function Profile() {
         />
     
       <div className="p-0 sm:p-4">
-        <ActivitiesStudentTable />
+        {role === "Estudante" && <ActivitiesStudentTable />}
+        {role === "Corretor" && < HistoryReviewer/>}
       </div>
     </ContainerHeaderHistory>
 
