@@ -6,6 +6,7 @@ import { StatisticsStatsStudent } from "@components/domain/Profile/StatisticsSta
 import { SectionHeaderHistory } from "@components/ui/Header/SectionHeaderHistory";
 import { ActivitiesStudentTable } from "@components/domain/Dashboard/ActivityStudentTable";
 import { ContainerHeaderHistory } from "@components/ui/Header/ContainerHeaderHistory/ContainerHeaderHistory";
+import { StatisticsStatsReviewer } from "@components/domain/Profile/StatisticsStatsReviewer";
 
 export function Profile() {
   const { state } = useAuth();
@@ -49,6 +50,7 @@ export function Profile() {
       </div>
 
       {user?.profile.name === "Estudante" && <StatisticsStatsStudent />}
+      {user?.profile.name === "Corretor" && <StatisticsStatsReviewer />}
 
       <ContainerHeaderHistory>
         
