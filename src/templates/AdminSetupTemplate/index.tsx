@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Outlet, NavLink } from "react-router";
 import {
   Home,
@@ -16,7 +16,6 @@ import {
 import { Logout } from "@components/domain/Auth/Logout";
 import { HeaderNav } from "@components/layout/HeaderNav";
 import { useProfile } from "@hooks/useProfile";
-
 import { MenuSkeletonList } from "@components/ui/Loading/MenuSkeleton/MenuSkeletonList";
 import { useAuth } from "@hooks/useAuth";
 
@@ -39,7 +38,11 @@ export default function AdminSetupTemplate() {
   const user = state.user;
 
   const { stateProfile, loadMenusByLoggedUser } = useProfile();
-  const menus = stateProfile.menusByLoggedUser;
+  
+  const sortedMenus = useMemo(() => {
+    const menus = stateProfile.menusByLoggedUser ?? [];
+    return [...menus].sort((a, b) => Number(a.id) - Number(b.id));
+  }, [stateProfile.menusByLoggedUser]);
 
   useEffect(() => {
     if (!user?.profile?.id) return;
@@ -74,13 +77,13 @@ export default function AdminSetupTemplate() {
         <nav className="mt-6 pb-4">
           {isLoading ? (
             <MenuSkeletonList items={5} />
-          ) : menus.length === 0 ? (
+          ) : sortedMenus.length === 0 ? (
             <p className="px-6 py-3 text-slate-400 text-sm">
               Nenhum menu encontrado.
             </p>
           ) : (
             <div className="px-3 space-y-1">
-              {menus.map(menu => {
+              {sortedMenus.map(menu => {
                 const Icon =
                   AVAILABLE_ICONS[menu.icon as IconName] || HelpCircle;
 

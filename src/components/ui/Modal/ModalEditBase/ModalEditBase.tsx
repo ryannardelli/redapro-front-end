@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import { AnimationPresenceMotion } from "@components/ui/Motion/AnimationPresenceMotion";
 import { MotionContainer } from "@components/ui/Motion/MotionContainer";
 import React, { type ReactNode, useEffect, useState } from "react";
+import LoadingButtonEditForm from "@components/ui/Button/LoadingCreateButtonForm/LoadingButtonCreateForm";
 
 interface ModalEditBaseProps {
   isOpen: boolean;
@@ -77,13 +78,9 @@ export const ModalEditBase: React.FC<ModalEditBaseProps> = ({
                 Cancelar
               </button>
 
-              <button
-                onClick={onSave}
-                disabled={isLoading}
-                className="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
-              >
+              <LoadingButtonEditForm isLoading={isLoading} onClick={onSave}>
                 Salvar
-              </button>
+              </LoadingButtonEditForm>
             </footer>
           </MotionContainer>
         </MotionContainer>

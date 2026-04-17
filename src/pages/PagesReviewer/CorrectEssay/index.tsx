@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CorrectEssayPage } from "./CorrectEssayPage";
 import { ListLoading } from "@components/ui/Loading/ListLoading";
 import { Calendar, FileText, Play, Loader2 } from "lucide-react";
@@ -15,19 +15,33 @@ export function CorrectEssay() {
   const [starting, setStarting] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<"PENDENTE" | "EM_CORRECAO">("PENDENTE");
   const [essay, setEssay] = useState<any>(null);
-
   const { essays, loading } = stateEssay;
+  const startedRef = useRef(false);
 
   useEffect(() => {
     loadEssays();
   }, [loadEssays]);
 
   useEffect(() => {
-    if (essayId !== null) {
-      const found = stateEssay.essays.find(e => e.id === essayId);
-      if (found) setEssay(found);
+  if (!essayId) return;
+
+  const found = stateEssay.essays.find(e => e.id === essayId);
+
+  if (!found) {
+    if (!stateEssay.loading && stateEssay.essays.length > 0) {
+      navigate("/");
     }
-  }, [essayId, stateEssay.essays]);
+    return;
+  }
+
+  setEssay(found);
+
+  if (found.status === "PENDENTE" && !startedRef.current) {
+    startedRef.current = true;
+    startReview(essayId);
+  }
+
+}, [essayId, stateEssay.essays, stateEssay.loading]);
 
   const handleStartCorrection = async (id: number) => {
     try {
