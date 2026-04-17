@@ -5,6 +5,7 @@ export interface Menu {
   name: string; 
   icon: IconName;
   route: string;
+  order?: number;
 }
 
 export interface MenuUpdateDto {

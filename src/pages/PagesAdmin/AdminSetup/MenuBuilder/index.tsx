@@ -47,6 +47,7 @@ export type IconName = keyof typeof AVAILABLE_ICONS;
 
 export function MenuBuilder() {
   const { stateProfile, loadMenusByProfileForEdit, updateMenu } = useProfile();
+  console.log(stateProfile.menusByEditingProfile,);
 
   const profiles: Profile[] = stateProfile.profiles ?? [];
   const backendMenus = stateProfile.menusByEditingProfile ?? [];
@@ -87,7 +88,7 @@ useEffect(() => {
       id: String(menu.id),
       name: menu.name,
       route: menu.route,
-      icon: menu.icon as IconName
+      icon: menu.icon as IconName,
     }));
 
     setActiveMenus(prev => ({ ...prev, [activeTab]: [] }));
@@ -288,7 +289,7 @@ useEffect(() => {
                       <button
                         key={icon}
                         onClick={() => updateIcon(menu.route, icon)}
-                        className={`p-2 rounded-lg border ${
+                        className={`p-2 rounded-lg border cursor-pointer ${
                           activeItem?.icon === icon
                             ? "bg-blue-50 border-blue-300 text-blue-600"
                             : "border-slate-200 hover:bg-slate-50"
