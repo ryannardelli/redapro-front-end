@@ -112,6 +112,11 @@ export const DashboardProvider = ({ children }: Props) => {
       loadStudentStats();
       loadRecentEssays();
     }
+
+    if (profile === "Corretor") {
+      loadReviewerStats();
+      loadRecentReviewedEssays();
+    }
   }, [isAuthenticated, profile]);
 
   return (

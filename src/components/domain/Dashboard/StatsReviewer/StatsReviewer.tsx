@@ -8,6 +8,8 @@ export function StatsReviewer() {
 
   const { reviewerStats, loading } = stateDashboard;
 
+  console.log(stateDashboard);
+
   if (loading) {
     return (
       <section className="px-4 py-12 mx-auto max-w-7xl">
