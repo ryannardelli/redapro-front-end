@@ -1,0 +1,210 @@
+// import { FileText, Eye } from "lucide-react";
+
+// export function HistoryEssays() {
+//   const data = [
+//     { id: 1, tema: "Impactos do Meio Ambiente", aluno: "Ryan Nardelli", corretor: "Prof. Ana Souza", data: "05/10/2025", hora: "12:30", nota: 960, status: "excellent" },
+//     { id: 2, tema: "Avanços da Tecnologia", aluno: "Maria Clara", corretor: "Prof. João Lima", data: "04/10/2025", hora: "09:15", nota: 750, status: "average" },
+//     { id: 3, tema: "Mobilidade e Transporte", aluno: "João Lima", corretor: "Prof. Ana Souza", data: "03/10/2025", hora: "16:45", nota: 400, status: "low" },
+//   ];
+
+//   const getScoreStyle = (score: number) => {
+//     if (score >= 900) return "bg-emerald-50 text-emerald-700 border-emerald-100";
+//     if (score >= 600) return "bg-amber-50 text-amber-700 border-amber-100";
+//     return "bg-rose-50 text-rose-700 border-rose-100";
+//   };
+
+//   return (
+//     <div className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+//       <div className="p-6 border-b border-slate-100">
+//         <h2 className="text-lg font-bold text-slate-800">Histórico de Produção</h2>
+//         <p className="text-sm text-slate-500">Acompanhe seu desempenho em cada tema praticado.</p>
+//       </div>
+
+//       <div className="overflow-x-auto">
+//         <table className="w-full text-left border-collapse">
+//           <thead>
+//             <tr className="bg-slate-50/50">
+//               <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500">Tema da Redação</th>
+//               <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 hidden md:table-cell">Corretor</th>
+//               <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 hidden sm:table-cell">Data</th>
+//               <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Nota Final</th>
+//               <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">Ação</th>
+//             </tr>
+//           </thead>
+
+//           <tbody className="divide-y divide-slate-100">
+//             {data.map((item) => (
+//               <tr key={item.id} className="hover:bg-slate-50 transition-all group">
+//                 <td className="p-4">
+//                   <div className="flex items-center gap-3">
+//                     <div className="p-2.5 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
+//                       <FileText size={20} />
+//                     </div>
+//                     <div>
+//                       <p className="text-sm font-bold text-slate-900 leading-none mb-1">{item.tema}</p>
+//                       <p className="text-xs text-slate-500 md:hidden">Corretor: {item.corretor}</p>
+//                     </div>
+//                   </div>
+//                 </td>
+//                 <td className="p-4 hidden md:table-cell">
+//                   <div className="flex items-center gap-2">
+//                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-600 border border-slate-200">
+//                       {(item.corretor.split(' ').pop() || '').charAt(0)}
+//                     </div>
+//                     <div>
+//                       <p className="text-sm font-semibold text-slate-700">{item.corretor}</p>
+//                       <span className="text-[10px] text-purple-600 font-bold uppercase tracking-tighter">Especialista</span>
+//                     </div>
+//                   </div>
+//                 </td>
+
+//                 {/* Data */}
+//                 <td className="p-4 hidden sm:table-cell">
+//                   <p className="text-sm font-medium text-slate-700">{item.data}</p>
+//                   <p className="text-[10px] text-slate-400 font-bold">{item.hora}</p>
+//                 </td>
+
+//                 {/* Nota */}
+//                 <td className="p-4 text-center">
+//                   <div className={`inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-lg border font-black text-sm shadow-sm ${getScoreStyle(item.nota)}`}>
+//                     {item.nota}
+//                   </div>
+//                 </td>
+
+//                 {/* Ação */}
+//                 <td className="p-4 text-right">
+//                   <button className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:text-purple-600 hover:border-purple-200 hover:shadow-sm transition-all text-xs font-bold">
+//                     <Eye size={14} />
+//                     <span className="hidden lg:inline">Ver Detalhes</span>
+//                   </button>
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// }
+
+import { FileText, Eye } from "lucide-react";
+import type { Essay } from "models/Essay";
+import { useDashboard } from "@hooks/useDashboard";
+import { formatDate } from "utils/formatDate";
+import { TableSkeleton } from "@components/ui/Loading/TableSkeleton";
+import { getScoreStyle } from "utils/getScoreStyle";
+import { EmptyActivitiesReviewer } from "@components/ui/feedback/EmptyActivitiesReviewer";
+
+export function HistoryReviewer() {
+  const { stateDashboard } = useDashboard();
+
+  const { recentReviewedEssays, loading } = stateDashboard;
+
+  if (loading) {
+    return (
+      <TableSkeleton
+        columns={4}
+        rows={5}
+      />
+    );
+  }
+
+  if (!recentReviewedEssays || recentReviewedEssays.length === 0) {
+    return (
+      <EmptyActivitiesReviewer message="Você ainda não realizou nenhuma correção." />
+    );
+  }
+
+  return (
+    <div className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+      <div className="p-6 border-b border-slate-100">
+        <h2 className="text-lg font-bold text-slate-800">
+          Histórico de Correções
+        </h2>
+        <p className="text-sm text-slate-500">
+          Acompanhe as redações que você já corrigiu.
+        </p>
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-slate-50/50">
+              <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500">
+                Tema da Redação
+              </th>
+
+              <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 hidden sm:table-cell">
+                Data da Correção
+              </th>
+
+              <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">
+                Nota
+              </th>
+
+              <th className="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-right">
+                Ação
+              </th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y divide-slate-100">
+            {recentReviewedEssays.map((essay: Essay) => (
+              <tr
+                key={essay.id}
+                className="hover:bg-slate-50 transition-all group"
+              >
+                <td className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-purple-50 text-purple-600 rounded-xl group-hover:scale-110 transition-transform">
+                      <FileText size={20} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-bold text-slate-900 leading-none mb-1">
+                        {essay.title}
+                      </p>
+
+                      <p className="text-xs text-slate-500">
+                        {essay.content?.slice(0, 50)}...
+                      </p>
+                    </div>
+                  </div>
+                </td>
+
+                <td className="p-4 hidden sm:table-cell">
+                  <p className="text-sm font-medium text-slate-700">
+                    {formatDate(essay.updatedAt ?? essay.createdAt ?? "")}
+                  </p>
+                </td>
+
+                <td className="p-4 text-center">
+                  {essay.note ? (
+                    <div
+                      className={`inline-flex items-center justify-center min-w-[60px] px-3 py-1.5 rounded-lg border font-black text-sm shadow-sm ${getScoreStyle(
+                        essay.note
+                      )}`}
+                    >
+                      {essay.note}
+                    </div>
+                  ) : (
+                    <span className="text-sm text-slate-400 font-bold">
+                      -
+                    </span>
+                  )}
+                </td>
+
+                <td className="p-4 text-right">
+                  <button className="inline-flex cursor-pointer items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-lg text-slate-600 hover:text-purple-600 hover:border-purple-200 hover:shadow-sm transition-all text-xs font-bold">
+                    <Eye size={14} />
+                    <span className="hidden lg:inline">Ver Detalhes</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

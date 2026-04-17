@@ -1,5 +1,5 @@
 import { Shortcuts } from "@components/ui/Dashboard/ShortCuts";
-import { HistoryEssays } from "@components/domain/Essay/HistoryEssays";
+import { HistoryReviewer } from "@components/domain/Essay/HistoryReviewer";
 import { ActivityTable } from "@components/domain/Essay/ActivityTable";
 import { StatsStudent } from "@components/domain/Dashboard/StatsStudent";
 import { useAuth } from "@hooks/useAuth";
@@ -30,7 +30,7 @@ export function Home() {
             
             <div className="flex flex-col gap-6 p-4">
                 {role === "Estudante" && <ActivityTable />}
-                {role === "Corretor" && <HistoryEssays />}
+                {role === "Corretor" && <HistoryReviewer />}
             </div>
 
         </div>

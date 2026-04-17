@@ -77,7 +77,7 @@ export async function getRecentReviewedEssays(): Promise<Essay[]> {
   const token = userAuthentication.getTokenFromStorage();
 
   try {
-    const res = await fetch(`${API_URL}/reviewer/reviewer-activity`, {
+    const res = await fetch(`${API_URL}/reviewer-activity`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
