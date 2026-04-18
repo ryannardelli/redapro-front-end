@@ -14,6 +14,7 @@ import NotFound from "pages/NotFound";
 import { CorrectEssay } from "pages/PagesReviewer/CorrectEssay";
 import { MemberRoute } from "routers/MemberRouter";
 import { ProfileType } from "models/Profile";
+import { ForgotPassword } from "pages/ForgotPassword";
 
 export function MainRouter() {
   return (
@@ -21,6 +22,7 @@ export function MainRouter() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" element={<NotFound />} />
 
          {/* Rotas de estudante e corretor */}
