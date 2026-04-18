@@ -133,8 +133,29 @@ const registerUser = async (name: string, email: string, password: string) => {
   }
 };
 
+const resetPassword = async (token: string, newPassword: string) => {
+  try {
+    dispatch({ type: "SET_LOADING", payload: true });
+
+    const response = await userAuthentication.resetPassword({
+      token,
+      newPassword,
+    });
+
+    return response;
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Erro ao redefinir senha";
+
+    dispatch({ type: "SET_ERROR", payload: message });
+    throw err;
+  } finally {
+    dispatch({ type: "SET_LOADING", payload: false });
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ state, dispatch, login, registerUser, logout, forgotPassword }}>
+    <AuthContext.Provider value={{ state, dispatch, login, registerUser, logout, forgotPassword, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );

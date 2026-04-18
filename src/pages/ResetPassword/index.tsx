@@ -1,4 +1,57 @@
+import { useAuth } from "@hooks/useAuth";
+import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+
 export function ResetPassword() {
+  const { resetPassword, state } = useAuth();
+
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const token = searchParams.get("token") || "";
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setError(null);
+
+    if (!password || !confirmPassword) {
+      setError("Preencha todos os campos");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem");
+      return;
+    }
+
+    try {
+      await resetPassword(token, password);
+
+      setSuccess(true);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Erro ao redefinir senha";
+
+      setError(msg);
+    }
+  };
+
   return (
     <div
       className="reset-password-container"
@@ -17,105 +70,102 @@ export function ResetPassword() {
           background: "white",
           padding: "40px",
           borderRadius: "16px",
-          boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+          boxShadow:
+            "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
           width: "100%",
           maxWidth: "400px",
           textAlign: "center",
         }}
       >
-        <div
-          style={{
-            background: "#ecfdf5",
-            width: "56px",
-            height: "56px",
-            borderRadius: "12px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: "0 auto 24px",
-          }}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3-3.5 3.5z"></path>
-          </svg>
-        </div>
-
-        <h1 style={{ fontSize: "24px", fontWeight: "700", color: "#111827", marginBottom: "8px" }}>
+        <h1 style={{ fontSize: "24px", fontWeight: "700", color: "#111827" }}>
           Nova senha
         </h1>
 
-        <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "32px", lineHeight: "1.5" }}>
-          Escolha uma senha forte com pelo menos 8 caracteres para proteger sua conta.
+        <p
+          style={{
+            fontSize: "14px",
+            color: "#6b7280",
+            marginBottom: "24px",
+            lineHeight: "1.5",
+          }}
+        >
+          Escolha uma senha forte para proteger sua conta.
         </p>
 
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div style={{ textAlign: "left", marginBottom: "20px" }}>
-            <label
-              htmlFor="password"
-              style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}
-            >
-              Nova senha
-            </label>
-            <input
-              type="password"
-              id="password"
-              placeholder="••••••••"
-              required
-              minLength={8}
-              style={{
-                width: "100%",
-                padding: "12px 16px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                fontSize: "14px",
-                boxSizing: "border-box",
-                outline: "none",
-              }}
-            />
-          </div>
-
-          <div style={{ textAlign: "left", marginBottom: "28px" }}>
-            <label
-              htmlFor="confirm-password"
-              style={{ display: "block", fontSize: "14px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}
-            >
-              Confirmar nova senha
-            </label>
-            <input
-              type="password"
-              id="confirm-password"
-              placeholder="••••••••"
-              required
-              style={{
-                width: "100%",
-                padding: "12px 16px",
-                border: "1px solid #d1d5db",
-                borderRadius: "8px",
-                fontSize: "14px",
-                boxSizing: "border-box",
-                outline: "none",
-              }}
-            />
-          </div>
-
-          <button
-            type="submit"
+        {success ? (
+          <div
             style={{
-              width: "100%",
-              background: "#10b981",
-              color: "white",
-              padding: "12px",
-              border: "none",
+              background: "#ecfdf5",
+              color: "#065f46",
+              padding: "16px",
               borderRadius: "8px",
               fontSize: "14px",
-              fontWeight: "600",
-              cursor: "pointer",
-              transition: "background 0.2s",
             }}
           >
-            Redefinir senha
-          </button>
-        </form>
+            Senha redefinida com sucesso! Redirecionando...
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div style={{ textAlign: "left", marginBottom: "16px" }}>
+              <label style={{ fontSize: "14px", fontWeight: "500" }}>
+                Nova senha
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "8px",
+                  marginTop: "6px",
+                }}
+              />
+            </div>
+
+            <div style={{ textAlign: "left", marginBottom: "20px" }}>
+              <label style={{ fontSize: "14px", fontWeight: "500" }}>
+                Confirmar senha
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "8px",
+                  marginTop: "6px",
+                }}
+              />
+            </div>
+
+            {error && (
+              <p style={{ color: "#ef4444", fontSize: "13px" }}>{error}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={state.loading}
+              style={{
+                width: "100%",
+                background: state.loading ? "#93c5fd" : "#10b981",
+                color: "white",
+                padding: "12px",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "600",
+                cursor: state.loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {state.loading ? "Redefinindo..." : "Redefinir senha"}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

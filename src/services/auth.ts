@@ -80,4 +80,28 @@ login: async ({ email, password }: CredentialsUser): Promise<LoginResponse> => {
 
     return data;
   },
+
+  resetPassword: async ({
+      token,
+      newPassword,
+    }: {
+      token: string;
+      newPassword: string;
+    }) => {
+      const res = await fetch(`${API_URL}/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, newPassword }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.message || "Erro ao redefinir senha");
+      }
+
+      return data;
+    },
 };
