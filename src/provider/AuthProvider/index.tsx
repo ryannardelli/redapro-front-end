@@ -115,8 +115,26 @@ const registerUser = async (name: string, email: string, password: string) => {
     window.location.href = "/login";
   };
 
+  const forgotPassword = async (email: string) => {
+  try {
+    dispatch({ type: "SET_LOADING", payload: true });
+
+    const response = await userAuthentication.forgotPassword({ email });
+
+    return response;
+  } catch (err: unknown) {
+    const message =
+      err instanceof Error ? err.message : "Erro ao solicitar redefinição de senha";
+
+    dispatch({ type: "SET_ERROR", payload: message });
+    throw err;
+  } finally {
+    dispatch({ type: "SET_LOADING", payload: false });
+  }
+};
+
   return (
-    <AuthContext.Provider value={{ state, dispatch, login, registerUser, logout }}>
+    <AuthContext.Provider value={{ state, dispatch, login, registerUser, logout, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

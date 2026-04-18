@@ -9,6 +9,7 @@ type ContextType = {
   logout: () => void;
   registerUser: (name: string, email: string, password: string) => Promise<RegisterResponse>;
   login: (email: string, password: string) => Promise<AuthUser>;
+  forgotPassword: (email: string) => Promise<{ message: string }>;
 };
 
 export const AuthContext = createContext<ContextType>({
@@ -20,5 +21,8 @@ export const AuthContext = createContext<ContextType>({
   },
    login: async () => {
     throw new Error("login não implementado");
+  },
+   forgotPassword: async () => {
+    throw new Error("forgotPassword não implementado");
   },
 });

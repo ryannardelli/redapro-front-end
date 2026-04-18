@@ -62,4 +62,22 @@ login: async ({ email, password }: CredentialsUser): Promise<LoginResponse> => {
   getTokenFromStorage: () => {
     return localStorage.getItem("token");
   },
+
+  forgotPassword: async ({ email }: { email: string }) => {
+    const res = await fetch(`${API_URL}/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      throw new Error(data.message || "Erro ao solicitar redefinição de senha");
+    }
+
+    return data;
+  },
 };
