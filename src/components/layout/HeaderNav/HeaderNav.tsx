@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Menu, User, LogOut, Settings } from "lucide-react";
+import { Bell, Menu, User, LogOut, HelpCircle, BookOpen, Users } from "lucide-react";
 import { useAuth } from "@hooks/useAuth";
 import { SearchInput } from "@components/domain/Header/SearchInput";;
 import { ContainerHeaderSidebar } from "@components/ui/Header/ContainerHeaderSidebar/ContainerHeaderSidebar";
@@ -10,6 +10,7 @@ import { NotificationPanel } from "@components/domain/Header/NotificationPanel";
 import { ProfileButton } from "@components/domain/Header/ProfileButton";
 import { useNotifications } from "@hooks/useNotification";
 import { useProfile } from "@hooks/useProfile";
+import { RouterLinks } from "@components/ui/Links/RouterLinks";
 
 interface HeaderNavProps {
   onToggleSidebar: () => void;
@@ -24,6 +25,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const { logout, state } = useAuth();
   const { stateProfile } = useProfile();
   const user = state.user;
+  const role = user?.profile.name;
   const menus = stateProfile.menusByLoggedUser;
 
   const {
@@ -95,7 +97,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
         <div className="relative">
           <ProfileButton
             name={user?.name || "Usuário"}
-            role={user?.profile.name || ""}
+            role={role || ""}
             avatarUrl={
               user?.pictureUrl ||
               `https://ui-avatars.com/api/?name=${user?.name}`
@@ -112,14 +114,30 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
               />
 
               <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-2xl py-2">
-                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
-                  <User size={18} /> Meu Perfil
-                </button>
+                  {role === "Estudante" || role === "Corretor" && (
+                    <>
+                      <RouterLinks href="/my-profile" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <User size={18} /> Meu Perfil
+                      </RouterLinks>
 
-                <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
-                  <Settings size={18} /> Configurações
-                </button>
+                      <RouterLinks href="/support" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <HelpCircle size={18} /> Ajuda e Suporte
+                      </RouterLinks>
+                    </>
+                    )}
 
+                    {role === "Administrador" && (
+                    <>
+                      <RouterLinks href="/admin/setup/profiles" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <Users size={18} /> Perfis
+                      </RouterLinks>
+
+                      <RouterLinks href="/admin/setup/reference-essay" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <BookOpen size={18} /> Modelos nota 1000
+                      </RouterLinks>
+                    </>
+                    )}
+                    
                 <div className="h-[1px] bg-gray-50 my-2 mx-4" />
 
                 <button
