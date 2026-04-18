@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, Menu, User, LogOut, HelpCircle, BookOpen, Users } from "lucide-react";
+import { Bell, Menu, LogOut, BookOpen, Users, FileText, Pencil, User } from "lucide-react";
 import { useAuth } from "@hooks/useAuth";
 import { SearchInput } from "@components/domain/Header/SearchInput";;
 import { ContainerHeaderSidebar } from "@components/ui/Header/ContainerHeaderSidebar/ContainerHeaderSidebar";
@@ -114,30 +114,42 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
               />
 
               <div className="absolute right-0 mt-3 w-56 bg-white border border-gray-100 rounded-2xl shadow-2xl py-2">
-                  {role === "Estudante" || role === "Corretor" && (
+                  {role === "Estudante" && (
                     <>
-                      <RouterLinks href="/my-profile" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
-                        <User size={18} /> Meu Perfil
+                      <RouterLinks href="/my-essays" onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <FileText size={18} /> Minhas Redações
                       </RouterLinks>
 
-                      <RouterLinks href="/support" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
-                        <HelpCircle size={18} /> Ajuda e Suporte
+                      <RouterLinks href="/essay-upload" onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <Pencil size={18} /> Enviar Redação
+                      </RouterLinks>
+                    </>
+                    )}
+
+                    {role === "Corretor" && (
+                    <>
+                      <RouterLinks href="/essays-corrector" onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <FileText size={18} /> Correções de Redação
+                      </RouterLinks>
+
+                      <RouterLinks href="/my-profile" onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                        <User size={18} /> Meu Perfil
                       </RouterLinks>
                     </>
                     )}
 
                     {role === "Administrador" && (
                     <>
-                      <RouterLinks href="/admin/setup/profiles" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                      <RouterLinks href="/admin/setup/profiles" onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
                         <Users size={18} /> Perfis
                       </RouterLinks>
 
-                      <RouterLinks href="/admin/setup/reference-essay" className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
+                      <RouterLinks href="/admin/setup/reference-essay"  onClick={() => setIsProfileOpen(false)} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-indigo-50">
                         <BookOpen size={18} /> Modelos nota 1000
                       </RouterLinks>
                     </>
                     )}
-                    
+
                 <div className="h-[1px] bg-gray-50 my-2 mx-4" />
 
                 <button
