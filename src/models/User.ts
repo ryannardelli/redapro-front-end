@@ -12,6 +12,7 @@ export type User = {
 
 export type UserState = {
   users: User[];
+  currentUser?: User | null;
   
   loadingUsers: boolean;
   errorUsers: string | null;
@@ -23,7 +24,7 @@ export type UserAction =
   | { type: "SET_ERROR_USERS"; payload: string | null }
   | { type: "DELETE_USER"; payload: number }
   | { type: "UPDATE_USER"; payload: User }
-  | { type: "UPDATE_USER_PICTURE"; payload: string;
+  | { type: "UPDATE_USER_PICTURE"; payload: {userId: number, pictureUrl: string};
 };
 
 export type UpdateUserPayload = {

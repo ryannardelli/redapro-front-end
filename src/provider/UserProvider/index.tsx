@@ -156,7 +156,10 @@ const uploadProfilePicture = useCallback(async (file: File) => {
 
     dispatchUser({
       type: "UPDATE_USER_PICTURE",
-      payload: response.url,
+      payload: {
+        userId: stateUser.currentUser?.id ?? 0,
+        pictureUrl: response.url,
+      },
     });
 
     return response;
