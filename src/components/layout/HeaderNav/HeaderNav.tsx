@@ -154,9 +154,9 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
 
                 <button
                   onClick={logout}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-500 hover:bg-rose-50 font-semibold"
+                  className="w-full flex cursor-pointer items-center gap-3 px-4 py-2.5 text-sm text-rose-500 hover:bg-rose-50 font-semibold"
                 >
-                  <LogOut size={18} /> Sair da conta
+                  <LogOut size={18} /> Sair da Plataforma
                 </button>
               </div>
             </>
