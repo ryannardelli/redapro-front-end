@@ -1,4 +1,4 @@
-import { Trophy, Clock, Calendar } from "lucide-react";
+import { Clock, Calendar } from "lucide-react";
 import { useAuth } from "../../../hooks/useAuth";
 import { SpinnerLoading } from "@components/ui/Loading/SpinnerLoading";
 import { EditUser } from "@components/domain/Users/EditUser";
@@ -43,9 +43,6 @@ export function Profile() {
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
             <div className="flex items-center gap-1.5 text-slate-500 text-xs font-bold">
               <Calendar size={14} className="text-slate-400" /> Desde Out 2025
-            </div>
-            <div className="flex items-center gap-1.5 text-slate-500 text-xs font-bold">
-              <Trophy size={14} className="text-amber-500" /> Nível 4 (Veterano)
             </div>
           </div>
         </div>
