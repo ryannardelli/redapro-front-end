@@ -1,9 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Camera, User, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditUserSchema, type UserEditFormData } from "schemas/User/EditUserSchema";
 import type { UpdateUserPayload } from "models/User";
+import { useUsers } from "@hooks/useUsers";
+import { showMessage } from "adapters/showMessage";
 
 interface UserEditFormProps {
   user: UpdateUserPayload;
@@ -13,6 +15,10 @@ interface UserEditFormProps {
 
 export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { uploadProfilePicture } = useUsers();
+
+  const [file, ] = useState<File | null>(null);
 
   const {
     register,
@@ -31,26 +37,52 @@ export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {
   const preview = watch("pictureUrl");
   const name = watch("name");
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
 
-    if (file) {
-      const reader = new FileReader();
+  if (!file) return;
 
-      reader.onloadend = () => {
-        setValue("pictureUrl", reader.result as string);
-      };
+  try {
+    const response = await uploadProfilePicture(file);
 
-      reader.readAsDataURL(file);
+    setValue("pictureUrl", response.url);
+
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+  const handleFormSubmit = async (data: UserEditFormData) => {
+    try {
+      await onSubmit(data);
+
+      if (file) {
+        const response = await uploadProfilePicture(file);
+
+        showMessage.success(response.message);
+      }
+
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "Erro ao atualizar perfil";
+
+      showMessage.error(message);
     }
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className="space-y-8"
+    >
 
       <div className="space-y-8">
         <div className="flex flex-col items-center">
           <div className="relative group">
+
             <div className="w-32 h-32 rounded-[2rem] overflow-hidden ring-4 ring-purple-50 shadow-inner">
               <img
                 src={
@@ -65,7 +97,7 @@ export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="absolute -bottom-2 -right-2 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-2xl shadow-xl transition-all hover:scale-110 active:scale-90"
+              className="absolute cursor-pointer -bottom-2 -right-2 bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-2xl shadow-xl transition-all hover:scale-110 active:scale-90"
             >
               <Camera size={20} />
             </button>
@@ -77,6 +109,7 @@ export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {
               className="hidden"
               accept="image/*"
             />
+
           </div>
         </div>
 
@@ -102,7 +135,7 @@ export function UserEditForm({ user, onSubmit, formRef }: UserEditFormProps) {
               </p>
             )}
           </div>
-          
+
           <div className="space-y-2 group">
             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 flex justify-between">
               E-mail

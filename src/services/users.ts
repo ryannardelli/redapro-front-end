@@ -1,15 +1,16 @@
 const API_URL = "/api/users";
 
+import type { UpdateUserPayload, UploadProfilePictureResponse, User } from "../models/User";
+import { userAuthentication } from "./auth";
+
 interface CatchInformationsUser {
     getUserById: (id: number) => Promise<User>;
     findAll: () => Promise<User[]>;
     deleteUser: (id: number) => Promise<{ message: string }>;
     updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
     associateProfile: (userId: number, profileId: number) => Promise<User>;
+    uploadProfilePicture: (file: File) => Promise<UploadProfilePictureResponse>;
 }
-
-import type { UpdateUserPayload, User } from "../models/User";
-import { userAuthentication } from "./auth";
 
 type ApiError = {
     message?: string;
@@ -115,6 +116,28 @@ export const catchInformationsUser: CatchInformationsUser = {
         }
 
   return res.json() as Promise<User>;
+},
+
+uploadProfilePicture: async (file: File) => {
+  const token = userAuthentication.getTokenFromStorage();
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch(`${API_URL}/me/picture`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const errorData: ApiError = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || "Erro ao atualizar imagem");
+  }
+
+  return res.json();
 },
 };
 

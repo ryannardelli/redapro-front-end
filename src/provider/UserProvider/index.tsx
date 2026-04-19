@@ -148,6 +148,34 @@ const associateProfile = useCallback(
   []
 );
 
+const uploadProfilePicture = useCallback(async (file: File) => {
+  try {
+    dispatchUser({ type: "SET_LOADING_USERS", payload: true });
+
+    const response = await catchInformationsUser.uploadProfilePicture(file);
+
+    dispatchUser({
+      type: "UPDATE_USER_PICTURE",
+      payload: response.url,
+    });
+
+    return response;
+
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Erro ao atualizar imagem";
+
+    dispatchUser({
+      type: "SET_ERROR_USERS",
+      payload: message,
+    });
+
+    throw error;
+  } finally {
+    dispatchUser({ type: "SET_LOADING_USERS", payload: false });
+  }
+}, []);
+
   return (
     <UserContext.Provider
       value={{
@@ -156,7 +184,8 @@ const associateProfile = useCallback(
         updateUser,
         loadUsers,
         deleteUser,
-        associateProfile
+        associateProfile,
+        uploadProfilePicture
       }}
     >
       {children}

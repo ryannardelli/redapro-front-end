@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type { UpdateUserPayload, User, UserAction, UserState } from "models/User";
+import type { UpdateUserPayload, UploadProfilePictureResponse, User, UserAction, UserState } from "models/User";
 import { initialStateUser } from "reducer/userReducer";
 
 type UserContextType = {
@@ -10,6 +10,7 @@ type UserContextType = {
   deleteUser: (id: number) => Promise<{ message: string }>;
   updateUser: (id: number, data: UpdateUserPayload) => Promise<UpdateUserPayload & { message: string }>;
   associateProfile: (userId: number, profileId: number) => Promise<User & { message: string }>;
+  uploadProfilePicture: (file: File) => Promise<UploadProfilePictureResponse>;
 };
 
 export const UserContext = createContext<UserContextType>({
@@ -30,5 +31,9 @@ export const UserContext = createContext<UserContextType>({
 
   associateProfile: async () => {
     throw new Error("associateProfile not implemented");
-  }
+  },
+
+  uploadProfilePicture: async () => {
+    throw new Error("uploadProfilePicture not implemented");
+  },
 });

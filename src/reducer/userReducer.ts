@@ -32,6 +32,19 @@ export function userReducer(
         )
       };
 
+     case "UPDATE_USER_PICTURE":
+      return {
+        ...state,
+        users: state.users.map(user =>
+          user.id === action.payload.userId
+            ? {
+                ...user,
+                pictureUrl: action.payload.pictureUrl,
+              }
+            : user
+        ),
+      };
+
     case "SET_ERROR_USERS":
       return {
         ...state,
