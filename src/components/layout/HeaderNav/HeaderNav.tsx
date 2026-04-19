@@ -29,7 +29,7 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const { stateProfile } = useProfile();
 
   const user = stateUser.users.find(
-    u => u.id === state.user.id
+    u => u.id === state.user?.id
   );
 
   const role = user?.profile.name;

@@ -15,7 +15,7 @@ export function Profile() {
 
   const { stateUser } = useUsers();
   const user = stateUser.users.find(
-    u => u.id === state.user.id
+    u => u.id === state.user?.id
   );
   
   const role = user?.profile.name;
