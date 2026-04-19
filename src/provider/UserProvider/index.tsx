@@ -91,6 +91,8 @@ const updateUser = useCallback(async (id: number, data: UpdateUserPayload) => {
       type: "UPDATE_USER",
       payload: updatedUser as unknown as User,
     });
+
+    await loadUsers();
     
     return updatedUser;
 
@@ -161,6 +163,8 @@ const uploadProfilePicture = useCallback(async (file: File) => {
         pictureUrl: response.url,
       },
     });
+
+    await loadUsers();
 
     return response;
 

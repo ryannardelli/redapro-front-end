@@ -11,6 +11,7 @@ import { ProfileButton } from "@components/domain/Header/ProfileButton";
 import { useNotifications } from "@hooks/useNotification";
 import { useProfile } from "@hooks/useProfile";
 import { RouterLinks } from "@components/ui/Links/RouterLinks";
+import { useUsers } from "@hooks/useUsers";
 
 interface HeaderNavProps {
   onToggleSidebar: () => void;
@@ -23,8 +24,14 @@ export function HeaderNav({ onToggleSidebar }: HeaderNavProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const { logout, state } = useAuth();
+  const { stateUser } = useUsers();
+
   const { stateProfile } = useProfile();
-  const user = state.user;
+
+  const user = stateUser.users.find(
+    u => u.id === state.user.id
+  );
+
   const role = user?.profile.name;
   const menus = stateProfile.menusByLoggedUser;
 

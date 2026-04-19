@@ -8,10 +8,16 @@ import { ActivitiesStudentTable } from "@components/domain/Dashboard/ActivityStu
 import { ContainerHeaderHistory } from "@components/ui/Header/ContainerHeaderHistory/ContainerHeaderHistory";
 import { StatisticsStatsReviewer } from "@components/domain/Profile/StatisticsStatsReviewer";
 import { HistoryReviewer } from "@components/domain/Essay/HistoryReviewer";
+import { useUsers } from "@hooks/useUsers";
 
 export function Profile() {
   const { state } = useAuth();
-  const user = state.user;
+
+  const { stateUser } = useUsers();
+  const user = stateUser.users.find(
+    u => u.id === state.user.id
+  );
+  
   const role = user?.profile.name;
 
   if (!user) return <SpinnerLoading />;
