@@ -17,6 +17,7 @@ import { EmptyState } from '@components/feedback/EmptyState';
 import { useProfileStudentEssay } from '@hooks/useProfileStudentEssay';
 import type { DialogProps } from 'types/DialogProps';
 import { EssayProcessingModal } from '@components/ui/Modal/EssayProcessingModal';
+import { EssayAttachmentDownload } from '../EssayAttachmentDownload';
 
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
@@ -26,7 +27,6 @@ export function CardEssays({ filters }: { filters: EssayFilters }) {
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
   const [correctingEssayId, setCorrectingEssayId] = useState<number | null>(null);
-
 
   const filteredEssays = useMemo(() => {
     return essays.filter((essay) => {
@@ -220,6 +220,10 @@ useEffect(() => {
                             loading={loading}
                             title="Ver redação completa"
                           />
+
+                          {essay.attachmentUrl && (
+                            <EssayAttachmentDownload attachmentUrl={essay.attachmentUrl} />
+                          )}
 
                           <DeleteEssay
                             onDelete={() => handleDelete(essay.id)}

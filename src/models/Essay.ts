@@ -13,6 +13,7 @@ export interface Essay {
   createdAt?: string | null;
   updatedAt?: string | null;
   category?: EssayCategory | null;
+  attachmentUrl: string | null;
   c1: number;
   c2: number;
   c3: number;

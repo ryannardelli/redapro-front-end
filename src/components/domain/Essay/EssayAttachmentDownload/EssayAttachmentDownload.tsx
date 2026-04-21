@@ -1,0 +1,23 @@
+import { Download } from "lucide-react";
+
+type EssayAttachmentDownloadProps = {
+  attachmentUrl?: string | null;
+};
+
+export function EssayAttachmentDownload({
+  attachmentUrl,
+}: EssayAttachmentDownloadProps) {
+  if (!attachmentUrl) return null;
+
+  return (
+    <a
+      href={attachmentUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center justify-center px-3 py-2 text-xs font-semibold bg-indigo-50 text-indigo-600 rounded-lg border border-indigo-200 hover:bg-indigo-100 transition"
+      title="Baixar arquivo"
+    >
+      <Download size={14} />
+    </a>
+  );
+}
