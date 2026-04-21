@@ -42,6 +42,7 @@ export type EssayAction =
   | { type: "UPDATE_ESSAY"; payload: Essay }
   | { type: "UPDATE_ESSAY_REALTIME"; payload: UpdateEssayRealtimePayload }
   | { type: "UPDATE_ESSAY_CORRECTED"; payload: { id: number; correctedContent: string } }
+  | { type: "UPDATE_ESSAY_ATTACHMENT"; payload: { id: number; url: string } }
   | { type: "SET_ERROR"; payload: string | null };
 
 export type CreateEssayPayload = {

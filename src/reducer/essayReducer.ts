@@ -69,6 +69,18 @@ export function essayReducer(state: EssayState, action: EssayAction) {
                     : essay
                 ),
             };
+        case "UPDATE_ESSAY_ATTACHMENT":
+            return {
+                ...state,
+                essays: state.essays.map((essay) =>
+                essay.id === action.payload.id
+                    ? {
+                        ...essay,
+                        attachment: { url: action.payload.url }
+                    }
+                    : essay
+                ),
+            };
         default:
             return state
     }

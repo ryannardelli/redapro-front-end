@@ -230,3 +230,34 @@ export async function finishReviewEssay(
   }
 }
 
+export async function uploadEssayAttachment(
+  essayId: number,
+  file: File
+): Promise<{ message: string; url: string }> {
+
+  const token = userAuthentication.getTokenFromStorage();
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}/attachment`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao anexar arquivo.");
+    }
+
+    return await res.json();
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

@@ -1,6 +1,6 @@
 import { useReducer, useCallback, useEffect, type ReactNode } from "react";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { finishReviewEssay, getEssaysByStatus, startReviewEssay } from "../../services/essay";
+import { finishReviewEssay, getEssaysByStatus, startReviewEssay, uploadEssayAttachment } from "../../services/essay";
 import { ProfileCorrectorContext } from "./ProfileCorrectorContext";
 
 type CorretorProviderProps = { children: ReactNode };
@@ -91,8 +91,39 @@ export const ProfileCorrectorProvider = ({ children }: CorretorProviderProps) =>
   }
 };
 
+const uploadAttachment = async (essayId: number, file: File) => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const response = await uploadEssayAttachment(essayId, file);
+
+    dispatchEssay({
+      type: "UPDATE_ESSAY_ATTACHMENT",
+      payload: {
+        id: essayId,
+        url: response.url,
+      },
+    });
+
+    return response;
+
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao anexar arquivo";
+
+    dispatchEssay({ type: "SET_ERROR", payload: message });
+
+    throw error;
+
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+};
+
   return (
-    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay, startReview, loadEssays, finishReview }}>
+    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay, startReview, loadEssays, finishReview, uploadAttachment }}>
       {children}
     </ProfileCorrectorContext.Provider>
   );
