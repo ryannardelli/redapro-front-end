@@ -1,6 +1,4 @@
-import { showMessage } from "adapters/showMessage"
-import { FileText, UploadCloud, X } from "lucide-react"
-import { useRef, useState } from "react"
+import { FileUpload } from "../FileUpload"
 
 type EvaluationPanelProps = {
   scores: {
@@ -18,14 +16,18 @@ type EvaluationPanelProps = {
     c5: number
   }>>
   generalFeedback: string
-  setGeneralFeedback: (value: string) => void
+  setGeneralFeedback: (value: string) => void;
+  attachedFile: File | null;
+  setAttachedFile: (file: File | null) => void;
 }
 
 export function EvaluationPanel({
   scores,
   setScores,
   generalFeedback,
-  setGeneralFeedback
+  setGeneralFeedback,
+  attachedFile,
+  setAttachedFile
 }: EvaluationPanelProps) {
 
   const finalScore =
@@ -34,23 +36,6 @@ export function EvaluationPanel({
     (scores.c3 || 0) +
     (scores.c4 || 0) +
     (scores.c5 || 0)
-  
-    const [attachedFile, setAttachedFile] = useState<File | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const file = event.target.files?.[0];
-      
-      if (!file) return;
-  
-      setAttachedFile(file);
-      showMessage.success(`Arquivo "${file.name}" preparado!`);
-    };
-  
-    const removeFile = () => {
-      setAttachedFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    };
 
   return (
     <aside className="w-full lg:w-[400px] border-t lg:border-l border-slate-200 bg-white overflow-y-auto p-6 space-y-8">
@@ -119,33 +104,7 @@ export function EvaluationPanel({
 
       </div>
 
-      <div className="px-4 py-2 bg-white border-b border-slate-200 flex items-center gap-4">
-            {!attachedFile ? (
-              <label className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-600 rounded-md cursor-pointer hover:bg-indigo-100 transition-colors text-sm font-medium border border-indigo-200">
-                <UploadCloud size={16} />
-                <span>Anexar arquivo</span>
-                <input 
-                  type="file" 
-                  ref={fileInputRef}
-                  className="hidden" 
-                  accept=".pdf, .doc, .docx, application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                  onChange={handleFileChange}
-                />
-              </label>
-            ) : (
-              <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-md border border-emerald-200 text-sm animate-in fade-in slide-in-from-left-2">
-                <FileText size={16} />
-                <span className="max-w-[200px] truncate font-medium">{attachedFile.name}</span>
-                <button 
-                  onClick={removeFile}
-                  className="ml-1 p-0.5 hover:bg-emerald-200 rounded-full transition-colors"
-                  title="Remover arquivo"
-                >
-                  <X size={14} />
-                </button>
-              </div>
-            )}
-          </div>
+     <FileUpload file={attachedFile} onFileChange={setAttachedFile} />
 
     </aside>
   )

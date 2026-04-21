@@ -32,6 +32,8 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
   const [essay, setEssay] = useState<Essay | null>(initialEssay);
   const [editor, setEditor] = useState<any>(null);
 
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+
   const [scores, setScores] = useState({
     c1: 0,
     c2: 0,
@@ -128,6 +130,8 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
           setScores={setScores}
           generalFeedback={generalFeedback}
           setGeneralFeedback={setGeneralFeedback}
+          attachedFile={attachedFile}
+          setAttachedFile={setAttachedFile}
         />
 
       </main>
