@@ -21,6 +21,8 @@ import { EssayProcessingModal } from '@components/ui/Modal/EssayProcessingModal'
 export function CardEssays({ filters }: { filters: EssayFilters }) {
   const { stateEssay, deleteEssay, correctEssayAI } = useProfileStudentEssay();
 
+  console.log(stateEssay.essays);
+
   const loading = stateEssay.loading;
   const essays = stateEssay.essays || [];
   const [correctingEssayId, setCorrectingEssayId] = useState<number | null>(null);

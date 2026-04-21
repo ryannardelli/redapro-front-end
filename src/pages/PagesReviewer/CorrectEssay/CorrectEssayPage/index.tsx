@@ -26,7 +26,8 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
 
   const {
     stateEssay,
-    finishReview
+    finishReview,
+    uploadAttachment
   } = useProfileCorrectorEssay();
 
   const [essay, setEssay] = useState<Essay | null>(initialEssay);
@@ -84,6 +85,10 @@ export function CorrectEssayPage({ essay: initialEssay }: CorrectEssayPageProps)
         c5: scores.c5,
         generalFeedback
       });
+
+      if (attachedFile) {
+        await uploadAttachment(essayId, attachedFile);
+      }
 
       showMessage.success(response.message);
       navigate("/");
