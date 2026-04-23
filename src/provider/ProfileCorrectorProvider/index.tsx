@@ -1,6 +1,6 @@
 import { useReducer, useCallback, useEffect, type ReactNode } from "react";
 import { essayReducer, initialStateEssay } from "../../reducer/essayReducer";
-import { finishReviewEssay, getEssaysByStatus, startReviewEssay, uploadEssayAttachment } from "../../services/essay";
+import { finishReviewEssay, generateEssayPdf, getEssaysByStatus, startReviewEssay, uploadEssayAttachment } from "../../services/essay";
 import { ProfileCorrectorContext } from "./ProfileCorrectorContext";
 
 type CorretorProviderProps = { children: ReactNode };
@@ -122,8 +122,40 @@ const uploadAttachment = async (essayId: number, file: File) => {
   }
 };
 
+const downloadEssayPdf = async (essayId: number) => {
+  try {
+    dispatchEssay({ type: "SET_LOADING", payload: true });
+
+    const blob = await generateEssayPdf(essayId);
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `redacao-${essayId}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+
+    link.remove();
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Erro ao baixar PDF";
+
+    dispatchEssay({ type: "SET_ERROR", payload: message });
+    throw error;
+
+  } finally {
+    dispatchEssay({ type: "SET_LOADING", payload: false });
+  }
+};
+
   return (
-    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay, startReview, loadEssays, finishReview, uploadAttachment }}>
+    <ProfileCorrectorContext.Provider value={{ stateEssay, dispatchEssay, startReview, loadEssays, finishReview, uploadAttachment, downloadEssayPdf }}>
       {children}
     </ProfileCorrectorContext.Provider>
   );

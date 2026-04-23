@@ -14,6 +14,7 @@ type ProfileCorrectorContextType = {
   finishReview: (essayId: number, payload: FinishReviewPayload) => Promise<Essay & { message: string }>;
   loadEssays: () => Promise<void>;
   uploadAttachment: (essayId: number, file: File) => Promise<{ message: string; url: string }>;
+  downloadEssayPdf: (essayId: number) => Promise<void>;
 };
 
 export const ProfileCorrectorContext = createContext<ProfileCorrectorContextType>({
@@ -30,5 +31,9 @@ export const ProfileCorrectorContext = createContext<ProfileCorrectorContextType
    
    uploadAttachment: async () => {
     throw new Error("uploadAttachment not implemented");
+  },
+
+  downloadEssayPdf: async () => {
+    throw new Error("downloadEssayPdf not implemented");
   },
 });

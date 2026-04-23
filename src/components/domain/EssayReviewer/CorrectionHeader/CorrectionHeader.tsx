@@ -46,7 +46,8 @@ export function CorrectionHeader({ essay, onFinish, loading }: CorrectionHeaderP
           loading={loading}
         />
         
-        <DownloadEssay />
+        {/* <DownloadEssay /> */}
+        <DownloadEssay essayId={essay.id} />
       </div>
 
     </header>

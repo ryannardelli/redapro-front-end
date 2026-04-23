@@ -261,3 +261,28 @@ export async function uploadEssayAttachment(
     throw error;
   }
 }
+
+export async function generateEssayPdf(essayId: number): Promise<Blob> {
+  const token = userAuthentication.getTokenFromStorage();
+
+  try {
+    const res = await fetch(`${API_URL}/${essayId}/generate-pdf`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
+      throw new Error(errorData?.message ?? "Erro ao gerar PDF da redação.");
+    }
+
+    const blob = await res.blob();
+    return blob;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
