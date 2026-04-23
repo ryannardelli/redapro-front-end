@@ -222,7 +222,7 @@ useEffect(() => {
                           />
 
                           {essay.attachmentUrl && (
-                            <EssayAttachmentDownload attachmentUrl={essay.attachmentUrl} />
+                            <EssayAttachmentDownload filename={essay.attachmentOriginalName} attachmentUrl={essay.attachmentUrl} />
                           )}
 
                           <DeleteEssay
