@@ -41,13 +41,13 @@ export function CorrectionHeader({ essay, onFinish, loading }: CorrectionHeaderP
       </div>
 
       <div className="flex flex-shrink-0 items-center gap-3">
+        <DownloadEssay essayId={essay.id} />
+        
         <FinishCorrectEssay
           onClick={onFinish}
           loading={loading}
         />
         
-        {/* <DownloadEssay /> */}
-        <DownloadEssay essayId={essay.id} />
       </div>
 
     </header>
