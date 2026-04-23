@@ -12,8 +12,6 @@ export function EssayAttachmentDownload({
 }: Props) {
   if (!attachmentUrl) return null;
 
-  console.log(filename);
-
   const safeFilename = filename || "arquivo";
 
   const downloadUrl = getDownloadUrl(attachmentUrl, safeFilename);
