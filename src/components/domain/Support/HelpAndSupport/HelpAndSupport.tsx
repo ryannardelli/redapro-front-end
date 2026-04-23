@@ -61,7 +61,7 @@ const correctorFaqs = [
   {
     ask: "A plataforma utiliza Inteligência Artificial na correção?",
     answer:
-      "Sim. A plataforma pode utilizar Inteligência Artificial para auxiliar na análise textual, identificando aspectos como estrutura, gramática e coerência. No entanto, a avaliação final e o feedback ao estudante são realizados pela escolha doe estudante."
+      "Sim. A plataforma pode utilizar Inteligência Artificial para auxiliar na análise textual, identificando aspectos como estrutura, gramática e coerência. No entanto, a avaliação final e o feedback ao estudante são realizados pela escolha do estudante."
   },
   {
     ask: "Como garantir uma correção justa e consistente?",

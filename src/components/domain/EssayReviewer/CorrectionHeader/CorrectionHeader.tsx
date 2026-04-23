@@ -2,6 +2,7 @@ import { FinishCorrectEssay } from "@components/ui/Button/FinishCorrectEssay";
 import { ChevronLeft } from "lucide-react";
 import type { Essay } from "models/Essay";
 import { useNavigate } from "react-router";
+import { DownloadEssay } from "../DowloadEssay";
 
 type CorrectionHeaderProps = {
   essay: Essay;
@@ -39,11 +40,13 @@ export function CorrectionHeader({ essay, onFinish, loading }: CorrectionHeaderP
         </div>
       </div>
 
-      <div className="flex-shrink-0">
+      <div className="flex flex-shrink-0 items-center gap-3">
         <FinishCorrectEssay
           onClick={onFinish}
           loading={loading}
         />
+        
+        <DownloadEssay />
       </div>
 
     </header>
