@@ -33,7 +33,7 @@ export function DownloadEssay({ essayId }: Props) {
       disabled={status === "loading"}
       className={`
         relative flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm
-        transition-all duration-200 active:scale-95
+        transition-all duration-200 active:scale-95 cursor-pointer
         ${status === "loading" 
           ? "bg-slate-100 text-slate-400 cursor-not-allowed" 
           : status === "success"
