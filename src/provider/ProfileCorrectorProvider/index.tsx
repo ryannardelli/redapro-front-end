@@ -123,8 +123,7 @@ const uploadAttachment = async (essayId: number, file: File) => {
 };
 
 const downloadEssayPdf = async (essayId: number) => {
-  try {
-    dispatchEssay({ type: "SET_LOADING", payload: true });
+  try {;
 
     const blob = await generateEssayPdf(essayId);
 
@@ -149,8 +148,6 @@ const downloadEssayPdf = async (essayId: number) => {
     dispatchEssay({ type: "SET_ERROR", payload: message });
     throw error;
 
-  } finally {
-    dispatchEssay({ type: "SET_LOADING", payload: false });
   }
 };
 
